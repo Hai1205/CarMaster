@@ -86,6 +86,7 @@ public class StyleDialog extends JDialog implements MouseListener {
         txtStyleName = new InputForm("Tên kiểu dáng");
         txtStyleName.setPreferredSize(new Dimension(250, 70));
         table = new JTable();
+        table.setDefaultEditor(Object.class, null);
         table.setBackground(Color.WHITE);
         table.addMouseListener(this);
         table.setAutoCreateRowSorter(true);

@@ -92,6 +92,7 @@ public class DiscountDialog extends JDialog implements MouseListener {
         txtDiscountPercent.setPreferredSize(new Dimension(250, 70));
         main.add(txtDiscountPercent);
         table = new JTable();
+        table.setDefaultEditor(Object.class, null);
         table.setBackground(Color.WHITE);
         table.addMouseListener(this);
         table.setAutoCreateRowSorter(true);

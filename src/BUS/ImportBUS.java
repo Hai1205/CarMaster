@@ -8,7 +8,6 @@ import DTO.ImportDetailDTO;
 
 /**
  *
- * @author Tran Nhat Sinh
  */
 public class ImportBUS {
 

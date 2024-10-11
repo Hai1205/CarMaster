@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 
 /**
  *
- * @author Tran Nhat Sinh
  */
 public class Tool {
     public static String randomID() {

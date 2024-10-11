@@ -5,6 +5,7 @@ import BUS.InvoiceBUS;
 import DTO.ImportDetailDTO;
 import DTO.ImportDTO;
 import DTO.InvoiceDTO;
+import DTO.InvoiceDetailDTO;
 import GUI.Component.ButtonCustom;
 import GUI.Component.HeaderTitle;
 import GUI.Component.InputForm;
@@ -32,20 +33,21 @@ public final class DetailDialog extends JDialog implements ActionListener {
 
     private HeaderTitle titlePage;
     private JPanel pnmain, pnmain_top, pnmain_bottom, pnmain_bottom_left, pnmain_btn;
-    private InputForm txtID, txtEmployeeID, txtSupplierID, txtCreationDate;
+    private InputForm txtID, txtEmployeeID, txtTransactionID, txtCreationDate, txtTotalCost;
     private DefaultTableModel tblModel;
     private JTable table;
     private JScrollPane scrollTable;
 
     private ImportDTO ipDTO;
-    // private InvoiceDTO ivDTO;
+    private InvoiceDTO ivDTO;
     private ImportBUS ipBUS;
-    // private InvoiceBUS ivBUS;
+    private InvoiceBUS ivBUS;
 
     private ButtonCustom btnPdf;
     private ButtonCustom btnCanel;
 
     private ArrayList<ImportDetailDTO> ipdList;
+    private ArrayList<InvoiceDetailDTO> ivdList;
 
     public DetailDialog(JFrame owner, String title, boolean modal, ImportDTO ipDTO) {
         super(owner, title, modal);
@@ -54,46 +56,58 @@ public final class DetailDialog extends JDialog implements ActionListener {
         ipdList = ipBUS.getListDetailByID(ipDTO.getImportID());
         initComponent(title);
         initImport();
-        loadDataIntoDetailTable(ipdList);
+        loadDataIntoImportDetailTable(ipdList);
         this.setVisible(true);
     }
 
-    // public DetailDialog(JFrame owner, String title, boolean modal, InvoiceDTO ivDTO) {
-    //     super(owner, title, modal);
-    //     this.ivDTO = ivDTO;
-    //     ivBUS = new InvoiceBUS();
-    //     ipdList = ivBUS.selectCTP(ivDTO.getInvoiceID());
-    //     chitietsanpham = ctspBus.getChiTietSanPhamFromMaPX(ivDTO.getInvoiceID());
-    //     initComponent(title);
-    //     initInvoice();
-    //     loadDataIntoDetailTable(ipdList);
-    //     this.setVisible(true);
-    // }
+    public DetailDialog(JFrame owner, String title, boolean modal, InvoiceDTO ivDTO) {
+        super(owner, title, modal);
+        this.ivDTO = ivDTO;
+        ivBUS = new InvoiceBUS();
+        ivdList = ivBUS.getListDetailByID(ivDTO.getInvoiceID());
+        initComponent(title);
+        initInvoice();
+        loadDataIntoInvoiceDetailTable(ivdList);
+        this.setVisible(true);
+    }
 
     public void initImport() {
         txtID.setText(ipDTO.getImportID());
-        txtSupplierID.setText(ipBUS.getSupplierNameByID(ipDTO.getSupplierID()));
+        txtTransactionID.setText(ipBUS.getSupplierNameByID(ipDTO.getSupplierID()));
         txtEmployeeID.setText(ipBUS.getEmployeeNameByID(ipDTO.getEmployeeID()));
         txtCreationDate.setText(Formater.FormatTime(ipDTO.getCreationDate()));
+        txtTotalCost.setText(Formater.FormatVND(ipDTO.getTotalCost()));
+    }
+    
+    public void initInvoice() {
+        txtID.setText(ivDTO.getInvoiceID());
+        txtTransactionID.setText(ivBUS.getCustomerNameByID(ivDTO.getCustomerID()));
+        txtEmployeeID.setText(ivBUS.getEmployeeNameByID(ivDTO.getEmployeeID()));
+        txtCreationDate.setText(Formater.FormatTime(ivDTO.getCreationDate()));
+        txtTotalCost.setText(Formater.FormatVND(ivDTO.getTotalCost()));
     }
 
-    // public void initInvoice() {
-    //     txtID.setText("PX" + Integer.toString(this.ivDTO.getInvoiceID()));
-    //     txtSupplierID.setTitle("Khách hàng");
-    //     txtSupplierID.setText(KhachHangDAO.getInstance().selectById(ivDTO.getMakh() + "").getHoten());
-    //     txtEmployeeID.setText(NhanVienDAO.getInstance().selectById(ivDTO.getManguoitao() + "").getHoten());
-    //     txtCreationDate.setText(Formater.FormatTime(ivDTO.getThoigiantao()));
-    // }
-
-    public void loadDataIntoDetailTable(ArrayList<ImportDetailDTO> detailList) {
+    public void loadDataIntoImportDetailTable(ArrayList<ImportDetailDTO> detailList) {
         tblModel.setRowCount(0);
-        if(detailList == null) {
+        if (detailList == null) {
             return;
         }
 
-        for(ImportDetailDTO ipdDTO : detailList) {
-            tblModel.addRow(new Object[]{
-                ipdDTO.getProductID(), ipdDTO.getPrice(), ipdDTO.getQuantity(), ipdDTO.getCost()});
+        for (ImportDetailDTO ipdDTO : detailList) {
+            tblModel.addRow(new Object[] {
+                    ipdDTO.getProductID(), ipdDTO.getPrice(), ipdDTO.getQuantity(), ipdDTO.getCost() });
+        }
+    }
+
+    public void loadDataIntoInvoiceDetailTable(ArrayList<InvoiceDetailDTO> detailList) {
+        tblModel.setRowCount(0);
+        if (detailList == null) {
+            return;
+        }
+
+        for (InvoiceDetailDTO ivdDTO : detailList) {
+            tblModel.addRow(new Object[] {
+                    ivdDTO.getProductID(), ivdDTO.getPrice(), ivdDTO.getQuantity(), ivdDTO.getCost() });
         }
     }
 
@@ -105,20 +119,34 @@ public final class DetailDialog extends JDialog implements ActionListener {
         pnmain = new JPanel(new BorderLayout());
 
         pnmain_top = new JPanel(new GridLayout(1, 4));
-        txtID = new InputForm("Mã phiếu");
-        txtEmployeeID = new InputForm("Nhân viên nhập");
-        txtSupplierID = new InputForm("Nhà cung cấp");
+        txtEmployeeID = new InputForm("Nhân viên");
+
+        if (ivDTO == null) {
+            txtID = new InputForm("Mã phiếu nhập");
+        } else {
+            txtID = new InputForm("Mã hóa đơn");
+        }
+
+        if (ivDTO == null) {
+            txtTransactionID = new InputForm("Nhà cung cấp");
+        } else {
+            txtTransactionID = new InputForm("Khách hàng");
+        }
+
         txtCreationDate = new InputForm("Thời gian tạo");
+        txtTotalCost = new InputForm("Tổng tiền");
 
         txtID.setEditable(false);
         txtEmployeeID.setEditable(false);
-        txtSupplierID.setEditable(false);
+        txtTransactionID.setEditable(false);
         txtCreationDate.setEditable(false);
+        txtTotalCost.setEditable(false);
 
         pnmain_top.add(txtID);
         pnmain_top.add(txtEmployeeID);
-        pnmain_top.add(txtSupplierID);
+        pnmain_top.add(txtTransactionID);
         pnmain_top.add(txtCreationDate);
+        pnmain_top.add(txtTotalCost);
 
         pnmain_bottom = new JPanel(new BorderLayout(5, 5));
         pnmain_bottom.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -126,9 +154,10 @@ public final class DetailDialog extends JDialog implements ActionListener {
 
         pnmain_bottom_left = new JPanel(new GridLayout(1, 1));
         table = new JTable();
+        table.setDefaultEditor(Object.class, null);
         scrollTable = new JScrollPane();
         tblModel = new DefaultTableModel();
-        String[] header = new String[]{"Mã sản phẩm", "Đơn giá", "Số lượng", "Thành tiền"};
+        String[] header = new String[] { "Mã sản phẩm", "Đơn giá", "Số lượng", "Thành tiền" };
         tblModel.setColumnIdentifiers(header);
         table.setModel(tblModel);
         table.setFocusable(false);
@@ -167,10 +196,9 @@ public final class DetailDialog extends JDialog implements ActionListener {
         }
         if (source == btnPdf) {
             WritePDF w = new WritePDF();
-            // if (this.ivDTO != null) {
-            //     w.writePX(ivDTO.getInvoiceID());
-            // }
-            if (this.ipDTO != null) {
+            if (this.ivDTO != null) {
+                w.writeInvoice(ivDTO.getInvoiceID());
+            } else {
                 w.writeImport(ipDTO.getImportID());
             }
         }

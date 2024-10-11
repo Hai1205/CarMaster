@@ -36,10 +36,10 @@ public class ProductDetailDAO {
                 String colorName = resultSet.getString("colorName");
                 String gearBox = resultSet.getString("gearBox");
                 int yearOfManufacture = resultSet.getInt("yearOfManufacture");
-                int numberOfSeating = resultSet.getInt("numberOfSeat");
+                int numberOfSeat = resultSet.getInt("numberOfSeat");
                 int discountPercent = resultSet.getInt("discountPercent");
                 
-                return new ProductDetailDTO(productID, brandName, styleName, fuelType, colorName, gearBox, yearOfManufacture, numberOfSeating, discountPercent);
+                return new ProductDetailDTO(productID, brandName, styleName, fuelType, colorName, gearBox, yearOfManufacture, numberOfSeat, discountPercent);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,7 +76,7 @@ public class ProductDetailDAO {
             pstmt.setString(4, pdDTO.getColorName());
             pstmt.setString(5, pdDTO.getGearBox());
             pstmt.setInt(6, pdDTO.getYearOfManufacture());
-            pstmt.setInt(7, pdDTO.getNumberOfSeating());
+            pstmt.setInt(7, pdDTO.getNumberOfSeat());
             pstmt.setInt(8, pdDTO.getDiscountPercent());
             pstmt.setString(9, pdDTO.getProductID());
 
@@ -103,7 +103,7 @@ public class ProductDetailDAO {
         try {
             connection = Database.getConnection();
 
-            String sql = "INSERT INTO productdetail (brandName, styleName, fuelType, colorName, gearBox, yearOfManufacture, numberOfSeating, discountPercent, productID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO productdetail (brandName, styleName, fuelType, colorName, gearBox, yearOfManufacture, numberOfSeat, discountPercent, productID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             pstmt = connection.prepareStatement(sql);
 
             pstmt.setString(1, pdDTO.getBrandName());
@@ -112,7 +112,7 @@ public class ProductDetailDAO {
             pstmt.setString(4, pdDTO.getColorName());
             pstmt.setString(5, pdDTO.getGearBox());
             pstmt.setInt(6, pdDTO.getYearOfManufacture());
-            pstmt.setInt(7, pdDTO.getNumberOfSeating());
+            pstmt.setInt(7, pdDTO.getNumberOfSeat());
             pstmt.setInt(8, pdDTO.getDiscountPercent());
             pstmt.setString(9, pdDTO.getProductID());
 

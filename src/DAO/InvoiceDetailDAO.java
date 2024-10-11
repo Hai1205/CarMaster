@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 
 /**
  *
- * @author Tran Nhat Sinh
  */
 public class InvoiceDetailDAO {
 

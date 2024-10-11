@@ -130,6 +130,41 @@ public class CustomerDAO {
         }
         return epDTO;
     }
+    
+    public static String getIDByName(String customerName) {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+        ResultSet resultSet = null;
+        try {
+            connection = Database.getConnection();
+            String query;
+            query = "SELECT customerID FROM customer WHERE customerName = ?";
+            pstmt = connection.prepareStatement(query);
+            pstmt.setString(1, customerName);
+            resultSet = pstmt.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getString("customerID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 
     public static ArrayList<CustomerDTO> search(String info) {
         ArrayList<CustomerDTO> list = new ArrayList<>();

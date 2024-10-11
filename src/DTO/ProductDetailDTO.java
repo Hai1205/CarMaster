@@ -8,11 +8,10 @@ import java.util.Objects;
 
 /**
  *
- * @author Tran Nhat Sinh
  */
 public class ProductDetailDTO {
     private String productID, brandName, styleName, fuelType, colorName, gearBox;
-    private int yearOfManufacture, numberOfSeating, discountPercent;
+    private int yearOfManufacture, numberOfSeat, discountPercent;
 
     public void setProductID(String productID) {
         this.productID = productID;
@@ -42,8 +41,8 @@ public class ProductDetailDTO {
         this.yearOfManufacture = yearOfManufacture;
     }
 
-    public void setNumberOfSeating(int numberOfSeating) {
-        this.numberOfSeating = numberOfSeating;
+    public void setNumberOfSeat(int numberOfSeat) {
+        this.numberOfSeat = numberOfSeat;
     }
 
     public void setDiscountPercent(int discountPercent) {
@@ -78,15 +77,15 @@ public class ProductDetailDTO {
         return yearOfManufacture;
     }
 
-    public int getNumberOfSeating() {
-        return numberOfSeating;
+    public int getNumberOfSeat() {
+        return numberOfSeat;
     }
 
     public int getDiscountPercent() {
         return discountPercent;
     }
 
-    public ProductDetailDTO(String productID, String brandName, String styleName, String fuelType, String colorName, String gearBox, int yearOfManufacture, int numberOfSeating, int discountPercent) {
+    public ProductDetailDTO(String productID, String brandName, String styleName, String fuelType, String colorName, String gearBox, int yearOfManufacture, int numberOfSeat, int discountPercent) {
         this.productID = productID;
         this.brandName = brandName;
         this.styleName = styleName;
@@ -94,7 +93,7 @@ public class ProductDetailDTO {
         this.colorName = colorName;
         this.gearBox = gearBox;
         this.yearOfManufacture = yearOfManufacture;
-        this.numberOfSeating = numberOfSeating;
+        this.numberOfSeat = numberOfSeat;
         this.discountPercent = discountPercent;
     }
     
@@ -131,7 +130,7 @@ public class ProductDetailDTO {
         if (this.yearOfManufacture != other.yearOfManufacture) {
             return false;
         }
-        if (this.numberOfSeating != other.numberOfSeating) {
+        if (this.numberOfSeat != other.numberOfSeat) {
             return false;
         }
         return Objects.equals(this.discountPercent, other.discountPercent);
@@ -139,6 +138,6 @@ public class ProductDetailDTO {
 
     @Override
     public String toString() {
-        return "ProductDetailDTO{" + "productID=" + productID + ", brandName=" + brandName + ", styleName=" + styleName + ", fuelType=" + fuelType + ", colorName=" + colorName + ", gearBox=" + gearBox + ", yearOfManufacture=" + yearOfManufacture + ", numberOfSeating=" + numberOfSeating + ", discountPercent=" + discountPercent + '}';
+        return "ProductDetailDTO{" + "productID=" + productID + ", brandName=" + brandName + ", styleName=" + styleName + ", fuelType=" + fuelType + ", colorName=" + colorName + ", gearBox=" + gearBox + ", yearOfManufacture=" + yearOfManufacture + ", numberOfSeat=" + numberOfSeat + ", discountPercent=" + discountPercent + '}';
     }
 }

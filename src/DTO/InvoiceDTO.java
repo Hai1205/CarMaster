@@ -64,4 +64,10 @@ public class InvoiceDTO {
         this.totalCost = totalCost;
     }
 
+    public InvoiceDTO(String invoiceID, String customerID, String employeeID, long totalCost) {
+        this.invoiceID = invoiceID;
+        this.customerID = customerID;
+        this.employeeID = employeeID;
+        this.totalCost = totalCost;
+    }
 }

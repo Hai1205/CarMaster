@@ -27,7 +27,7 @@ public class MenuTaskbar extends JPanel {
     private ProductPanel pdPanel;
     private PropertyPanel pptPanel;
    private ImportPanel ipPanel;
-//    private InvoicePanel ivPanel;
+   private InvoicePanel ivPanel;
    private CustomerPanel ctmPanel;
    private SupplierPanel spPanel;
     private EmployeePanel epPanel;
@@ -37,8 +37,8 @@ public class MenuTaskbar extends JPanel {
         {"Trang chủ", "home.svg", "homePage"},
         {"Sản phẩm", "product.svg", "FT000006"},
         {"Thuộc tính", "brand.svg", "FT000008"},
-        {"Phiếu nhập", "import.svg", "FT000004"},
-        {"Phiếu xuất", "export.svg", "FT000009"},
+        {"Nhập hàng", "import.svg", "FT000004"},
+        {"Bán hàng", "export.svg", "FT000009"},
         {"Khách hàng", "customer.svg", "FT000001"},
         {"Nhà cung cấp", "supplier.svg", "FT000002"},
         {"Nhân viên", "staff.svg", "FT000003"},
@@ -200,8 +200,8 @@ public class MenuTaskbar extends JPanel {
         listitem[4].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-//                ivPanel = new InvoicePanel(main, epDTO);
-//                main.setPanel(ivPanel);
+               ivPanel = new InvoicePanel(main, epDTO);
+               main.setPanel(ivPanel);
             }
         });
         

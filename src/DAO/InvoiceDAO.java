@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Tran Nhat Sinh
  */
 public class InvoiceDAO {
     

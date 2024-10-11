@@ -2,8 +2,11 @@ package helper;
 
 // import BUS.EmployeeBUS;
 import BUS.ImportBUS;
+import BUS.InvoiceBUS;
 import DTO.ImportDTO;
 import DTO.ImportDetailDTO;
+import DTO.InvoiceDTO;
+import DTO.InvoiceDetailDTO;
 
 import com.itextpdf.text.Chunk;
 import java.awt.Desktop;
@@ -196,7 +199,7 @@ public class WritePDF {
 
             // Truyen thong tin tung chi tiet vao table
             ArrayList<ImportDetailDTO> detailList = ipBUS.getListDetailByID(ID);
-            loadDataIntoDetailTable(detailList);
+            loadDataIntoImportDetailTable(detailList);
 
             document.add(table);
             document.add(Chunk.NEWLINE);
@@ -236,7 +239,116 @@ public class WritePDF {
         }
     }
 
-    public void loadDataIntoDetailTable(ArrayList<ImportDetailDTO> detailList) {
+    public void writeInvoice(String ID) {
+        String url = "";
+        try {
+            fd.setTitle("In hóa đơn");
+            fd.setLocationRelativeTo(null);
+            url = getFile(ID + "");
+            if (url.equals("nullnull")) {
+                return;
+            }
+            url = url + ".pdf";
+            file = new FileOutputStream(url);
+            document = new Document();
+            PdfWriter writer = PdfWriter.getInstance(document, file);
+            document.open();
+
+            Paragraph company = new Paragraph("Showroom ô tô CarMaster", fontBold15);
+            company.add(new Chunk(createWhiteSpace(20)));
+            Date today = new Date(System.currentTimeMillis());
+            company.add(new Chunk("Thời gian in phiếu: " + formatDate.format(today), fontNormal10));
+            company.setAlignment(Element.ALIGN_LEFT);
+            document.add(company);
+            // Thêm tên công ty vào file PDF
+            document.add(Chunk.NEWLINE);
+            Paragraph header = new Paragraph("THÔNG TIN HÓA ĐƠN", fontBold25);
+            header.setAlignment(Element.ALIGN_CENTER);
+            document.add(header);
+
+            InvoiceBUS ivBUS = new InvoiceBUS();
+            // Thêm dòng Paragraph vào file PDF
+            InvoiceDTO ivDTO = ivBUS.getInvoiceByID(ID);
+            Paragraph paragraph1 = new Paragraph("Mã phiếu: " + ivDTO.getInvoiceID(), fontNormal10);
+            String customerName = ivBUS.getCustomerNameByID(ivDTO.getCustomerID());
+            Paragraph paragraph2 = new Paragraph("Khách hàng: " + customerName, fontNormal10);
+            paragraph2.add(new Chunk(createWhiteSpace(5)));
+            paragraph2.add(new Chunk("-"));
+            paragraph2.add(new Chunk(createWhiteSpace(5)));
+            String address = ivBUS.getAddressByID(ivDTO.getCustomerID());
+            paragraph2.add(new Chunk(address, fontNormal10));
+
+            String employeeName = ivBUS.getEmployeeNameByID(ivDTO.getEmployeeID());
+            Paragraph paragraph3 = new Paragraph("Nhân viên nhập: " + employeeName, fontNormal10);
+            paragraph3.add(new Chunk(createWhiteSpace(5)));
+            paragraph3.add(new Chunk("-"));
+            paragraph3.add(new Chunk(createWhiteSpace(5)));
+            paragraph3.add(new Chunk("Mã nhân viên: " + ivDTO.getEmployeeID(), fontNormal10));
+            Paragraph paragraph4 = new Paragraph("Thời gian nhập: " + formatDate.format(ivDTO.getCreationDate()),
+                    fontNormal10);
+            document.add(paragraph1);
+            document.add(paragraph2);
+            document.add(paragraph3);
+            document.add(paragraph4);
+            document.add(Chunk.NEWLINE);
+            // Thêm table 5 cột vào file PDF
+            table = new PdfPTable(5);
+            table.setWidthPercentage(100);
+            table.setWidths(new float[] { 30f, 35f, 20f, 45f });
+            PdfPCell cell;
+
+            table.addCell(new PdfPCell(new Phrase("Mã sản phẩm", fontBold15)));
+            table.addCell(new PdfPCell(new Phrase("Giá", fontBold15)));
+            table.addCell(new PdfPCell(new Phrase("Số lượng", fontBold15)));
+            table.addCell(new PdfPCell(new Phrase("Thành tiền", fontBold15)));
+            for (int i = 0; i < 5; i++) {
+                cell = new PdfPCell(new Phrase(""));
+                table.addCell(cell);
+            }
+
+            // Truyen thong tin tung chi tiet vao table
+            ArrayList<InvoiceDetailDTO> detailList = ivBUS.getListDetailByID(ID);
+            loadDataIntoInvoiceDetailTable(detailList);
+
+            document.add(table);
+            document.add(Chunk.NEWLINE);
+
+            Paragraph paraTongThanhToan = new Paragraph(
+                    new Phrase("Tổng thành tiền: " + formatter.format(ivDTO.getTotalCost()) + "VND", fontBold15));
+            paraTongThanhToan.setIndentationLeft(300);
+
+            document.add(paraTongThanhToan);
+            document.add(Chunk.NEWLINE);
+            document.add(Chunk.NEWLINE);
+
+            Paragraph paragraph = new Paragraph();
+            paragraph.setIndentationLeft(22);
+            paragraph.add(new Chunk("Người lập phiếu", fontBoldItalic15));
+            paragraph.add(new Chunk(createWhiteSpace(30)));
+            paragraph.add(new Chunk("Nhân viên nhận", fontBoldItalic15));
+            paragraph.add(new Chunk(createWhiteSpace(30)));
+            paragraph.add(new Chunk("Khách hàng", fontBoldItalic15));
+
+            Paragraph sign = new Paragraph();
+            sign.setIndentationLeft(23);
+            sign.add(new Chunk("(Ký và ghi rõ họ tên)", fontNormal10));
+            sign.add(new Chunk(createWhiteSpace(30)));
+            sign.add(new Chunk("(Ký và ghi rõ họ tên)", fontNormal10));
+            sign.add(new Chunk(createWhiteSpace(28)));
+            sign.add(new Chunk("(Ký và ghi rõ họ tên)", fontNormal10));
+            document.add(paragraph);
+            document.add(sign);
+
+            document.close();
+            writer.close();
+            openFile(url);
+
+        } catch (DocumentException | FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Lỗi khi ghi file " + url);
+        }
+    }
+
+    public void loadDataIntoImportDetailTable(ArrayList<ImportDetailDTO> detailList) {
         if (detailList == null) {
             return;
         }
@@ -249,126 +361,16 @@ public class WritePDF {
         }
     }
 
-    // public void writePX(int ID) {
-    //     String url = "";
-    //     try {
-    //         fd.setTitle("In phiếu xuất");
-    //         fd.setLocationRelativeTo(null);
-    //         url = getFile(ID + "");
-    //         if (url.equals("nullnull")) {
-    //             return;
-    //         }
-    //         url = url + ".pdf";
-    //         file = new FileOutputStream(url);
-    //         document = new Document();
-    //         PdfWriter writer = PdfWriter.getInstance(document, file);
-    //         document.open();
+    public void loadDataIntoInvoiceDetailTable(ArrayList<InvoiceDetailDTO> detailList) {
+        if (detailList == null) {
+            return;
+        }
 
-    //         Paragraph company = new Paragraph("Hệ thống quản lý VNDiện thoại AnBaoChSi", fontBold15);
-    //         company.add(new Chunk(createWhiteSpace(20)));
-    //         Date today = new Date(System.currentTimeMillis());
-    //         company.add(new Chunk("Thời gian in phiếu: " + formatDate.format(today), fontNormal10));
-    //         company.setAlignment(Element.ALIGN_LEFT);
-    //         document.add(company);
-    //         // Thêm tên công ty vào file PDF
-    //         document.add(Chunk.NEWLINE);
-    //         Paragraph header = new Paragraph("THÔNG TIN PHIẾU XUẤT", fontBold25);
-    //         header.setAlignment(Element.ALIGN_CENTER);
-    //         document.add(header);
-    //         PhieuXuatDTO px = PhieuXuatDAO.getInstance().selectById(ID + "");
-    //         // Thêm dòng Paragraph vào file PDF
-
-    //         Paragraph paragraph1 = new Paragraph("Mã phiếu: PX-" + px.getMaphieu(), fontNormal10);
-    //         String hoten = KhachHangDAO.getInstance().selectById(px.getMakh() + "").getHoten();
-    //         Paragraph paragraph2 = new Paragraph("khách hàng: " + hoten, fontNormal10);
-    //         paragraph2.add(new Chunk(createWhiteSpace(5)));
-    //         paragraph2.add(new Chunk("-"));
-    //         paragraph2.add(new Chunk(createWhiteSpace(5)));
-    //         String diachikh = KhachHangDAO.getInstance().selectById(px.getMakh() + "").getDiachi();
-    //         paragraph2.add(new Chunk(diachikh, fontNormal10));
-
-    //         String employeeName = epBUS.getEmployeeByID(px.getManguoitao() + "").getEmployeeName();
-    //         Paragraph paragraph3 = new Paragraph("Người thực hiện: " + employeeName, fontNormal10);
-    //         paragraph3.add(new Chunk(createWhiteSpace(5)));
-    //         paragraph3.add(new Chunk("-"));
-    //         paragraph3.add(new Chunk(createWhiteSpace(5)));
-    //         paragraph3.add(new Chunk("Mã nhân viên: " + px.getManguoitao(), fontNormal10));
-    //         Paragraph paragraph4 = new Paragraph("Thời gian nhập: " + formatDate.format(px.getThoigiantao()),
-    //                 fontNormal10);
-    //         document.add(paragraph1);
-    //         document.add(paragraph2);
-    //         document.add(paragraph3);
-    //         document.add(paragraph4);
-    //         document.add(Chunk.NEWLINE);
-    //         // Thêm table 5 cột vào file PDF
-    //         PdfPTable table = new PdfPTable(5);
-    //         table.setWidthPercentage(100);
-    //         table.setWidths(new float[] { 30f, 35f, 20f, 15f, 20f });
-    //         PdfPCell cell;
-
-    //         table.addCell(new PdfPCell(new Phrase("Tên sản phẩm", fontBold15)));
-    //         table.addCell(new PdfPCell(new Phrase("Phiên bản", fontBold15)));
-    //         table.addCell(new PdfPCell(new Phrase("Giá", fontBold15)));
-    //         table.addCell(new PdfPCell(new Phrase("Số lượng", fontBold15)));
-    //         table.addCell(new PdfPCell(new Phrase("Tổng tiền", fontBold15)));
-    //         for (int i = 0; i < 5; i++) {
-    //             cell = new PdfPCell(new Phrase(""));
-    //             table.addCell(cell);
-    //         }
-
-    //         // Truyen thong tin tung chi tiet vao table
-    //         // for (ChiTietPhieuDTO ctp : ChiTietPhieuXuatDAO.getInstance().selectAll(ID +
-    //         // "")) {
-    //         // SanPhamDTO sp = new SanPhamDAO().selectByPhienBan(ctp.getMaphienbansp() +
-    //         // "");
-    //         // table.addCell(new PdfPCell(new Phrase(sp.getTensp(), fontNormal10)));
-    //         // PhienBanSanPhamDTO pbsp = new
-    //         // PhienBanSanPhamDAO().selectById(ctp.getMaphienbansp());
-    //         // table.addCell(new PdfPCell(new Phrase(romBus.getKichThuocById(pbsp.getRom())
-    //         // + "GB - "
-    //         // + ramBus.getKichThuocById(pbsp.getRam()) + "GB - " +
-    //         // mausacBus.getTenMau(pbsp.getMausac()), fontNormal10)));
-    //         // table.addCell(new PdfPCell(new Phrase(formatter.format(ctp.getDongia()) +
-    //         // "VND", fontNormal10)));
-    //         // table.addCell(new PdfPCell(new Phrase(String.valueOf(ctp.getSoluong()),
-    //         // fontNormal10)));
-    //         // table.addCell(new PdfPCell(new Phrase(formatter.format(ctp.getSoluong() *
-    //         // ctp.getDongia()) + "VND", fontNormal10)));
-    //         // }
-
-    //         document.add(table);
-    //         document.add(Chunk.NEWLINE);
-
-    //         Paragraph paraTongThanhToan = new Paragraph(
-    //                 new Phrase("Tổng thành tiền: " + formatter.format(px.getTongTien()) + "VND", fontBold15));
-    //         paraTongThanhToan.setIndentationLeft(300);
-
-    //         document.add(paraTongThanhToan);
-    //         document.add(Chunk.NEWLINE);
-    //         document.add(Chunk.NEWLINE);
-    //         Paragraph paragraph = new Paragraph();
-    //         paragraph.setIndentationLeft(22);
-    //         paragraph.add(new Chunk("Người lập phiếu", fontBoldItalic15));
-    //         paragraph.add(new Chunk(createWhiteSpace(30)));
-    //         paragraph.add(new Chunk("Người giao", fontBoldItalic15));
-    //         paragraph.add(new Chunk(createWhiteSpace(30)));
-    //         paragraph.add(new Chunk("Khách hàng", fontBoldItalic15));
-
-    //         Paragraph sign = new Paragraph();
-    //         sign.setIndentationLeft(20);
-    //         sign.add(new Chunk("(Ký và ghi rõ họ tên)", fontNormal10));
-    //         sign.add(new Chunk(createWhiteSpace(25)));
-    //         sign.add(new Chunk("(Ký và ghi rõ họ tên)", fontNormal10));
-    //         sign.add(new Chunk(createWhiteSpace(23)));
-    //         sign.add(new Chunk("(Ký và ghi rõ họ tên)", fontNormal10));
-    //         document.add(paragraph);
-    //         document.add(sign);
-    //         document.close();
-    //         writer.close();
-    //         openFile(url);
-
-    //     } catch (DocumentException | FileNotFoundException ex) {
-    //         JOptionPane.showMessageDialog(null, "Lỗi khi ghi file " + url);
-    //     }
-    // }
+        for (InvoiceDetailDTO ivdDTO : detailList) {
+            table.addCell(new PdfPCell(new Phrase(ivdDTO.getProductID())));
+            table.addCell(new PdfPCell(new Phrase(ivdDTO.getPrice())));
+            table.addCell(new PdfPCell(new Phrase(ivdDTO.getQuantity())));
+            table.addCell(new PdfPCell(new Phrase(ivdDTO.getCost())));
+        }
+    }
 }

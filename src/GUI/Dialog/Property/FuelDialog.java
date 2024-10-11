@@ -87,6 +87,7 @@ public class FuelDialog extends JDialog implements MouseListener {
         txtFuelType = new InputForm("Loại nhiên liệu");
         txtFuelType.setPreferredSize(new Dimension(250, 70));
         table = new JTable();
+        table.setDefaultEditor(Object.class, null);
         table.setBackground(Color.WHITE);
         table.addMouseListener(this);
         table.setAutoCreateRowSorter(true);

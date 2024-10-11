@@ -303,7 +303,7 @@ public class ProductDialog extends JDialog implements ActionListener {
         pddDTO = pdBUS.getProductDetailByID(pdDTO.getProductID());
         cbBrandName.setSelectedItem(pddDTO.getBrandName());
         txtYearOfManufacture.setText(pddDTO.getYearOfManufacture() + "");
-        cbSeeting.getCbb().setSelectedItem(pddDTO.getNumberOfSeating() + "");
+        cbSeeting.getCbb().setSelectedItem(pddDTO.getNumberOfSeat() + "");
         cbStyle.getCbb().setSelectedItem(pddDTO.getStyleName());
         cbFuel.getCbb().setSelectedItem(pddDTO.getFuelType());
         cbColor.getCbb().setSelectedItem(pddDTO.getColorName());

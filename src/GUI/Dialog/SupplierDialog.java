@@ -27,7 +27,6 @@ import javax.swing.text.PlainDocument;
 
 /**
  *
- * @author Tran Nhat Sinh
  */
 public class SupplierDialog extends JDialog implements ActionListener {
 

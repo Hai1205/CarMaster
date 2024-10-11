@@ -41,7 +41,7 @@ public final class ImportPanel extends JPanel
     private IntegratedSearch search;
     private DefaultTableModel tblModel;
 
-    private CreateImportPanel cipPanel;
+    private CreatePanel cipPanel;
     private Main m;
     private EmployeeDTO epDTO;
 
@@ -87,7 +87,7 @@ public final class ImportPanel extends JPanel
         ipTable = new JTable();
         scrollImportTable = new JScrollPane();
         tblModel = new DefaultTableModel();
-        String[] header = new String[] { "Mã phiếu nhập", "Nhà cung cấp", "Nhân viên nhập", "Thời gian tạo",
+        String[] header = new String[] { "Mã phiếu nhập", "Nhà cung cấp", "Nhân viên", "Thời gian tạo",
                 "Tổng tiền" };
         tblModel.setColumnIdentifiers(header);
         ipTable.setModel(tblModel);
@@ -178,7 +178,7 @@ public final class ImportPanel extends JPanel
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == mainFunction.btn.get("create")) {
-            cipPanel = new CreateImportPanel(epDTO, "create", m);
+            cipPanel = new CreatePanel(epDTO, "create", m);
             m.setPanel(cipPanel);
         } else if (source == mainFunction.btn.get("detail")) {
             int index = getRowSelected();

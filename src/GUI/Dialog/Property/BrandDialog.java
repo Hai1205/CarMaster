@@ -87,6 +87,7 @@ public class BrandDialog extends JDialog implements MouseListener {
         txtBrandName = new InputForm("Tên hãng xe");
         txtBrandName.setPreferredSize(new Dimension(250, 70));
         table = new JTable();
+        table.setDefaultEditor(Object.class, null);
         table.setBackground(Color.WHITE);
         table.addMouseListener(this);
         table.setAutoCreateRowSorter(true);
