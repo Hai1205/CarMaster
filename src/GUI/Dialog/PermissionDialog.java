@@ -38,7 +38,7 @@ public class PermissionDialog extends JDialog implements ActionListener {
     private JTextField txtPermissionName;
     private JPanel jpTop, jpLeft, jpCen, jpBottom;
     private JCheckBox[][] listCheckBox;
-    private ButtonCustom btnAdd, btnUpdate,btnCancel;
+    private ButtonCustom btnAdd, btnUpdate;
     private int sizeFunction, sizeAction;
     private ArrayList<FunctionDTO> ftList;
     private final String[] actionID = {"view", "create", "update"};
@@ -101,12 +101,12 @@ public class PermissionDialog extends JDialog implements ActionListener {
         
         switch (type) {
             case "create" -> {
-                btnAdd = new ButtonCustom("Thêm nhóm quyền", "success", 14);
+                btnAdd = new ButtonCustom("Thêm", "success", 14);
                 btnAdd.addActionListener(this);
                 jpBottom.add(btnAdd);
             }
             case "update" -> {
-                btnUpdate = new ButtonCustom("Cập nhật nhóm quyền", "success", 14);
+                btnUpdate = new ButtonCustom("Cập nhật", "success", 14);
                 btnUpdate.addActionListener(this);
                 jpBottom.add(btnUpdate);
                 initUpdate();
@@ -117,12 +117,6 @@ public class PermissionDialog extends JDialog implements ActionListener {
             default -> throw new AssertionError();
         }
         
-        
-        btnCancel = new ButtonCustom("Huỷ bỏ", "danger", 14);
-        btnCancel.addActionListener(this);
-        
-        jpBottom.add(btnCancel);
-
         this.add(jpTop, BorderLayout.NORTH);
         this.add(jpLeft, BorderLayout.WEST);
         this.add(jpCen, BorderLayout.CENTER);
@@ -157,8 +151,6 @@ public class PermissionDialog extends JDialog implements ActionListener {
             pmsdtList = getPermisionDetailList(pmsDTO.getPermissionID());
             pmsDTO.setPermissionName(txtPermissionName.getText());
             pmsBUS.update(pmsDTO, pmsdtList);
-            dispose();
-        } else if (e.getSource() == btnCancel) {
             dispose();
         }
     }

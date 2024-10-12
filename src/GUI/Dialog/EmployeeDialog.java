@@ -10,26 +10,20 @@ import GUI.Component.InputForm;
 import GUI.Component.NumericDocumentFilter;
 import GUI.Component.SelectForm;
 import helper.BCrypt;
+import helper.SendEmailSMTP;
 import helper.Tool;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+
 import java.awt.event.ActionEvent;
 import java.text.ParseException;
 import java.util.Date;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
+
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.PlainDocument;
+import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+import javax.swing.*;
 
 /**
  *
@@ -41,14 +35,17 @@ public class EmployeeDialog extends JDialog {
     private EmployeeDTO epDTO;
     private HeaderTitle titlePage;
     private JPanel main, bottom;
-    private ButtonCustom btnAdd, btnUpdate, btnExit;
-    private InputForm employeeName, phone, email, password, salary;
+    private ButtonCustom btnAdd, btnUpdate;
+    private InputForm employeeName, phone, email, salary;
+    private JLabel password;
     private SelectForm permissionName, status;
     private ButtonGroup gender;
     private JRadioButton male;
     private JRadioButton female;
     private InputDate jcBd;
     private final PermissionBUS pmsBUS;
+    // private final JFrame owner = (JFrame) SwingUtilities.getWindowAncestor(this);
+    private EmployeeDialog epDialog;
 
     public EmployeeDialog(EmployeeBUS epBUS, JFrame owner, boolean modal, String title, String type) {
         super(owner, title, modal);
@@ -68,10 +65,36 @@ public class EmployeeDialog extends JDialog {
         this.epDTO = epDTO;
         init(title, type);
 
+        setEmployee(title);
+
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+
+    public EmployeeDTO getEmployee() {
+        return epDTO;
+    }
+
+    public void resetChange() {
+        epDTO = epBUS.getEmployeeByID(epDTO.getEmployeeID());
+    }
+
+    private void setEmployee(String title) {
         String permissionNameStr = pmsBUS.getNameByID(epDTO.getPermissionID());
         permissionName.setSelectedItem(permissionNameStr);
         employeeName.setText(epDTO.getEmployeeName());
+        email.setEditable(false);
         email.setText(epDTO.getEmail());
+
+        if (title.equals("Thông tin tài khoản")) {
+            epDialog = this;
+            password.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent evt) {
+                    new MyAccount(null, epDialog, "Đổi mật khẩu", true);
+                }
+            });
+        }
 
         if (epDTO.getGender().equals("Nam")) {
             male.setSelected(true);
@@ -83,12 +106,6 @@ public class EmployeeDialog extends JDialog {
         phone.setText(epDTO.getPhone());
         salary.setText(epDTO.getSalary() + "");
         status.setSelectedItem(epDTO.getStatus());
-
-        password.setVisible(false);
-        email.setVisible(false);
-
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
     }
 
     public void init(String title, String type) {
@@ -103,15 +120,18 @@ public class EmployeeDialog extends JDialog {
 
         employeeName = new InputForm("Họ và tên");
         email = new InputForm("Email");
-        password = new InputForm("Mật khẩu", "password");
-        password.setPreferredSize(inputSize);
+
+        password = new JLabel("Đổi mật khẩu");
+        password.setPreferredSize(new Dimension(320, 40));
+        password.setFont(new Font(FlatRobotoFont.FAMILY, Font.ITALIC, 18));
+        
         permissionName = new SelectForm("Nhóm quyền", pmsBUS.getPermission());
         permissionName.setPreferredSize(inputSize);
-
+        
         phone = new InputForm("Số điện thoại");
         PlainDocument phonex = (PlainDocument) phone.getTxtForm().getDocument();
         phonex.setDocumentFilter((new NumericDocumentFilter()));
-
+        
         male = new JRadioButton("Nam");
         female = new JRadioButton("Nữ");
         gender = new ButtonGroup();
@@ -128,7 +148,7 @@ public class EmployeeDialog extends JDialog {
         JLabel labelGender = new JLabel("Giới tính");
         jpanelG.add(labelGender);
         jpanelG.add(jgender);
-
+        
         JPanel jpaneljd = new JPanel();
         jpaneljd.setBorder(new EmptyBorder(10, -5, 10, 10));
         jpaneljd.setSize(new Dimension(200, 100));
@@ -137,41 +157,38 @@ public class EmployeeDialog extends JDialog {
         jcBd = new InputDate("Ngày sinh");
         jcBd.setPreferredSize(new Dimension(405, 100));
         jpaneljd.add(jcBd);
-
+        
         salary = new InputForm("Lương tháng");
         PlainDocument slr = (PlainDocument) salary.getTxtForm().getDocument();
         slr.setDocumentFilter((new NumericDocumentFilter()));
-
+        
         status = new SelectForm("Trạng thái", new String[] { "Hoạt động", "Ngưng hoạt động" });
         status.setPreferredSize(inputSize);
-
+        
         // Thêm các thành phần vào main panel
         main.add(permissionName);
         main.add(employeeName);
         main.add(email);
-        main.add(password);
+        if (title.equals("Thông tin tài khoản")) {
+            main.add(password);
+        }
         main.add(phone);
         main.add(jpanelG);
         main.add(jpaneljd);
         main.add(salary);
         main.add(status);
-
+        
         // Cuộn trang khi nội dung quá dài
         JScrollPane scrollPane = new JScrollPane(main);
         scrollPane.setBorder(null);
         this.add(scrollPane, BorderLayout.CENTER);
-
+        
         bottom = new JPanel(new FlowLayout());
         bottom.setBorder(new EmptyBorder(10, 0, 10, 0));
         bottom.setBackground(Color.white);
-        btnAdd = new ButtonCustom("Thêm người dùng", "success", 14);
-        btnUpdate = new ButtonCustom("Lưu thông tin", "success", 14);
-        btnExit = new ButtonCustom("Hủy bỏ", "danger", 14);
-
-        btnExit.addActionListener((ActionEvent e) -> {
-            dispose();
-        });
-
+        btnAdd = new ButtonCustom("Thêm", "success", 14);
+        btnUpdate = new ButtonCustom("Cập nhật", "success", 14);
+        
         btnAdd.addActionListener((ActionEvent e) -> {
             add();
         });
@@ -188,8 +205,6 @@ public class EmployeeDialog extends JDialog {
             default ->
                 throw new AssertionError();
         }
-
-        bottom.add(btnExit);
 
         this.add(titlePage, BorderLayout.NORTH);
         this.add(scrollPane, BorderLayout.CENTER);
@@ -236,17 +251,19 @@ public class EmployeeDialog extends JDialog {
                     } else if (female.isSelected()) {
                         genderStr = "Nữ";
                     }
-                    String employeeID = "EP" + Tool.randomID();
+                    String employeeID = epBUS.createID();
                     String permissionIDStr = pmsBUS.getIDByName(permissionName.getValue());
                     String txtName = employeeName.getText();
                     Date birthDay = new Date(jcBd.getDate().getTime());
                     String txtPhone = phone.getText();
-                    String passwordStr = BCrypt.hashpw(password.getPass(), BCrypt.gensalt(12));
+                    String yourPassword = Tool.createPassword();
+                    String passwordStr = BCrypt.hashpw(yourPassword, BCrypt.gensalt(12));
                     String txtEmail = email.getText();
                     String statusStr = status.getValue();
                     String salaryStr = salary.getText();
                     java.sql.Timestamp hiredate = new java.sql.Timestamp(System.currentTimeMillis());
 
+                    SendEmailSMTP.sendPassword(txtEmail, yourPassword);
                     epBUS.insert(new EmployeeDTO(employeeID, permissionIDStr, txtName, hiredate, genderStr, txtPhone,
                             txtEmail, passwordStr, statusStr, birthDay, Integer.parseInt(salaryStr), 0));
                     this.dispose();

@@ -15,6 +15,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -33,8 +35,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public final class EmployeePanel extends JPanel {
 
-    public JFrame owner = (JFrame) SwingUtilities.getWindowAncestor(this);
-    private EmployeeBUS epBus;
+    private JFrame owner = (JFrame) SwingUtilities.getWindowAncestor(this);
+    private EmployeeBUS epBUS;
     private PanelBorderRadius main, functionBar;
     private JPanel pnlBorder1, pnlBorder2, pnlBorder3, pnlBorder4, contentCenter;
     private JTable epTable;
@@ -57,13 +59,14 @@ public final class EmployeePanel extends JPanel {
     }
 
     private void initComponent() {
-        epBus = new EmployeeBUS(this);
+        epBUS = new EmployeeBUS(this);
 
         this.setBackground(BackgroundColor);
         this.setLayout(new BorderLayout(0, 0));
         this.setOpaque(true);
 
-        // pnlBorder1, pnlBorder2, pnlBorder3, pnlBorder4 chỉ để thêm contentCenter ở giữa mà contentCenter không bị dính sát vào các thành phần khác
+        // pnlBorder1, pnlBorder2, pnlBorder3, pnlBorder4 chỉ để thêm contentCenter ở
+        // giữa mà contentCenter không bị dính sát vào các thành phần khác
         pnlBorder1 = new JPanel();
         pnlBorder1.setPreferredSize(new Dimension(0, 10));
         pnlBorder1.setBackground(BackgroundColor);
@@ -90,23 +93,31 @@ public final class EmployeePanel extends JPanel {
         contentCenter.setLayout(new BorderLayout(10, 10));
         this.add(contentCenter, BorderLayout.CENTER);
 
-        // functionBar là thanh bên trên chứa các nút chức năng như thêm xóa sửa, và tìm kiếm
+        // functionBar là thanh bên trên chứa các nút chức năng như thêm xóa sửa, và tìm
+        // kiếm
         functionBar = new PanelBorderRadius();
         functionBar.setPreferredSize(new Dimension(0, 100));
         functionBar.setLayout(new GridLayout(1, 2, 50, 0));
         functionBar.setBorder(new EmptyBorder(10, 10, 10, 10));
         contentCenter.add(functionBar, BorderLayout.NORTH);
 
-        String[] action = {"create", "update", "import", "export"};
+        String[] action = { "create", "update", "import", "export" };
         mainFunction = new MainFunction(m.getEmployee().getPermissionID(), "FT000003", action);
         for (String ac : action) {
-            mainFunction.btn.get(ac).addActionListener(epBus);
+            mainFunction.btn.get(ac).addActionListener(epBUS);
         }
         functionBar.add(mainFunction);
         search = new IntegratedSearch();
         functionBar.add(search);
-        search.getBtnReset().addActionListener(epBus);
-        search.getTxtSearchForm().getDocument().addDocumentListener(new EmployeeBUS(search.getTxtSearchForm(), this));
+        search.getBtnReset().addActionListener(epBUS);
+        search.getTxtSearchForm().addKeyListener((KeyListener) new KeyAdapter() {
+            @Override
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                String info = search.getTxtSearchForm().getText();
+                ArrayList<EmployeeDTO> rs = epBUS.search(info);
+                epBUS.loadDataIntoTable(rs);
+            }
+        });
 
         // main là phần ở dưới để thống kê bảng biểu
         main = new PanelBorderRadius();
@@ -118,7 +129,8 @@ public final class EmployeePanel extends JPanel {
         scrollTable = new JScrollPane();
         epTable = new JTable();
         tblModel = new DefaultTableModel();
-        String[] header = new String[]{"Mã nhân viên", "Mã nhóm quyên", "Họ tên", "Email", "Giới tính", "Ngày Sinh", "Số điện thoại", "Ngày tuyển", "Lương", "Trạng thái"};
+        String[] header = new String[] { "Mã nhân viên", "Mã nhóm quyên", "Họ tên", "Email", "Giới tính", "Ngày Sinh",
+                "Số điện thoại", "Ngày tuyển", "Lương", "Trạng thái" };
 
         tblModel.setColumnIdentifiers(header);
         epTable.setModel(tblModel);
@@ -139,8 +151,8 @@ public final class EmployeePanel extends JPanel {
         epTable.setAutoCreateRowSorter(true);
         TableSorter.configureTableColumnSorter(epTable, 8, TableSorter.VND_CURRENCY_COMPARATOR);
         scrollTable.setViewportView(epTable);
-        epList = epBus.getList("");
-        epBus.loadDataIntoTable(epList);
+        epList = epBUS.getList("");
+        epBUS.loadDataIntoTable(epList);
         epTable.setDefaultEditor(Object.class, null);
         main.add(scrollTable);
     }
@@ -150,11 +162,15 @@ public final class EmployeePanel extends JPanel {
     }
 
     public EmployeeDTO getEmployee() {
-        epList = epBus.getList("");
+        epList = epBUS.getList("");
         return epList.get(epTable.getSelectedRow());
     }
 
     public DefaultTableModel getTblModel() {
         return tblModel;
+    }
+
+    public JFrame getOwner() {
+        return owner;
     }
 }

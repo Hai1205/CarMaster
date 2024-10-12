@@ -9,7 +9,6 @@ import DTO.EmployeeDTO;
 import GUI.Component.ButtonCustom;
 import GUI.Component.HeaderTitle;
 import GUI.Component.InputForm;
-import GUI.Component.MenuTaskbar;
 import helper.BCrypt;
 import helper.Tool;
 import java.awt.BorderLayout;
@@ -28,33 +27,33 @@ import javax.swing.border.EmptyBorder;
 public class MyAccount extends JDialog implements ActionListener {
 
 //    private CardLayout card;
-    private ButtonCustom save, cancel;
+    private ButtonCustom save;
     private HeaderTitle title;
     private JPanel top, center, top_center, main_center, bottom;
     private InputForm currentPass, newPass, confirmPass;
     private EmployeeDTO epDTO;
     private EmployeeBUS epBUS;
-    private MenuTaskbar menuTaskbar;
+    private EmployeeDialog epDialog;
     private JPanel changePassPanel;
 
-    public MyAccount(JFrame owner, MenuTaskbar menutaskbar, String title, boolean modal) {
+    public MyAccount(JFrame owner, EmployeeDialog epDialog, String title, boolean modal) {
         super(owner, title, modal);
-        initComponent(menutaskbar);
+        initComponent(epDialog);
         this.setLocationRelativeTo(null);
     }
 
-    public void initComponent(MenuTaskbar menutaskbar) {
+    public void initComponent(EmployeeDialog epDialog) {
         epBUS = new EmployeeBUS();
-        this.menuTaskbar = menutaskbar;
+        this.epDialog = epDialog;
         this.setSize(400, 500);
         this.setLayout(new BorderLayout(0, 0));
         this.setBackground(Color.WHITE);
         this.setResizable(false);
-        epDTO = menuTaskbar.getEmployee();
+        epDTO = epDialog.getEmployee();
         top = new JPanel();
         top.setBackground(Color.WHITE);
         top.setLayout(new FlowLayout(0, 0, 0));
-        title = new HeaderTitle("CHỈNH SỬA THÔNG TIN");
+        title = new HeaderTitle("ĐỔI MẬT KHẨU");
         top.add(title);
         this.add(top, BorderLayout.NORTH);
 
@@ -85,10 +84,7 @@ public class MyAccount extends JDialog implements ActionListener {
         bottom = new JPanel(new FlowLayout(1, 20, 10));
         bottom.setBackground(Color.WHITE);
 
-        cancel = new ButtonCustom("Hủy", "danger", 15);
-        cancel.addActionListener(this);
-        bottom.add(cancel);
-        save = new ButtonCustom("Lưu", "success", 15);
+        save = new ButtonCustom("Cập nhật", "success", 15);
         save.addActionListener(this);
         bottom.add(save);
         this.add(bottom, BorderLayout.SOUTH);
@@ -98,10 +94,6 @@ public class MyAccount extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == cancel) {
-            this.dispose();
-        }
-
         if (e.getSource() == save) {
             changPass();
         }
@@ -132,6 +124,6 @@ public class MyAccount extends JDialog implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Mật khẩu hiện tại không đúng", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
             }
         }
-        menuTaskbar.resetChange();
+        epDialog.resetChange();
     }
 }

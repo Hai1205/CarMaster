@@ -1,6 +1,8 @@
 package BUS;
 
 import DTO.SupplierDTO;
+import helper.Tool;
+
 import java.util.ArrayList;
 
 import DAO.SupplierDAO;
@@ -12,6 +14,14 @@ public class SupplierBUS {
 
     public ArrayList<SupplierDTO> getList() {
         return SupplierDAO.getList();
+    }
+
+    public String createID() {
+        String ID;
+        do {
+            ID = "SP" + Tool.randomID();
+        } while (getSupplierByID(ID) != null);
+        return ID;
     }
 
     public void add(SupplierDTO spDTO) {
@@ -44,7 +54,7 @@ public class SupplierBUS {
         return SupplierDAO.getSupplierByID(supplierID);
     }
 
-    public String getIDByName(String supplierName){
+    public String getIDByName(String supplierName) {
         return SupplierDAO.getIDByName(supplierName);
     }
 

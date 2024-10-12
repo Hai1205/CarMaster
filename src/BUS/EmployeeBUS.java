@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -57,8 +56,15 @@ public class EmployeeBUS implements ActionListener, DocumentListener {
 
     private LogIn logIn;
     private EmployeePanel epPanel;
-    private JTextField textField;
     public ArrayList<EmployeeDTO> epList;
+
+    public String createID() {
+        String ID;
+        do {
+            ID = "EP" + Tool.randomID();
+        } while (getEmployeeByID(ID) != null);
+        return ID;
+    }
 
     public EmployeeBUS() {
         epList = EmployeeDAO.getList("");
@@ -74,11 +80,10 @@ public class EmployeeBUS implements ActionListener, DocumentListener {
         epList = EmployeeDAO.getList("");
     }
 
-    public EmployeeBUS(JTextField textField, EmployeePanel epPanel) {
-        this.textField = textField;
-        this.epPanel = epPanel;
-        epList = EmployeeDAO.getList("");
-    }
+    // public EmployeeBUS(JTextField textField, EmployeePanel epPanel) {
+    // this.epPanel = epPanel;
+    // epList = EmployeeDAO.getList("");
+    // }
 
     public EmployeePanel getEmployeePanel() {
         return epPanel;
@@ -131,9 +136,11 @@ public class EmployeeBUS implements ActionListener, DocumentListener {
             return;
         }
 
-        for (EmployeeDTO epDTO : epList) {
-            epPanel.getTblModel().addRow(new Object[]{
-                epDTO.getEmployeeID(), epDTO.getPermissionID(), epDTO.getEmployeeName(), epDTO.getEmail(), epDTO.getGender(), epDTO.getDOB(), epDTO.getPhone(), epDTO.getHireDate(), Formater.FormatVND(epDTO.getSalary()), epDTO.getStatus()
+        for (EmployeeDTO epDTO : list) {
+            epPanel.getTblModel().addRow(new Object[] {
+                    epDTO.getEmployeeID(), epDTO.getPermissionID(), epDTO.getEmployeeName(), epDTO.getEmail(),
+                    epDTO.getGender(), epDTO.getDOB(), epDTO.getPhone(), epDTO.getHireDate(),
+                    Formater.FormatVND(epDTO.getSalary()), epDTO.getStatus()
             });
         }
     }
@@ -143,19 +150,22 @@ public class EmployeeBUS implements ActionListener, DocumentListener {
         String passwordCheck = logIn.getTxtPassword();
 
         if (emailCheck.equals("") || passwordCheck.equals("")) {
-            JOptionPane.showMessageDialog(logIn, "Vui lòng nhập thông tin đầy đủ", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(logIn, "Vui lòng nhập thông tin đầy đủ", "Cảnh báo!",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         EmployeeDTO epDTO = EmployeeDAO.getEmployeeByEmail(emailCheck);
 
         if (epDTO == null) {
-            JOptionPane.showMessageDialog(logIn, "Tài khoản của bạn không tồn tại trên hệ thống", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(logIn, "Tài khoản của bạn không tồn tại trên hệ thống", "Cảnh báo!",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         if (epDTO.getStatus().equals("Đã nghỉ việc")) {
-            JOptionPane.showMessageDialog(logIn, "Tài khoản của bạn đang bị khóa", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(logIn, "Tài khoản của bạn đang bị khóa", "Cảnh báo!",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -224,7 +234,8 @@ public class EmployeeBUS implements ActionListener, DocumentListener {
                         } else if (hireCell.getCellType() == CellType.STRING) {
                             // Nếu ô là kiểu chuỗi, ta cần chuyển đổi chuỗi ngày
                             String hireDateString = hireCell.getStringCellValue();
-                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // Thay đổi định dạng nếu cần
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // Thay đổi định
+                                                                                                      // dạng nếu cần
                             try {
                                 java.util.Date hireDate = formatter.parse(hireDateString);
                                 hire = new Timestamp(hireDate.getTime());
@@ -265,7 +276,8 @@ public class EmployeeBUS implements ActionListener, DocumentListener {
                     if (check == 0) {
                         k++;
                     } else {
-                        EmployeeDAO.insert(new EmployeeDTO(employeeID, permissionID, employeeName, hire, gender, phone, email, password, status, birth, salary, 0));
+                        EmployeeDAO.insert(new EmployeeDTO(employeeID, permissionID, employeeName, hire, gender, phone,
+                                email, password, status, birth, salary, 0));
                     }
                 }
 
@@ -288,21 +300,25 @@ public class EmployeeBUS implements ActionListener, DocumentListener {
         String btn = e.getActionCommand();
         switch (btn) {
             case "THÊM" -> {
-                new EmployeeDialog(this, epPanel.owner, true, "Thêm nhân viên", "create");
+                new EmployeeDialog(this, epPanel.getOwner(), true, "Thêm nhân viên", "create");
             }
             case "CẬP NHẬT" -> {
                 int index = epPanel.getRow();
                 if (index < 0) {
                     JOptionPane.showMessageDialog(null, "Vui lòng chọn nhân viên cần sửa");
                 } else {
-                    new EmployeeDialog(this, epPanel.owner, true, "Sửa nhân viên", "update", epPanel.getEmployee());
+                    new EmployeeDialog(this, epPanel.getOwner(), true, "Sửa nhân viên", "update",
+                            epPanel.getEmployee());
                 }
             }
             case "NHẬP EXCEL" -> {
                 importExcel();
             }
             case "XUẤT EXCEL" -> {
-                String[] header = new String[]{"Mã nhân viên", "Mã nhóm quyên", "Họ và tên                     ", "Email                                ", "Giới tính", "Ngày Sinh", "Số điện thoại", "Ngày tuyển       ", "Lương(VND)", "Trạng thái    ", "Mật khẩu                                                                           "};
+                String[] header = new String[] { "Mã nhân viên", "Mã nhóm quyên", "Họ và tên                     ",
+                        "Email                                ", "Giới tính", "Ngày Sinh", "Số điện thoại",
+                        "Ngày tuyển       ", "Lương(VND)", "Trạng thái    ",
+                        "Mật khẩu                                                                           " };
                 exportExcel(epList, header);
             }
         }
@@ -361,7 +377,7 @@ public class EmployeeBUS implements ActionListener, DocumentListener {
         try {
             if (!list.isEmpty()) {
                 JFileChooser jFileChooser = new JFileChooser();
-                jFileChooser.showSaveDialog(epPanel.owner);
+                jFileChooser.showSaveDialog(epPanel.getOwner());
                 File saveFile = jFileChooser.getSelectedFile();
                 if (saveFile != null) {
                     saveFile = new File(saveFile.toString() + ".xlsx");
@@ -392,7 +408,7 @@ public class EmployeeBUS implements ActionListener, DocumentListener {
             // Format number
             short format = (short) BuiltinFormats.getBuiltinFormat("#,##0");
 
-            //Create CellStyle
+            // Create CellStyle
             Workbook workbook = row.getSheet().getWorkbook();
             cellStyleFormatNumber = workbook.createCellStyle();
             cellStyleFormatNumber.setDataFormat(format);
@@ -448,15 +464,12 @@ public class EmployeeBUS implements ActionListener, DocumentListener {
         return cellStyle;
     }
 
+    public ArrayList<EmployeeDTO> search(String info) {
+        return EmployeeDAO.search(info);
+    }
+
     @Override
     public void insertUpdate(DocumentEvent e) {
-        String text = textField.getText();
-        if (text.length() == 0) {
-            loadDataIntoTable(epList);
-        } else {
-            ArrayList<EmployeeDTO> listSearch = EmployeeDAO.search(text);
-            loadDataIntoTable(listSearch);
-        }
     }
 
     @Override

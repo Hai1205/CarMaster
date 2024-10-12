@@ -18,7 +18,7 @@ public class CustomerDialog extends JDialog implements MouseListener {
 
     private HeaderTitle titlePage;
     private JPanel pnlMain, pnlButtom;
-    private ButtonCustom btnAdd, btnUpdate, btnCancel;
+    private ButtonCustom btnAdd, btnUpdate;
     private InputForm txtCustomerName, txtPhone, txtAddress;
     private final CustomerPanel ctmPanel;
     private CustomerDTO ctmDTO;
@@ -59,13 +59,11 @@ public class CustomerDialog extends JDialog implements MouseListener {
         pnlButtom.setBorder(new EmptyBorder(10, 0, 10, 0));
         pnlButtom.setBackground(Color.white);
         btnAdd = new ButtonCustom("Thêm", "success", 14);
-        btnUpdate = new ButtonCustom("Lưu", "success", 14);
-        btnCancel = new ButtonCustom("Huỷ", "danger", 14);
+        btnUpdate = new ButtonCustom("Cập nhật", "success", 14);
 
         // Add MouseListener btn
         btnAdd.addMouseListener(this);
         btnUpdate.addMouseListener(this);
-        btnCancel.addMouseListener(this);
 
         switch (type) {
             case "create" -> {
@@ -78,7 +76,6 @@ public class CustomerDialog extends JDialog implements MouseListener {
                 pnlButtom.add(btnUpdate);
             }
         }
-        pnlButtom.add(btnCancel);
 
         this.add(titlePage, BorderLayout.NORTH);
         this.add(pnlMain, BorderLayout.CENTER);

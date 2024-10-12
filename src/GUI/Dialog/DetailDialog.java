@@ -44,7 +44,6 @@ public final class DetailDialog extends JDialog implements ActionListener {
     private InvoiceBUS ivBUS;
 
     private ButtonCustom btnPdf;
-    private ButtonCustom btnCanel;
 
     private ArrayList<ImportDetailDTO> ipdList;
     private ArrayList<InvoiceDetailDTO> ivdList;
@@ -173,11 +172,8 @@ public final class DetailDialog extends JDialog implements ActionListener {
         pnmain_btn.setBorder(new EmptyBorder(10, 0, 10, 0));
         pnmain_btn.setBackground(Color.white);
         btnPdf = new ButtonCustom("In", "success", 14);
-        btnCanel = new ButtonCustom("Đóng", "danger", 14);
         btnPdf.addActionListener(this);
-        btnCanel.addActionListener(this);
         pnmain_btn.add(btnPdf);
-        pnmain_btn.add(btnCanel);
 
         pnmain.add(pnmain_top, BorderLayout.NORTH);
         pnmain.add(pnmain_bottom, BorderLayout.CENTER);
@@ -191,9 +187,6 @@ public final class DetailDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        if (source == btnCanel) {
-            dispose();
-        }
         if (source == btnPdf) {
             WritePDF w = new WritePDF();
             if (this.ivDTO != null) {

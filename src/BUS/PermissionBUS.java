@@ -10,6 +10,8 @@ import DAO.PermissionDetailDAO;
 import DTO.FunctionDTO;
 import DTO.PermissionDTO;
 import DTO.PermissionDetailDTO;
+import helper.Tool;
+
 import java.util.ArrayList;
 
 /**
@@ -24,6 +26,14 @@ public class PermissionBUS {
         this.pmsList = PermissionDAO.getList();
     }
 
+    public String createID(){
+        String ID;
+        do{
+            ID = "PMS"+Tool.randomID();
+        }while(getPermissionByID(ID) != null);
+        return ID;
+    }
+
     public ArrayList<PermissionDTO> getPmsList() {
         return PermissionDAO.getList();
     }
@@ -36,7 +46,7 @@ public class PermissionBUS {
         return this.pmsList.get(index);
     }
 
-    public PermissionDTO getByID(String permissionID) {
+    public PermissionDTO getPermissionByID(String permissionID) {
         return PermissionDAO.getByID(permissionID);
     }
 

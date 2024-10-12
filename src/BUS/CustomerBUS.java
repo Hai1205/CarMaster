@@ -1,12 +1,22 @@
 package BUS;
 
 import DTO.CustomerDTO;
+import helper.Tool;
+
 import java.util.ArrayList;
 import DAO.CustomerDAO;
 
 public class CustomerBUS {
 
     public CustomerBUS() {
+    }
+
+    public String createID(){
+        String ID;
+        do{
+            ID = "CTM"+Tool.randomID();
+        }while(getCustomerByID(ID) != null);
+        return ID;
     }
 
     public ArrayList<CustomerDTO> getList() {
@@ -47,7 +57,7 @@ public class CustomerBUS {
         return CustomerDAO.getListCustomerName();
     }
 
-    public CustomerDTO selectKh(String customerID) {
+    public CustomerDTO getCustomerByID(String customerID) {
         return CustomerDAO.getCustomerByID(customerID);
     }
 }

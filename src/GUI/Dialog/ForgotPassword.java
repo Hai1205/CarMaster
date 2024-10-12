@@ -8,6 +8,8 @@ import BUS.EmployeeBUS;
 import DTO.EmployeeDTO;
 import helper.BCrypt;
 import helper.SendEmailSMTP;
+import helper.Tool;
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -155,7 +157,7 @@ public class ForgotPassword extends JDialog implements ActionListener {
         c.next(jpMain);
         emailCheck = email;
 
-        String otp = SendEmailSMTP.getOTP();
+        String otp = Tool.randomID();
         SendEmailSMTP.sendOTP(email, otp);
         epBUS.sendOTP(email, Integer.parseInt(otp));
     }

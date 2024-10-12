@@ -8,6 +8,7 @@ import DAO.ProductDAO;
 import DAO.ProductDetailDAO;
 import DTO.ProductDTO;
 import DTO.ProductDetailDTO;
+import helper.Tool;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,14 @@ public class ProductBUS {
 
     public ProductBUS() {
         list = getProductList();
+    }
+
+    public String createID(){
+        String ID;
+        do{
+            ID = "SP"+Tool.randomID();
+        }while(getProductByID(ID) != null);
+        return ID;
     }
 
     public ArrayList<ProductDTO> getProductList() {

@@ -74,7 +74,7 @@ public class MenuTaskbar extends JPanel {
     public MenuTaskbar(Main main, EmployeeDTO epDTO) {
         this.main = main;
         this.epDTO = epDTO;
-        this.pmsDTO = pmsBUS.getByID(epDTO.getPermissionID());
+        this.pmsDTO = pmsBUS.getPermissionByID(epDTO.getPermissionID());
         pmsdtList = pmsBUS.getPmsdtList(epDTO.getPermissionID());
         initComponent();
     }
@@ -327,7 +327,8 @@ public class MenuTaskbar extends JPanel {
         lblIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                new MyAccount(owner, MenuTaskbar.this, "Chỉnh sửa thông tin tài khoản", true);
+                EmployeeBUS epBUS = new EmployeeBUS();
+                new EmployeeDialog(epBUS, owner, true, "Thông tin tài khoản", "update", epDTO);
             }
         });
     }

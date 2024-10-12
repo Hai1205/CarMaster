@@ -5,6 +5,7 @@ import DAO.InvoiceDAO;
 import DAO.InvoiceDetailDAO;
 import DTO.InvoiceDTO;
 import DTO.InvoiceDetailDTO;
+import helper.Tool;
 
 /**
  *
@@ -12,6 +13,14 @@ import DTO.InvoiceDetailDTO;
 public class InvoiceBUS {
 
     public InvoiceBUS() {
+    }
+
+    public String createID(){
+        String ID;
+        do{
+            ID = "IV"+Tool.randomID();
+        }while(getInvoiceByID(ID) != null);
+        return ID;
     }
 
     public ArrayList<InvoiceDTO> getList() {

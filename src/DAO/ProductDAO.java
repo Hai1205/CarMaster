@@ -155,13 +155,14 @@ public class ProductDAO {
         try {
             connection = Database.getConnection();
 
-            String sql = "UPDATE product SET productName = ?, sellPrice = ?, status = ?, productImg = ?";
+            String sql = "UPDATE product SET productName = ?, sellPrice = ?, status = ?, productImg = ? WHERE productID = ?";
             pstmt = connection.prepareStatement(sql);
 
             pstmt.setString(1, pdDTO.getProductName());
             pstmt.setLong(2, pdDTO.getSellPrice());
             pstmt.setString(3, pdDTO.getStatus());
             pstmt.setString(4, pdDTO.getProductImg());
+            pstmt.setString(5, pdDTO.getProductID());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {

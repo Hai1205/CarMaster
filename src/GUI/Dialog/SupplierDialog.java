@@ -33,7 +33,7 @@ public class SupplierDialog extends JDialog implements ActionListener {
     private SupplierPanel spPanel;
     private HeaderTitle titlePage;
     private JPanel pnmain, pnbottom;
-    private ButtonCustom btnAdd, btnUpdate, btnCancel;
+    private ButtonCustom btnAdd, btnUpdate;
     private InputForm supplierName, address, email, phone;
     private SupplierDTO spDTO;
 
@@ -73,13 +73,11 @@ public class SupplierDialog extends JDialog implements ActionListener {
         pnbottom.setBorder(new EmptyBorder(10, 0, 10, 0));
         pnbottom.setBackground(Color.white);
         btnAdd = new ButtonCustom("Thêm", "success", 14);
-        btnUpdate = new ButtonCustom("Lưu", "success", 14);
-        btnCancel = new ButtonCustom("Huỷ", "danger", 14);
+        btnUpdate = new ButtonCustom("Cập nhật", "success", 14);
 
         // Add MouseListener btn
         btnAdd.addActionListener(this);
         btnUpdate.addActionListener(this);
-        btnCancel.addActionListener(this);
 
         switch (type) {
             case "create" ->
@@ -91,7 +89,6 @@ public class SupplierDialog extends JDialog implements ActionListener {
             default ->
                 throw new AssertionError();
         }
-        pnbottom.add(btnCancel);
         this.add(titlePage, BorderLayout.NORTH);
         this.add(pnmain, BorderLayout.CENTER);
         this.add(pnbottom, BorderLayout.SOUTH);

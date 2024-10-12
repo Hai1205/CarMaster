@@ -97,7 +97,7 @@ public class ProductPanel extends JPanel implements ActionListener {
         functionBar.setLayout(new GridLayout(1, 2, 50, 0));
         functionBar.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        String[] action = { "create", "update", "export" };
+        String[] action = { "create", "update", "import", "export" };
         mainFunction = new MainFunction(m.getEmployee().getPermissionID(), "FT000006", action);
         for (String ac : action) {
             mainFunction.btn.get(ac).addActionListener(this);
