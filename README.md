@@ -1,7 +1,7 @@
 
 ## Technologies Used
 
-- **Java (JDK 17)**: Main programming language for building the application.
+- **Java (JDK 21)**: Main programming language for building the application.
 - **Java Swing**: For building the desktop application interface.
 - **MySQL**: Database to store all application data such as customer details, inventory, and sales information.
 - **XAMPP**: For local MySQL and Apache server setup.
@@ -21,7 +21,7 @@
 3. Configure the database connection:
    - Update the database connection details in `Database.java` file under the Util package.
 4. Run the application:
-   - Open the project in an IDE (e.g., NetBeans, IntelliJ).
+   - Open the project in an IDE (e.g., NetBeans, IntelliJ) or Text Editor(VSCode).
    - Build and run the project.
 
 ## Usage
