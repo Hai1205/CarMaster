@@ -20,6 +20,7 @@ import java.awt.Frame;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JButton;
@@ -29,7 +30,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 /**
  *
  * @author ASUS
@@ -129,6 +131,12 @@ public class ForgotPassword extends JDialog implements ActionListener {
         this.getContentPane().add(jpTop, BorderLayout.NORTH);
         this.getContentPane().add(jpMain, BorderLayout.CENTER);
 
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                epBUS.sendOTP(emailCheck, 0);
+            }
+        });
     }
 
     private void sendMail() {
@@ -157,9 +165,17 @@ public class ForgotPassword extends JDialog implements ActionListener {
         c.next(jpMain);
         emailCheck = email;
 
-        String otp = Tool.randomID();
-        SendEmailSMTP.sendOTP(email, otp);
-        epBUS.sendOTP(email, Integer.parseInt(otp));
+        sendOTPAsync(email);
+    }
+
+    // async/await
+    public CompletableFuture<Void> sendOTPAsync(String email) {
+        return CompletableFuture.supplyAsync(() -> Tool.randomID())
+            .thenCompose(otp -> {
+                CompletableFuture<Void> emailFuture = SendEmailSMTP.sendOTP(email, otp);
+                CompletableFuture<Void> epBUSFuture = epBUS.sendOTP(email, Integer.parseInt(otp));
+                return CompletableFuture.allOf(emailFuture, epBUSFuture);
+            });
     }
 
     private void confirmOTP() {

@@ -199,9 +199,9 @@ public class CustomerPanel extends JPanel implements ActionListener, ItemListene
                 }
                 JOptionPane.showMessageDialog(this, "Nhập thành công");
             } catch (FileNotFoundException ex) {
-                System.out.println("Lỗi đọc file");
+                ex.printStackTrace();
             } catch (IOException ex) {
-                System.out.println("Lỗi đọc file");
+                ex.printStackTrace();
             }
         }
         if (k != 0) {

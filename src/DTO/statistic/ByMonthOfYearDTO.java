@@ -2,26 +2,26 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package DTO.statistic;
+package DTO.Statistic;
 
 /**
  *
  * @author ASUS
  */
-public class ByMonthDTO {
+public class ByMonthOfYearDTO {
     private int month;
-    private long proceed, workingCapital,profits;
+    private long expense, income,profits;
 
     public void setMonth(int month) {
         this.month = month;
     }
 
-    public void setProceed(long proceed) {
-        this.proceed = proceed;
+    public void setExpense(long expense) {
+        this.expense = expense;
     }
 
-    public void setWorkingCapital(long workingCapital) {
-        this.workingCapital = workingCapital;
+    public void setIncome(long income) {
+        this.income = income;
     }
 
     public void setProfits(long profits) {
@@ -32,22 +32,22 @@ public class ByMonthDTO {
         return month;
     }
 
-    public long getProceed() {
-        return proceed;
+    public long getExpense() {
+        return expense;
     }
 
-    public long getWorkingCapital() {
-        return workingCapital;
+    public long getIncome() {
+        return income;
     }
 
     public long getProfits() {
         return profits;
     }
 
-    public ByMonthDTO(int month, long proceed, long workingCapital, long profits) {
+    public ByMonthOfYearDTO(int month, long expense, long income, long profits) {
         this.month = month;
-        this.proceed = proceed;
-        this.workingCapital = workingCapital;
+        this.expense = expense;
+        this.income = income;
         this.profits = profits;
     }
 }

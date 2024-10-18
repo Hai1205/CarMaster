@@ -28,6 +28,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.CompletableFuture;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -117,8 +119,9 @@ public class EmployeeBUS implements ActionListener, DocumentListener {
         EmployeeDAO.updatePassword(email, password);
     }
 
-    public void sendOTP(String email, int OTP) {
+    public CompletableFuture<Void> sendOTP(String email, int OTP) {
         EmployeeDAO.sendOTP(email, OTP);
+        return null;
     }
 
     public boolean checkOTP(String email, int OTP) {
@@ -217,7 +220,7 @@ public class EmployeeBUS implements ActionListener, DocumentListener {
                             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                             dob = formatter.parse(dateString);
                         } catch (ParseException e) {
-                            System.out.println("Lỗi khi chuyển đổi ngày sinh: " + e.getMessage());
+                            e.printStackTrace();
                         }
                     }
                     java.sql.Date birth = (dob != null) ? new java.sql.Date(dob.getTime()) : null;
@@ -240,7 +243,7 @@ public class EmployeeBUS implements ActionListener, DocumentListener {
                                 java.util.Date hireDate = formatter.parse(hireDateString);
                                 hire = new Timestamp(hireDate.getTime());
                             } catch (ParseException e) {
-                                System.out.println("Lỗi khi chuyển đổi ngày thuê: " + e.getMessage());
+                                e.printStackTrace();
                             }
                         }
                     }
@@ -258,7 +261,7 @@ public class EmployeeBUS implements ActionListener, DocumentListener {
                             try {
                                 salary = Integer.parseInt(salaryString); // Chuyển đổi chuỗi thành số
                             } catch (NumberFormatException e) {
-                                System.out.println("Lỗi khi chuyển đổi lương: " + e.getMessage());
+                                e.printStackTrace();
                                 salary = 0; // Có thể đặt lương về 0 hoặc một giá trị mặc định nào đó
                             }
                         }

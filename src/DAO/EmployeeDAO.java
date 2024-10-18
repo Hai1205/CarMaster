@@ -27,8 +27,8 @@ public class EmployeeDAO {
         try {
             connection = Database.getConnection();
             String query;
-            if (status.equals("Còn làm việc")) {
-                query = "SELECT * FROM employee WHERE status = 'Còn làm việc'";
+            if (status.equals("Hoạt động")) {
+                query = "SELECT * FROM employee WHERE status = 'Hoạt động'";
             } else {
                 query = "SELECT * FROM employee";
             }

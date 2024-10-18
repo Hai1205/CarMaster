@@ -168,7 +168,7 @@ public final class SupplierPanel extends JPanel implements ActionListener, ItemL
             File path = new File(file);
             Desktop.getDesktop().open(path);
         } catch (IOException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -213,9 +213,9 @@ public final class SupplierPanel extends JPanel implements ActionListener, ItemL
                     JOptionPane.showMessageDialog(this, "Những dữ liệu không chuẩn không được thêm vào");
                 }
             } catch (FileNotFoundException ex) {
-                System.out.println("Lỗi đọc file");
+                ex.printStackTrace();
             } catch (IOException ex) {
-                System.out.println("Lỗi đọc file");
+                ex.printStackTrace();
             }
         }
 

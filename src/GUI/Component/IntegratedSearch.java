@@ -33,10 +33,12 @@ public class IntegratedSearch extends JPanel {
         txtSearchForm.putClientProperty("JTextField.showClearButton", true);
         jpSearch.add(txtSearchForm);
 
-        btnReset = new JButton("Làm mới");
+        // btnReset = new JButton("Làm mới");
+        btnReset = new JButton("");
         btnReset.setFont(new java.awt.Font(FlatRobotoFont.FAMILY, 0, 14));
         btnReset.setIcon(new FlatSVGIcon("./icon/refresh.svg"));
-        btnReset.setPreferredSize(new Dimension(125, 0));
+        // btnReset.setPreferredSize(new Dimension(125, 0));
+        btnReset.setPreferredSize(new Dimension(40, 0));
         btnReset.addActionListener(this::btnResetActionPerformed);
         jpSearch.add(btnReset,BorderLayout.EAST);
         this.add(jpSearch);

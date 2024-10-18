@@ -5,15 +5,9 @@ import DTO.*;
 import GUI.*;
 import GUI.Dialog.*;
 import GUI.Panel.*;
+import GUI.Panel.Statistic.Statistic;
 
-//import GUI.Panel.PermissionPanel;
-//import GUI.Panel.ImportPanel;
-//import GUI.Panel.InvoicePanel;
-//import GUI.Panel.PropertyPanel;
-//import GUI.Panel.ProductPanel;
-//import GUI.Panel.Statistic.Statistic;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -26,25 +20,25 @@ public class MenuTaskbar extends JPanel {
     private HomePage homePage;
     private ProductPanel pdPanel;
     private PropertyPanel pptPanel;
-   private ImportPanel ipPanel;
-   private InvoicePanel ivPanel;
-   private CustomerPanel ctmPanel;
-   private SupplierPanel spPanel;
+    private ImportPanel ipPanel;
+    private InvoicePanel ivPanel;
+    private CustomerPanel ctmPanel;
+    private SupplierPanel spPanel;
     private EmployeePanel epPanel;
     private PermissionPanel pmsPanel;
-//    private Statistic statistic;
+    private Statistic statistic;
     private final String[][] getSt = {
-        {"Trang chủ", "home.svg", "homePage"},
-        {"Sản phẩm", "product.svg", "FT000006"},
-        {"Thuộc tính", "brand.svg", "FT000008"},
-        {"Nhập hàng", "import.svg", "FT000004"},
-        {"Bán hàng", "export.svg", "FT000009"},
-        {"Khách hàng", "customer.svg", "FT000001"},
-        {"Nhà cung cấp", "supplier.svg", "FT000002"},
-        {"Nhân viên", "staff.svg", "FT000003"},
-        {"Phân quyền", "permission.svg", "FT000005"},
-        {"Thống kê", "statistical.svg", "FT000007"},
-        {"Đăng xuất", "log_out.svg", "logout"},};
+            { "Trang chủ", "home.svg", "homePage" },
+            { "Sản phẩm", "product.svg", "FT000006" },
+            { "Thuộc tính", "brand.svg", "FT000008" },
+            { "Nhập hàng", "import.svg", "FT000004" },
+            { "Bán hàng", "export.svg", "FT000009" },
+            { "Khách hàng", "customer.svg", "FT000001" },
+            { "Nhà cung cấp", "supplier.svg", "FT000002" },
+            { "Nhân viên", "staff.svg", "FT000003" },
+            { "Phân quyền", "permission.svg", "FT000005" },
+            { "Thống kê", "statistical.svg", "FT000007" },
+            { "Đăng xuất", "log_out.svg", "logout" }, };
 
     private final Main main;
     private EmployeeDTO epDTO;
@@ -54,7 +48,7 @@ public class MenuTaskbar extends JPanel {
     private JLabel lblPermissionName, lblEmail;
     private JScrollPane scrollPane;
 
-    //tasbarMenu chia thành 3 phần chính là pnlCenter, pnlTop, pnlBottom
+    // tasbarMenu chia thành 3 phần chính là pnlCenter, pnlTop, pnlBottom
     private JPanel pnlCenter, pnlTop, pnlBottom, bar1, bar2, bar3, bar4;
 
     private final Color FontColor = new Color(96, 125, 139);
@@ -98,7 +92,8 @@ public class MenuTaskbar extends JPanel {
         info.setLayout(new BorderLayout(0, 0));
         pnlTop.add(info, BorderLayout.CENTER);
 
-        // Cái info này bỏ vô cho đẹp tí, mai mốt có gì xóa đi đê hiển thị thông tin tài khoản và quyền
+        // Cái info này bỏ vô cho đẹp tí, mai mốt có gì xóa đi đê hiển thị thông tin tài
+        // khoản và quyền
         information(info);
 
         bar1 = new JPanel();
@@ -121,7 +116,8 @@ public class MenuTaskbar extends JPanel {
         bar3.setPreferredSize(new Dimension(1, 1));
         this.add(bar3, BorderLayout.EAST);
 
-        scrollPane = new JScrollPane(pnlCenter, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane = new JScrollPane(pnlCenter, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(new EmptyBorder(5, 10, 0, 10));
         this.add(scrollPane, BorderLayout.CENTER);
 
@@ -180,7 +176,7 @@ public class MenuTaskbar extends JPanel {
                 main.setPanel(pdPanel);
             }
         });
-        
+
         listitem[2].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
@@ -188,36 +184,36 @@ public class MenuTaskbar extends JPanel {
                 main.setPanel(pptPanel);
             }
         });
-        
+
         listitem[3].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-               ipPanel = new ImportPanel(main, epDTO);
-               main.setPanel(ipPanel);
+                ipPanel = new ImportPanel(main, epDTO);
+                main.setPanel(ipPanel);
             }
         });
-        
+
         listitem[4].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-               ivPanel = new InvoicePanel(main, epDTO);
-               main.setPanel(ivPanel);
+                ivPanel = new InvoicePanel(main, epDTO);
+                main.setPanel(ivPanel);
             }
         });
-        
+
         listitem[5].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-               ctmPanel = new CustomerPanel(main);
-               main.setPanel(ctmPanel);
+                ctmPanel = new CustomerPanel(main);
+                main.setPanel(ctmPanel);
             }
         });
 
         listitem[6].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-               spPanel = new SupplierPanel(main);
-               main.setPanel(spPanel);
+                spPanel = new SupplierPanel(main);
+                main.setPanel(spPanel);
             }
         });
 
@@ -236,12 +232,12 @@ public class MenuTaskbar extends JPanel {
                 main.setPanel(pmsPanel);
             }
         });
-        
+
         listitem[9].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-//                statistic = new Statistic();
-//                main.setPanel(statistic);
+                statistic = new Statistic();
+                main.setPanel(statistic);
             }
         });
 

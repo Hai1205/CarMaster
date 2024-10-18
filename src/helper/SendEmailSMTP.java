@@ -4,9 +4,10 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
+import java.util.concurrent.CompletableFuture;
 
 public class SendEmailSMTP {
-    public static void sendOTP(String emailTo, String otp) {
+    public static CompletableFuture<Void> sendOTP(String emailTo, String otp) {
         String username = "carmaster1205@gmail.com";
         String password = "iyci jfyt gegl mfyp";
         Properties prop = new Properties();
@@ -48,6 +49,7 @@ public class SendEmailSMTP {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public static void sendPassword(String emailTo, String yourPassword) {

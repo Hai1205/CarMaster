@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package DTO.statistic;
+package DTO.Statistic;
 
 import java.util.Date;
 
@@ -10,20 +10,20 @@ import java.util.Date;
  *
  * @author ASUS
  */
-public class ByDateDTO {
+public class ByPerDateInMonthDTO {
     private Date date;
-    private long proceed, workingCapital,profits;
+    private long expense, income,profits;
 
     public void setDate(Date date) {
         this.date = date;
     }
 
-    public void setProceed(long proceed) {
-        this.proceed = proceed;
+    public void setExpense(long expense) {
+        this.expense = expense;
     }
 
-    public void setWorkingCapital(long workingCapital) {
-        this.workingCapital = workingCapital;
+    public void setIncome(long income) {
+        this.income = income;
     }
 
     public void setProfits(long profits) {
@@ -34,22 +34,22 @@ public class ByDateDTO {
         return date;
     }
 
-    public long getProceed() {
-        return proceed;
+    public long getExpense() {
+        return expense;
     }
 
-    public long getWorkingCapital() {
-        return workingCapital;
+    public long getIncome() {
+        return income;
     }
 
     public long getProfits() {
         return profits;
     }
 
-    public ByDateDTO(Date date, long proceed, long workingCapital, long profits) {
+    public ByPerDateInMonthDTO(Date date, long expense, long income, long profits) {
         this.date = date;
-        this.proceed = proceed;
-        this.workingCapital = workingCapital;
+        this.expense = expense;
+        this.income = income;
         this.profits = profits;
     }
 }

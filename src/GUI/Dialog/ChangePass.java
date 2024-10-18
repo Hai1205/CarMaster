@@ -24,9 +24,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class MyAccount extends JDialog implements ActionListener {
+public class ChangePass extends JDialog implements ActionListener {
 
-//    private CardLayout card;
     private ButtonCustom save;
     private HeaderTitle title;
     private JPanel top, center, top_center, main_center, bottom;
@@ -36,7 +35,7 @@ public class MyAccount extends JDialog implements ActionListener {
     private EmployeeDialog epDialog;
     private JPanel changePassPanel;
 
-    public MyAccount(JFrame owner, EmployeeDialog epDialog, String title, boolean modal) {
+    public ChangePass(JFrame owner, EmployeeDialog epDialog, String title, boolean modal) {
         super(owner, title, modal);
         initComponent(epDialog);
         this.setLocationRelativeTo(null);
