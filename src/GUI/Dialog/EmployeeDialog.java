@@ -90,18 +90,18 @@ public class EmployeeDialog extends JDialog {
         setGenderSelection();
         setAdditionalInfo();
     }
-    
+
     private void setPermissionAndEmployeeInfo() {
         String permissionNameStr = pmsBUS.getNameByID(epDTO.getPermissionID());
         permissionName.setSelectedItem(permissionNameStr);
         employeeName.setText(epDTO.getEmployeeName());
     }
-    
+
     private void setEmailField() {
         email.setEditable(false);
         email.setText(epDTO.getEmail());
     }
-    
+
     private void handleAccountInfo() {
         if (isInfo) {
             epDialog = this;
@@ -113,14 +113,14 @@ public class EmployeeDialog extends JDialog {
             });
         }
     }
-    
+
     private void handleSalaryField() {
         slr.setDocumentFilter(isInfo ? null : new NumericDocumentFilter());
         String formattedSalary = isInfo ? Formater.FormatVND(epDTO.getSalary()) : String.valueOf(epDTO.getSalary());
         salary.setText(formattedSalary);
         salary.setEditable(!isInfo);
     }
-    
+
     private void setGenderSelection() {
         if (epDTO.getGender().equals("Nam")) {
             male.setSelected(true);
@@ -128,7 +128,7 @@ public class EmployeeDialog extends JDialog {
             female.setSelected(true);
         }
     }
-    
+
     private void setAdditionalInfo() {
         jcBd.setDate(epDTO.getDOB());
         phone.setText(epDTO.getPhone());
@@ -137,8 +137,7 @@ public class EmployeeDialog extends JDialog {
 
     public void init(String title, String type) {
         Dimension inputSize = new Dimension(100, 110);
-        // this.setSize(new Dimension(600, 590));
-        // this.setSize(new Dimension(450, 590));
+        this.setSize(new Dimension(450, 590));
         this.setLayout(new BorderLayout(0, 0));
 
         titlePage = new HeaderTitle(title.toUpperCase());
@@ -151,9 +150,12 @@ public class EmployeeDialog extends JDialog {
         employeeName = new InputForm("Họ và tên");
         email = new InputForm("Email");
 
-        changePassword = new JLabel("Đổi mật khẩu", SwingConstants.RIGHT);
+        changePassword = new JLabel("Đổi mật khẩu", SwingConstants.LEFT);
         changePassword.setPreferredSize(new Dimension(320, 40));
         changePassword.setFont(new Font(FlatRobotoFont.FAMILY, Font.ITALIC, 18));
+        JPanel changePasswordPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        changePasswordPanel.setBackground(Color.white);
+        changePasswordPanel.add(changePassword);
 
         permissionName = new SelectForm("Nhóm quyền", pmsBUS.getPermission());
         permissionName.setPreferredSize(inputSize);
@@ -194,19 +196,17 @@ public class EmployeeDialog extends JDialog {
         status = new SelectForm("Trạng thái", new String[] { "Hoạt động", "Ngưng hoạt động" });
         status.setPreferredSize(inputSize);
 
-        // Thêm các thành phần vào main panel
         main.add(permissionName);
         main.add(employeeName);
         main.add(email);
 
         if (isInfo) {
-            this.setSize(new Dimension(600, 590));
-            main.add(changePassword);
+            // this.setSize(new Dimension(600, 590));
+            main.add(changePasswordPanel);
         } else {
-            this.setSize(new Dimension(450, 590));
             main.add(status);
         }
-        
+
         main.add(phone);
         main.add(jpanelG);
         main.add(jpaneljd);

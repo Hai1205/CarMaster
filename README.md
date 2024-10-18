@@ -18,10 +18,11 @@
    - Install XAMPP.
    - Start Apache and MySQL services in XAMPP.
    - Import the provided database schema in MySQL Workbench or phpMyAdmin.
+   - Open MySQL Workbench then run file CarMaster.sql and SetCarMaster.sql to create database for project
 3. Configure the database connection:
    - Update the database connection details in `Database.java` file under the Util package.
 4. Run the application:
-   - Open the project in an IDE (e.g., NetBeans, IntelliJ) or Text Editor(VSCode).
+   - Open the project in an IDE (e.g., NetBeans, IntelliJ) or Text Editor(e.g., VSCode).
    - Build and run the project.
 
 ## Usage
