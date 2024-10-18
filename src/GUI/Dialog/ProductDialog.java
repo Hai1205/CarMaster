@@ -105,7 +105,7 @@ public class ProductDialog extends JDialog implements ActionListener {
 
     public ProductDialog(ProductPanel pdPanel, JFrame owner, String title, boolean modal, String type) {
         super(owner, title, modal);
-        productID = "PD" + Tool.randomID();
+        productID = pdBUS.createID();
         init(pdPanel);
         initCardOne(type);
         initComponents(title);

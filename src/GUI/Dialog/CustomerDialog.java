@@ -11,6 +11,8 @@ import java.awt.event.MouseListener;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.PlainDocument;
+
+import BUS.CustomerBUS;
 import DTO.CustomerDTO;
 import GUI.Panel.CustomerPanel;
 
@@ -22,19 +24,21 @@ public class CustomerDialog extends JDialog implements MouseListener {
     private InputForm txtCustomerName, txtPhone, txtAddress;
     private final CustomerPanel ctmPanel;
     private CustomerDTO ctmDTO;
+    private CustomerBUS ctmBUS;
 
-    public CustomerDialog(CustomerPanel ctmPanel, JFrame owner, String title, boolean modal, String type) {
+    public CustomerDialog(CustomerPanel ctmPanel, CustomerBUS ctmBUS, JFrame owner, String title, boolean modal, String type) {
         super(owner, title, modal);
         this.ctmPanel = ctmPanel;
+        this.ctmBUS=ctmBUS;
         initComponents(title, type);
     }
 
-    public CustomerDialog(CustomerPanel ctmPanel, JFrame owner, String title, boolean modal, String type,
+    public CustomerDialog(CustomerPanel ctmPanel, CustomerBUS ctmBUS, JFrame owner, String title, boolean modal, String type,
             CustomerDTO ctmDTO) {
         super(owner, title, modal);
         this.ctmDTO = ctmDTO;
+        this.ctmBUS=ctmBUS;
         this.ctmPanel = ctmPanel;
-
         initComponents(title, type);
     }
 
@@ -127,9 +131,8 @@ public class CustomerDialog extends JDialog implements MouseListener {
                     JOptionPane.WARNING_MESSAGE);
         }
 
-        String customerID = "CTM" + Tool.randomID();
-        ctmPanel.getCustomerBUS()
-                .add(new DTO.CustomerDTO(customerID, txtCustomerName.getText(), txtAddress.getText(),
+        String customerID = ctmBUS.createID();
+        ctmBUS.add(new DTO.CustomerDTO(customerID, txtCustomerName.getText(), txtAddress.getText(),
                         txtPhone.getText()));
         ctmPanel.loadNewDataIntoTabel();
         dispose();
@@ -141,8 +144,7 @@ public class CustomerDialog extends JDialog implements MouseListener {
                     JOptionPane.WARNING_MESSAGE);
         }
 
-        ctmPanel.getCustomerBUS()
-                .update(new CustomerDTO(ctmDTO.getCustomerID(), txtCustomerName.getText(), txtAddress.getText(),
+        ctmBUS.update(new CustomerDTO(ctmDTO.getCustomerID(), txtCustomerName.getText(), txtAddress.getText(),
                         txtPhone.getText()));
         ctmPanel.loadNewDataIntoTabel();
         dispose();

@@ -81,7 +81,7 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
 
         this.epDTO = nv;
         this.m = m;
-        importID = "IP" + Tool.randomID();
+        importID = ipBUS.createID();
         ipdList = new ArrayList<>();
         initComponent(type);
     }
@@ -95,7 +95,7 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
         this.ivPanel = ivPanel;
         this.epDTO = nv;
         this.m = m;
-        invoiceID = "IV" + Tool.randomID();
+        invoiceID = ivBUS.createID();
         ivdList = new ArrayList<>();
         initComponent(type);
     }

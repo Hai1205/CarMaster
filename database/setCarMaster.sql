@@ -373,10 +373,10 @@ INSERT INTO functional (functionID, functionName) VALUES
 ('FT000009', 'Quản lý bán hàng');
 
 -- Dữ liệu bảng rightsGroup
-INSERT INTO permission (permissionID, permissionName, creationDate) VALUES
-('PMS000001', 'Admin', '2017-12-06 15:00:00'),
-('PMS000002', 'Nhân viên nhập hàng', '2017-12-10 16:30:00'),
-('PMS000003', 'Nhân viên bán hàng', '2018-05-01 17:00:00');
+INSERT INTO permission (permissionID, permissionName, creationDate, slot) VALUES
+('PMS000001', 'Admin', '2017-12-06 15:00:00', 1),
+('PMS000002', 'Nhân viên nhập hàng', '2017-12-10 16:30:00', 5),
+('PMS000003', 'Nhân viên bán hàng', '2018-05-01 17:00:00', 5);
 
 -- Dữ liệu bảng rightsGroupDetail
 INSERT INTO permissionDetail (permissionID, functionID, action) VALUES

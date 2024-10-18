@@ -297,7 +297,6 @@ public class EmployeeDialog extends JDialog {
                     String salaryStr = salary.getText();
                     java.sql.Timestamp hiredate = new java.sql.Timestamp(System.currentTimeMillis());
 
-                    // SendEmailSMTP.sendPassword(txtEmail, yourPassword);
                     sendPasswordAsync(txtEmail, yourPassword);
                     epBUS.insert(new EmployeeDTO(employeeID, permissionIDStr, txtName, hiredate, genderStr, txtPhone,
                             txtEmail, passwordStr, statusStr, birthDay, Integer.parseInt(salaryStr), 0));

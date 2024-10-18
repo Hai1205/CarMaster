@@ -26,11 +26,11 @@ public class PermissionBUS {
         this.pmsList = PermissionDAO.getList();
     }
 
-    public String createID(){
+    public String createID() {
         String ID;
-        do{
-            ID = "PMS"+Tool.randomID();
-        }while(getPermissionByID(ID) != null);
+        do {
+            ID = "PMS" + Tool.randomID();
+        } while (getPermissionByID(ID) != null);
         return ID;
     }
 
@@ -62,8 +62,8 @@ public class PermissionBUS {
         return PermissionDetailDAO.getList(permissionID);
     }
 
-    public void add(String permissionID, String permissionName, ArrayList<PermissionDetailDTO> pmsdtList) {
-        PermissionDAO.insert(new PermissionDTO(permissionID, permissionName));
+    public void add(PermissionDTO pmsDTO, ArrayList<PermissionDetailDTO> pmsdtList) {
+        PermissionDAO.insert(pmsDTO);
 
         PermissionDetailDAO.insert(pmsdtList);
     }
@@ -94,10 +94,6 @@ public class PermissionBUS {
     }
 
     public String[] getPermission() {
-        String[] list = new String[pmsList.size()];
-        for (int i = 0; i < pmsList.size(); i++) {
-            list[i] = pmsList.get(i).getPermissionName();
-        }
-        return list;
+        return PermissionDAO.getListPermissionName();
     }
 }

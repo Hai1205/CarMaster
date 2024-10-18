@@ -192,7 +192,7 @@ public final class SupplierPanel extends JPanel implements ActionListener, ItemL
                 for (int row = 1; row <= excelSheet.getLastRowNum(); row++) {
                     XSSFRow excelRow = excelSheet.getRow(row);
 
-                    String supplierID = "SP" + Tool.randomID();
+                    String supplierID = spBUS.createID();
                     String supplierName = excelRow.getCell(0).getStringCellValue();
                     String address = excelRow.getCell(1).getStringCellValue();
                     String email = excelRow.getCell(2).getStringCellValue();
@@ -233,12 +233,12 @@ public final class SupplierPanel extends JPanel implements ActionListener, ItemL
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == mainFunction.btn.get("create")) {
-            new SupplierDialog(this, owner, "Thêm nhà cung cấp", true, "create");
+            new SupplierDialog(spBUS, owner, "Thêm nhà cung cấp", true, "create");
             loadNewDataIntoTable();
         } else if (e.getSource() == mainFunction.btn.get("update")) {
             int index = getRowSelected();
             if (index != -1) {
-                new SupplierDialog(this, owner, "Chỉnh sửa nhà cung cấp", true, "update",
+                new SupplierDialog(spBUS, owner, "Chỉnh sửa nhà cung cấp", true, "update",
                         spList.get(index));
             }
             loadNewDataIntoTable();
@@ -254,10 +254,6 @@ public final class SupplierPanel extends JPanel implements ActionListener, ItemL
                 Logger.getLogger(SupplierPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
-
-    public SupplierBUS getSupplierBUS() {
-        return spBUS;
     }
 
     @Override

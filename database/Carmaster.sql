@@ -153,6 +153,7 @@ CREATE TABLE functional (
 CREATE TABLE permission (
     permissionID VARCHAR(10) PRIMARY KEY NOT NULL,
     creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    slot INT NOT NULL, 
     permissionName VARCHAR(255) NOT NULL
 );
 

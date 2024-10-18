@@ -13,6 +13,7 @@ import java.util.Objects;
 public class PermissionDTO {
 
     private String permissionID, permissionName;
+    private int slot;
 
     public PermissionDTO() {
     }
@@ -25,6 +26,10 @@ public class PermissionDTO {
         this.permissionName = permissionName;
     }
 
+    public void setSlot(int slot) {
+        this.slot = slot;
+    }
+
     public String getPermissionID() {
         return permissionID;
     }
@@ -33,9 +38,14 @@ public class PermissionDTO {
         return permissionName;
     }
 
-    public PermissionDTO(String permissionID, String permissionName) {
+    public int getSlot() {
+        return slot;
+    }
+
+    public PermissionDTO(String permissionID, String permissionName, int slot) {
         this.permissionID = permissionID;
         this.permissionName = permissionName;
+        this.slot = slot;
     }
 
     @Override

@@ -186,7 +186,7 @@ public class CustomerPanel extends JPanel implements ActionListener, ItemListene
                 for (int row = 1; row <= excelSheet.getLastRowNum(); row++) {
                     XSSFRow excelRow = excelSheet.getRow(row);
 
-                    String customerID = "CTM" + Tool.randomID();
+                    String customerID = ctmBUS.createID();
                     String customerName = excelRow.getCell(0).getStringCellValue();
                     String phone = excelRow.getCell(1).getStringCellValue();
                     String address = excelRow.getCell(2).getStringCellValue();
@@ -210,14 +210,10 @@ public class CustomerPanel extends JPanel implements ActionListener, ItemListene
         loadNewDataIntoTabel();
     }
 
-    public CustomerBUS getCustomerBUS() {
-        return ctmBUS;
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == mainFunction.btn.get("create")) {
-            new CustomerDialog(this, owner, "Thêm khách hàng", true, "create");
+            new CustomerDialog(this, ctmBUS, owner, "Thêm khách hàng", true, "create");
         } else if (e.getSource() == mainFunction.btn.get("update")) {
             int index = ctmTable.getSelectedRow();
             if (index == -1) {
@@ -225,7 +221,7 @@ public class CustomerPanel extends JPanel implements ActionListener, ItemListene
                 return;
             }
 
-            new CustomerDialog(this, owner, "Chỉnh sửa khách hàng", true, "update",
+            new CustomerDialog(this, ctmBUS, owner, "Chỉnh sửa khách hàng", true, "update",
                     ctmList.get(index));
         } else if (e.getSource() == mainFunction.btn.get("import")) {
             importExcel();

@@ -5,7 +5,6 @@
 package GUI.Dialog;
 
 import DTO.SupplierDTO;
-import GUI.Panel.SupplierPanel;
 import GUI.Component.ButtonCustom;
 import GUI.Component.HeaderTitle;
 import GUI.Component.InputForm;
@@ -25,29 +24,31 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.PlainDocument;
 
+import BUS.SupplierBUS;
+
 /**
  *
  */
 public class SupplierDialog extends JDialog implements ActionListener {
 
-    private SupplierPanel spPanel;
     private HeaderTitle titlePage;
     private JPanel pnmain, pnbottom;
     private ButtonCustom btnAdd, btnUpdate;
     private InputForm supplierName, address, email, phone;
     private SupplierDTO spDTO;
+    private SupplierBUS spBUS;
 
-    public SupplierDialog(SupplierPanel spPanel, JFrame owner, String title, boolean modal, String type) {
+    public SupplierDialog(SupplierBUS spBUS, JFrame owner, String title, boolean modal, String type) {
         super(owner, title, modal);
-        this.spPanel = spPanel;
+        this.spBUS=spBUS;
         initComponents(title, type);
     }
 
-    public SupplierDialog(SupplierPanel spPanel, JFrame owner, String title, boolean modal, String type,
+    public SupplierDialog(SupplierBUS spBUS, JFrame owner, String title, boolean modal, String type,
             SupplierDTO spDTO) {
         super(owner, title, modal);
-        this.spPanel = spPanel;
         this.spDTO = spDTO;
+        this.spBUS=spBUS;
         initComponents(title, type);
     }
 
@@ -118,9 +119,8 @@ public class SupplierDialog extends JDialog implements ActionListener {
             return;
         }
         
-        String supplierID = "SP" + Tool.randomID();
-        spPanel.getSupplierBUS()
-                .add(new SupplierDTO(supplierID, supplierName.getText(), address.getText(), email.getText(),
+        String supplierID = spBUS.createID();
+        spBUS.add(new SupplierDTO(supplierID, supplierName.getText(), address.getText(), email.getText(),
                         phone.getText()));
         dispose();
     }
@@ -132,8 +132,7 @@ public class SupplierDialog extends JDialog implements ActionListener {
             return;
         }
 
-        spPanel.getSupplierBUS()
-                .update(new SupplierDTO(spDTO.getSupplierID(), supplierName.getText(), address.getText(),
+        spBUS.update(new SupplierDTO(spDTO.getSupplierID(), supplierName.getText(), address.getText(),
                         email.getText(), phone.getText()));
         dispose();
     }
