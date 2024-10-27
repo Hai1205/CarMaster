@@ -87,7 +87,7 @@ public class PermissionPanel extends JPanel implements ActionListener {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 String info = search.getTxtSearchForm().getText();
                 ArrayList<PermissionDTO> rs = pmsBUS.search(info);
-                loadDataIntoTalbe(rs);
+                loadDataIntoTable(rs);
             }
         });
         functionBar.add(search);
@@ -111,10 +111,11 @@ public class PermissionPanel extends JPanel implements ActionListener {
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         TableColumnModel columnModel = tblpms.getColumnModel();
-        columnModel.getColumn(0).setCellRenderer(centerRenderer);
-        columnModel.getColumn(0).setPreferredWidth(2);
-        columnModel.getColumn(1).setCellRenderer(centerRenderer);
-        columnModel.getColumn(1).setPreferredWidth(300);
+        for (int i = 0; i < 2; i++) {
+            if (i != 1) {
+                columnModel.getColumn(i).setCellRenderer(centerRenderer);
+            }
+        }
         tblpms.setFocusable(false);
         main.add(scrollTable);
 
@@ -127,10 +128,10 @@ public class PermissionPanel extends JPanel implements ActionListener {
     public PermissionPanel(Main m) {
         this.m = m;
         initComponent();
-        loadDataIntoTalbe(pmsList);
+        loadDataIntoTable(pmsList);
     }
 
-    private void loadDataIntoTalbe(ArrayList<PermissionDTO> result) {
+    private void loadDataIntoTable(ArrayList<PermissionDTO> result) {
         tblModel.setRowCount(0);
         if (result == null) {
             return;
@@ -145,7 +146,7 @@ public class PermissionPanel extends JPanel implements ActionListener {
 
     private void loadNewDataIntoTable() {
         pmsList = pmsBUS.getPmsList();
-        loadDataIntoTalbe(pmsList);
+        loadDataIntoTable(pmsList);
     }
 
     public DefaultTableModel getTblModel() {

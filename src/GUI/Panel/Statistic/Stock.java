@@ -59,7 +59,7 @@ public final class Stock extends JPanel implements ActionListener, KeyListener, 
         this.sttBUS = sttBUS;
         pdList = sttBUS.getStock();
         initComponent();
-        loadDataTalbe(pdList);
+        loadDataIntoTable(pdList);
     }
 
     public void initComponent() {
@@ -142,7 +142,7 @@ public final class Stock extends JPanel implements ActionListener, KeyListener, 
             Date begin = beginDate.getDate() != null ? beginDate.getDate() : new Date(0);
             Date end = endDate.getDate() != null ? endDate.getDate() : new Date();
             this.pdList = sttBUS.filterStock(input, begin, end);
-            loadDataTalbe(this.pdList);
+            loadDataIntoTable(this.pdList);
         }
     }
 
@@ -176,7 +176,7 @@ public final class Stock extends JPanel implements ActionListener, KeyListener, 
         return true;
     }
 
-    private void loadDataTalbe(HashMap<String, ArrayList<ByStockDTO>> list) {
+    private void loadDataIntoTable(HashMap<String, ArrayList<ByStockDTO>> list) {
         tblModel.setRowCount(0);
         for (String i : list.keySet()) {
             int[] quantity = sttBUS.getQuantity(list.get(i));

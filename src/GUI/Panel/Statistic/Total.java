@@ -45,7 +45,7 @@ public class Total extends JPanel {
         getStr[2][2] = sttBUS.getEmployeeQuantity() + "";
         dataset = sttBUS.getLast7Days();
         initComponent();
-        loadDataTalbe(dataset);
+        loadDataIntoTable(dataset);
     }
 
     public void loadDataChart() {
@@ -55,7 +55,7 @@ public class Total extends JPanel {
         }
     }
 
-    public void loadDataTalbe(ArrayList<ByPerDateInMonthDTO> list) {
+    public void loadDataIntoTable(ArrayList<ByPerDateInMonthDTO> list) {
         tblModel.setRowCount(0);
         for (ByPerDateInMonthDTO i : dataset) {
             tblModel.addRow(new Object[] {

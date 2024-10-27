@@ -127,7 +127,7 @@ public class CustomerPanel extends JPanel implements ActionListener, ItemListene
 
         search.getBtnReset().addActionListener((ActionEvent e) -> {
             search.setTxtSearchForm("");
-            loadNewDataIntoTabel();
+            loadNewDataIntoTable();
         });
         functionBar.add(search);
 
@@ -162,7 +162,7 @@ public class CustomerPanel extends JPanel implements ActionListener, ItemListene
         }
     }
 
-    public void loadNewDataIntoTabel() {
+    public void loadNewDataIntoTable() {
         ctmList = ctmBUS.getList();
         loadDataIntoTable(ctmList);
     }
@@ -207,7 +207,7 @@ public class CustomerPanel extends JPanel implements ActionListener, ItemListene
         if (k != 0) {
             JOptionPane.showMessageDialog(this, "Những dữ liệu không hợp lệ không được thêm vào");
         }
-        loadNewDataIntoTabel();
+        loadNewDataIntoTable();
     }
 
     @Override

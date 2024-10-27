@@ -241,7 +241,7 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 ArrayList<ProductDTO> rs = pdBUS.search(txtSearch.getTxtSearchForm().getText());
-                loadProductDataIntoTalbe(rs);
+                loadProductDataIntoTable(rs);
             }
         });
 
@@ -260,7 +260,7 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
         pdTable.setDefaultEditor(Object.class, null);
         pdTable.setFocusable(false);
         scrollProductTable.setViewportView(pdTable);
-        loadProductDataIntoTalbe(pdList);
+        loadProductDataIntoTable(pdList);
 
         pdTable.addMouseListener(new MouseAdapter() {
             @Override
@@ -379,7 +379,7 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
         right_bottom.add(buttonPanel, BorderLayout.CENTER);
     }
 
-    public void loadProductDataIntoTalbe(ArrayList<DTO.ProductDTO> pdList) {
+    public void loadProductDataIntoTable(ArrayList<DTO.ProductDTO> pdList) {
         pdTblModel.setRowCount(0);
         if (pdList == null) {
             return;

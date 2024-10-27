@@ -134,7 +134,7 @@ public class CustomerDialog extends JDialog implements MouseListener {
         String customerID = ctmBUS.createID();
         ctmBUS.add(new DTO.CustomerDTO(customerID, txtCustomerName.getText(), txtAddress.getText(),
                         txtPhone.getText()));
-        ctmPanel.loadNewDataIntoTabel();
+        ctmPanel.loadNewDataIntoTable();
         dispose();
     }
 
@@ -146,7 +146,7 @@ public class CustomerDialog extends JDialog implements MouseListener {
 
         ctmBUS.update(new CustomerDTO(ctmDTO.getCustomerID(), txtCustomerName.getText(), txtAddress.getText(),
                         txtPhone.getText()));
-        ctmPanel.loadNewDataIntoTabel();
+        ctmPanel.loadNewDataIntoTable();
         dispose();
     }
 

@@ -35,7 +35,7 @@ public class SupplierDAO {
                 String email = resultSet.getString("email");
                 String phone = resultSet.getString("phone");
 
-                list.add(new SupplierDTO(supplierID, supplierName, email, address, phone));
+                list.add(new SupplierDTO(supplierID, supplierName, address, email, phone));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -200,7 +200,7 @@ public class SupplierDAO {
                 String email = resultSet.getString("email");
                 String phone = resultSet.getString("phone");
 
-                list.add(new SupplierDTO(supplierID, supplierName, email, address, phone));
+                list.add(new SupplierDTO(supplierID, supplierName, address, email, phone));
             }
         } catch (SQLException e) {
             e.printStackTrace();

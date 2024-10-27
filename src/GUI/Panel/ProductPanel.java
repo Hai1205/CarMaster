@@ -79,10 +79,9 @@ public class ProductPanel extends JPanel implements ActionListener {
                 columnModel.getColumn(i).setCellRenderer(centerRenderer);
             }
         }
-        productTable.getColumnModel().getColumn(1).setPreferredWidth(180);
         productTable.setFocusable(false);
         productTable.setAutoCreateRowSorter(true);
-        TableSorter.configureTableColumnSorter(productTable, 2, TableSorter.INTEGER_COMPARATOR);
+        TableSorter.configureTableColumnSorter(productTable, 3, TableSorter.INTEGER_COMPARATOR);
         productTable.setDefaultEditor(Object.class, null);
         initPadding();
 
@@ -110,7 +109,7 @@ public class ProductPanel extends JPanel implements ActionListener {
             public void keyReleased(KeyEvent e) {
                 String txt = search.getTxtSearchForm().getText();
                 pdList = pdBUS.search(txt);
-                loadDataIntoTalbe(pdList);
+                loadDataIntoTable(pdList);
             }
 
         });
@@ -118,7 +117,7 @@ public class ProductPanel extends JPanel implements ActionListener {
         search.getBtnReset().addActionListener((ActionEvent e) -> {
             search.setTxtSearchForm("");
             pdList = pdBUS.getProductList();
-            loadDataIntoTalbe(pdList);
+            loadDataIntoTable(pdList);
         });
         functionBar.add(search);
 
@@ -136,10 +135,10 @@ public class ProductPanel extends JPanel implements ActionListener {
     public ProductPanel(Main m) {
         this.m = m;
         initComponent();
-        loadDataIntoTalbe(pdList);
+        loadDataIntoTable(pdList);
     }
 
-    public void loadDataIntoTalbe(ArrayList<ProductDTO> result) {
+    public void loadDataIntoTable(ArrayList<ProductDTO> result) {
         tblModel.setRowCount(0);
         if (result == null) {
             return;
@@ -154,7 +153,7 @@ public class ProductPanel extends JPanel implements ActionListener {
 
     public void loadNewDataIntoTable() {
         this.pdList = pdBUS.getProductList();
-        loadDataIntoTalbe(pdList);
+        loadDataIntoTable(pdList);
     }
 
     @Override

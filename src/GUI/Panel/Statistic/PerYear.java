@@ -57,10 +57,10 @@ public final class PerYear extends JPanel implements ActionListener {
         this.currentYear = LocalDate.now().getYear();
         this.dataset = this.sttBUS.getIncomeAndExpensePerYear(currentYear - 5, currentYear);
         initComponent();
-        loadDataTalbe(dataset);
+        loadDataIntoTable(dataset);
     }
 
-    public void loadDataTalbe(ArrayList<ByIncomeAndExpenseDTO> list) {
+    public void loadDataIntoTable(ArrayList<ByIncomeAndExpenseDTO> list) {
         tblModel.setRowCount(0);
         for (ByIncomeAndExpenseDTO i : dataset) {
             tblModel.addRow(new Object[] {
@@ -181,7 +181,7 @@ public final class PerYear extends JPanel implements ActionListener {
 
             this.dataset = this.sttBUS.getIncomeAndExpensePerYear(begin, end);
             loadDataChart(dataset);
-            loadDataTalbe(dataset);
+            loadDataIntoTable(dataset);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập số hợp lệ cho năm!");
         }
@@ -192,7 +192,7 @@ public final class PerYear extends JPanel implements ActionListener {
         endYear.setText("");
         this.dataset = this.sttBUS.getIncomeAndExpensePerYear(currentYear - 5, currentYear);
         loadDataChart(dataset);
-        loadDataTalbe(dataset);
+        loadDataIntoTable(dataset);
     }
 
     private void export() {
