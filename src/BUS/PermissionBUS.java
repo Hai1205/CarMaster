@@ -93,7 +93,7 @@ public class PermissionBUS {
         return PermissionDAO.search(text);
     }
 
-    public String[] getPermission() {
-        return PermissionDAO.getListPermissionName();
+    public String[] getPermission(String permissionName) {
+        return PermissionDAO.getListPermissionName(permissionName);
     }
 }

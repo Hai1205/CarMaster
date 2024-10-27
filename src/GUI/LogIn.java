@@ -124,7 +124,6 @@ public class LogIn extends JFrame implements KeyListener {
         pnlMain.add(pnlLogIn);
 
         this.add(pnlMain, BorderLayout.EAST);
-
     }
 
     public String getTxtEmail() {
@@ -173,4 +172,3 @@ public class LogIn extends JFrame implements KeyListener {
         login.setVisible(true);
     }
 }
-        

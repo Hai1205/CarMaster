@@ -272,11 +272,14 @@ public class PermissionDAO {
         return permissionName;
     }
 
-    public static String[] getListPermissionName() {
+    public static String[] getListPermissionName(String permissionName) {
         ArrayList<String> list = new ArrayList<>();
         Connection connection = null;
         PreparedStatement pstmt = null;
         ResultSet resultSet = null;
+        if(!permissionName.isEmpty()){
+            list.add(permissionName);
+        }
         try {
             connection = Database.getConnection();
             String query = "SELECT permission.permissionName\n"
