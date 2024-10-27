@@ -24,7 +24,7 @@ public class Tool {
         final String DIGITS = "0123456789";
         final String SPECIAL_CHARACTERS = "!@#$%^&*()-_+=<>?";
         final String ALL_CHARACTERS = LOWERCASE + UPPERCASE + DIGITS + SPECIAL_CHARACTERS;
-        final int length = 6;
+        final int length = 12;
 
         SecureRandom random = new SecureRandom();
         StringBuilder password = new StringBuilder(length);

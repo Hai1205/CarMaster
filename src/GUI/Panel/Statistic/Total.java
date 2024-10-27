@@ -35,7 +35,7 @@ public class Total extends JPanel {
     private DefaultTableModel tblModel;
     private ArrayList<ByPerDateInMonthDTO> dataset;
     private String[][] getStr = {
-            { "Sản phẩm hiện có trong kho", "productt.svg", "" },
+            { "Sản phẩm hiện có trong kho", "car.svg", "" },
             { "Khách từ trước đến nay", "stafff.svg", "" },
             { "Nhân viên đang hoạt động", "customerr.svg", "" } };
 

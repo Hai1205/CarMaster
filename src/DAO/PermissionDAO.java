@@ -281,7 +281,7 @@ public class PermissionDAO {
             connection = Database.getConnection();
             String query = "SELECT permission.permissionName\n"
                     + "FROM permission\n"
-                    + "LEFT JOIN employee ON permission.permissionID = employee.permissionIDD\n"
+                    + "LEFT JOIN employee ON permission.permissionID = employee.permissionID\n"
                     + "GROUP BY permission.permissionName, permission.slot\n"
                     + "HAVING COUNT(employee.permissionID) < permission.slot;";
             pstmt = connection.prepareStatement(query);

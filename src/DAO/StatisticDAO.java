@@ -151,10 +151,10 @@ public class StatisticDAO {
             connection = Database.getConnection();
             
             String setBeginYearSql = "SET @beginYear = ?;";
-            String setEndYearSql = "SET @endYear = ?;";
             pstmt = connection.prepareStatement(setBeginYearSql);
             pstmt.setInt(1, beginYear);
             pstmt.execute();
+            String setEndYearSql = "SET @endYear = ?;";
             pstmt = connection.prepareStatement(setEndYearSql);
             pstmt.setInt(1, endYear);
             pstmt.execute();
