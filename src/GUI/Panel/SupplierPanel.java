@@ -65,10 +65,8 @@ public final class SupplierPanel extends JPanel implements ActionListener, ItemL
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         TableColumnModel columnModel = spTable.getColumnModel();
-        for (int i = 0; i < 4; i++) {
-            if (i != 1) {
+        for (int i = 0; i < 5; i++) {
                 columnModel.getColumn(i).setCellRenderer(centerRenderer);
-            }
         }
 
         this.setBackground(BackgroundColor);

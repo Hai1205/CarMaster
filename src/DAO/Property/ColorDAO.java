@@ -68,7 +68,7 @@ public class ColorDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT * FROM color";
+            String query = "SELECT * FROM color ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
 
@@ -104,7 +104,7 @@ public class ColorDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT colorName FROM color";
+            String query = "SELECT colorName FROM color ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
     

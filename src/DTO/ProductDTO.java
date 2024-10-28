@@ -9,16 +9,12 @@ package DTO;
  * @author ASUS
  */
 public class ProductDTO {
-    private String productID, supplierID, productImg, productName, status;
+    private String productID, productImg, productName, status;
     private int quantity;
     private long basicPrice, sellPrice;
 
     public String getProductID() {
         return productID;
-    }
-
-    public String getSupplierID() {
-        return supplierID;
     }
 
     public String getProductImg() {
@@ -49,10 +45,6 @@ public class ProductDTO {
         this.productID = productID;
     }
 
-    public void setSupplierID(String supplierID) {
-        this.supplierID = supplierID;
-    }
-
     public void setProductImg(String productImg) {
         this.productImg = productImg;
     }
@@ -77,11 +69,10 @@ public class ProductDTO {
         this.sellPrice = sellPrice;
     }
 
-    public ProductDTO(String productID, String supplierID, String productName, String productImg, String status,
+    public ProductDTO(String productID, String productName, String productImg, String status,
             int quantity,
             long basicPrice, long sellPrice) {
         this.productID = productID;
-        this.supplierID = supplierID;
         this.productName = productName;
         this.status = status;
         this.quantity = quantity;
@@ -90,9 +81,15 @@ public class ProductDTO {
         this.productImg = productImg;
     }
 
-    public ProductDTO(String productID, String supplierID, String productName, String productImg, String status, long sellPrice) {
+    public ProductDTO(String productID, int quantity, long basicPrice) {
         this.productID = productID;
-        this.supplierID = supplierID;
+        this.quantity = quantity;
+        this.basicPrice = basicPrice;
+    }
+
+    public ProductDTO(String productID, String productName, String productImg, String status,
+            long sellPrice) {
+        this.productID = productID;
         this.productName = productName;
         this.status = status;
         this.sellPrice = sellPrice;

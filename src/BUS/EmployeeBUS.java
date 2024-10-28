@@ -82,11 +82,6 @@ public class EmployeeBUS implements ActionListener, DocumentListener {
         epList = EmployeeDAO.getList("");
     }
 
-    // public EmployeeBUS(JTextField textField, EmployeePanel epPanel) {
-    // this.epPanel = epPanel;
-    // epList = EmployeeDAO.getList("");
-    // }
-
     public EmployeePanel getEmployeePanel() {
         return epPanel;
     }

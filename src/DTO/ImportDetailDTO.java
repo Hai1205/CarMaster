@@ -10,7 +10,7 @@ package DTO;
  */
 public class ImportDetailDTO {
     private String importID, productID;
-    private long price, cost;
+    private long price, cost, basicPrice;
     private int quantity;
 
     public void setImportID(String importID) {
@@ -25,6 +25,10 @@ public class ImportDetailDTO {
         this.price = price;
     }
 
+    public void setBasicPrice(long basicPrice) {
+        this.basicPrice = basicPrice;
+    }
+
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
@@ -35,6 +39,10 @@ public class ImportDetailDTO {
 
     public String getImportID() {
         return importID;
+    }
+
+    public long getBasicPrice() {
+        return basicPrice;
     }
 
     public String getProductID() {
@@ -60,7 +68,7 @@ public class ImportDetailDTO {
         this.quantity = quantity;
         this.cost = cost;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -90,6 +98,7 @@ public class ImportDetailDTO {
 
     @Override
     public String toString() {
-        return "ImportDetailDTO{" + "importID=" + importID + ", productID=" + productID + ", quantity=" + quantity + ", price=" + price + ", productID=" + productID + '}';
+        return "ImportDetailDTO{" + "importID=" + importID + ", productID=" + productID + ", quantity=" + quantity
+                + ", price=" + price + ", productID=" + productID + '}';
     }
 }

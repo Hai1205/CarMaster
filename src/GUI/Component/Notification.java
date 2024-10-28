@@ -218,7 +218,6 @@ public class Notification extends JComponent {
     }
 
     
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         lbIcon = new javax.swing.JLabel();
@@ -293,12 +292,12 @@ public class Notification extends JComponent {
                     .addComponent(lbIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(10, 10, 10))
         );
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
     
-    private void cmdCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCloseActionPerformed
+    private void cmdCloseActionPerformed(java.awt.event.ActionEvent evt) {
         closeNotification();
-    }//GEN-LAST:event_cmdCloseActionPerformed
+    }
 
     public static enum Type {
         SUCCESS, INFO, WARNING
@@ -308,11 +307,9 @@ public class Notification extends JComponent {
         TOP_CENTER, TOP_RIGHT, TOP_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT, BOTTOM_LEFT, CENTER
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdClose;
     private javax.swing.JLabel lbIcon;
     private javax.swing.JLabel lbMessage;
     private javax.swing.JLabel lbMessageText;
     private javax.swing.JPanel panel;
-    // End of variables declaration//GEN-END:variables
 }

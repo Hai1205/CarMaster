@@ -10,7 +10,7 @@ package DTO;
  */
 public class InvoiceDetailDTO {
     private String invoiceID, productID;
-    private long price, cost;
+    private long price, cost, basicPrice;
     private int quantity;
 
     public void setInvoiceID(String invoiceID) {
@@ -33,8 +33,20 @@ public class InvoiceDetailDTO {
         this.cost = cost;
     }
 
+    public void setBasicprice(long basicPrice) {
+        this.basicPrice = basicPrice;
+    }
+
+    public void setCost(int quantity) {
+        this.cost = quantity * price;
+    }
+
     public String getInvoiceID() {
         return invoiceID;
+    }
+
+    public long getBasicprice() {
+        return basicPrice;
     }
 
     public String getProductID() {

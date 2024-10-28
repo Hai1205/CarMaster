@@ -9,7 +9,6 @@ import DTO.FunctionDTO;
 import DTO.PermissionDTO;
 import DTO.PermissionDetailDTO;
 import GUI.Component.ButtonCustom;
-import GUI.Component.NumericDocumentFilter;
 
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import java.awt.BorderLayout;
@@ -32,7 +31,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.PlainDocument;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 /**
  *
@@ -40,7 +40,8 @@ import javax.swing.text.PlainDocument;
  */
 public class PermissionDialog extends JDialog implements ActionListener {
     private JLabel lblPermissionName;
-    private JTextField txtPermissionName, txtSlot;
+    private JTextField txtPermissionName;
+    private JSpinner txtSlot;
     private JPanel jpTop, jpLeft, jpCen, jpBottom;
     private JCheckBox[][] listCheckBox;
     private ButtonCustom btnAdd, btnUpdate;
@@ -85,9 +86,10 @@ public class PermissionDialog extends JDialog implements ActionListener {
         gbc.weightx = 0;
         gbc.insets = new Insets(0, 20, 0, 10);
         jpTop.add(lblSlot, gbc);
-        txtSlot = new JTextField();
-        PlainDocument sl = (PlainDocument) txtSlot.getDocument();
-        sl.setDocumentFilter((new NumericDocumentFilter()));
+        SpinnerNumberModel model = new SpinnerNumberModel(0, 0, 100, 1);
+        txtSlot = new JSpinner(model);
+        // PlainDocument sl = (PlainDocument) txtSlot.getDocument();
+        // sl.setDocumentFilter((new NumericDocumentFilter()));
         txtSlot.setPreferredSize(new Dimension(30, 35));
         gbc.gridx = 3;
         gbc.gridy = 0;
@@ -175,16 +177,16 @@ public class PermissionDialog extends JDialog implements ActionListener {
     private void add() {
         String permissionID = pmsBUS.createID();
         String permissionName = txtPermissionName.getText();
-        int slot = Integer.parseInt(txtSlot.getText());
+        int slot = Integer.parseInt(txtSlot.getValue() + "");
         pmsdtList = getPermisionDetailList(permissionID);
-        pmsBUS.add(new PermissionDTO(permissionID, permissionName, slot), pmsdtList);
+        pmsBUS.add(new PermissionDTO(permissionID, permissionName, slot, 0), pmsdtList);
         dispose();
     }
 
     private void update() {
         pmsdtList = getPermisionDetailList(pmsDTO.getPermissionID());
         pmsDTO.setPermissionName(txtPermissionName.getText());
-        pmsDTO.setSlot(Integer.parseInt(txtSlot.getText()));
+        pmsDTO.setSlot(Integer.parseInt(txtSlot.getValue() + ""));
         pmsBUS.update(pmsDTO, pmsdtList);
         dispose();
     }
@@ -212,7 +214,7 @@ public class PermissionDialog extends JDialog implements ActionListener {
 
     public void initUpdate() {
         txtPermissionName.setText(pmsDTO.getPermissionName());
-        txtSlot.setText(pmsDTO.getSlot() + "");
+        txtSlot.setValue(pmsDTO.getSlot());
         for (PermissionDetailDTO k : pmsdtList) {
             for (int i = 0; i < sizeFunction; i++) {
                 for (int j = 0; j < sizeAction; j++) {

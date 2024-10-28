@@ -49,11 +49,11 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
     private JTable detailTable, pdTable;
     private JScrollPane scrollImportTable, scrollProductTable;
     private DefaultTableCellRenderer centerRenderer;
-    private DefaultTableModel ipTblModel, pdTblModel;
+    private DefaultTableModel TblDetailModel, pdTblModel;
     private ButtonCustom btnAdd, btnEdit, btnDelete, btnCancel, btnConfirm;
-    private InputForm txtEmployee, txtProductID, txtProductName, txtImportPrice, txtSellPrice, txtquantity;
+    private InputForm txtEmployee, txtProductID, txtProductName, txtImportPrice, txtSellPrice, spinner;
     private PlainDocument sp;
-    private SelectForm spCbx, ctmCbx;
+    private SelectForm combobox;
     private IntegratedSearch txtSearch;
     private JLabel lblCost;
     private Main m;
@@ -67,17 +67,20 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
     private EmployeeDTO epDTO;
 
     private ArrayList<ProductDTO> pdList;
+    private ArrayList<ProductDTO> pdTempList;
     private ArrayList<ImportDetailDTO> ipdList;
     private ArrayList<InvoiceDetailDTO> ivdList;
     private String importID, invoiceID;
 
     private InvoicePanel ivPanel;
 
+    // Import
     public CreatePanel(EmployeeDTO nv, String type, Main m) {
         pdBUS = new ProductBUS();
         spBUS = new SupplierBUS();
         ipBUS = new ImportBUS();
-        pdList = pdBUS.getProductList();
+        pdList = pdBUS.getProductList("");
+        pdTempList = new ArrayList<>();
 
         this.epDTO = nv;
         this.m = m;
@@ -86,11 +89,13 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
         initComponent(type);
     }
 
+    // Invoice
     public CreatePanel(EmployeeDTO nv, String type, Main m, InvoicePanel ivPanel) {
         pdBUS = new ProductBUS();
         ctmBUS = new CustomerBUS();
         ivBUS = new InvoiceBUS();
-        pdList = pdBUS.getProductList();
+        pdList = pdBUS.getProductList("Còn bán");
+        pdTempList = new ArrayList<>();
 
         this.ivPanel = ivPanel;
         this.epDTO = nv;
@@ -129,7 +134,7 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
 
         centerRenderer = new DefaultTableCellRenderer();
 
-        tableImportDetail();
+        tableDetail();
 
         initPadding();
 
@@ -190,22 +195,19 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
         contentCenter.add(right, BorderLayout.EAST);
     }
 
-    private void tableImportDetail() {
+    private void tableDetail() {
         detailTable = new JTable();
         scrollImportTable = new JScrollPane();
-        ipTblModel = new DefaultTableModel();
+        TblDetailModel = new DefaultTableModel();
         String[] header = new String[] { "Mã sản phẩm", "Số lượng", "Đơn giá", "Thành tiền" };
-        ipTblModel.setColumnIdentifiers(header);
-        detailTable.setModel(ipTblModel);
+        TblDetailModel.setColumnIdentifiers(header);
+        detailTable.setModel(TblDetailModel);
         scrollImportTable.setViewportView(detailTable);
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         TableColumnModel columnModel = detailTable.getColumnModel();
         for (int i = 0; i < 4; i++) {
-            if (i != 2) {
-                columnModel.getColumn(i).setCellRenderer(centerRenderer);
-            }
+            columnModel.getColumn(i).setCellRenderer(centerRenderer);
         }
-        detailTable.getColumnModel().getColumn(2).setPreferredWidth(300);
         detailTable.setDefaultEditor(Object.class, null);
         detailTable.setFocusable(false);
         scrollImportTable.setViewportView(detailTable);
@@ -215,10 +217,38 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
             public void mousePressed(MouseEvent e) {
                 int index = detailTable.getSelectedRow();
                 if (index != -1) {
+                    resetValue();
+                    setInfo(index);
                     actionbtn("update");
                 }
             }
         });
+    }
+
+    public void setInfo(int index) {
+        String productID = "";
+        int quantity = 0;
+        String price = "";
+        ProductDTO pdDTO = null;
+        
+        if (ivPanel == null) {
+            productID = ipdList.get(index).getProductID();
+            pdDTO = pdBUS.getProductByID(productID);
+            quantity = ipdList.get(index).getQuantity();
+            txtImportPrice.getTxtForm().setText(ipdList.get(index).getPrice() + "");
+            price = Formater.FormatVND(pdDTO.getBasicPrice());
+        } else {
+            productID = ivdList.get(index).getProductID();
+            pdDTO = pdBUS.getProductByID(productID);
+            quantity = ivdList.get(index).getQuantity();
+            price = Formater.FormatVND(pdDTO.getSellPrice());
+        }
+        String productName = pdDTO.getProductName();
+
+        txtProductID.getTxtForm().setText(productID);
+        txtProductName.getTxtForm().setText(productName);
+        txtSellPrice.getTxtForm().setText(price);
+        spinner.getSpinner().setValue(quantity);
     }
 
     private void contentLeft() {
@@ -251,12 +281,15 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
         pdTable = new JTable();
         scrollProductTable = new JScrollPane();
         pdTblModel = new DefaultTableModel();
-        String[] headerSP = new String[] { "Mã Sản phẩm", "Tên sản phẩm", "Đơn giá", "Số lượng tồn" };
+        String[] headerSP = new String[] { "Mã Sản phẩm", "Tên sản phẩm", (ivPanel == null) ? "Giá nhập" : "Đơn giá",
+                "Số lượng tồn" };
         pdTblModel.setColumnIdentifiers(headerSP);
         pdTable.setModel(pdTblModel);
         scrollProductTable.setViewportView(pdTable);
-        pdTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        pdTable.getColumnModel().getColumn(1).setPreferredWidth(300);
+        TableColumnModel columnModel = pdTable.getColumnModel();
+        for (int i = 0; i < 4; i++) {
+            columnModel.getColumn(i).setCellRenderer(centerRenderer);
+        }
         pdTable.setDefaultEditor(Object.class, null);
         pdTable.setFocusable(false);
         scrollProductTable.setViewportView(pdTable);
@@ -267,7 +300,7 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
             public void mousePressed(MouseEvent e) {
                 int index = pdTable.getSelectedRow();
                 if (index != -1) {
-                    resetForm();
+                    resetValue();
                     setProductInfo(pdList.get(index));
                     if (pdList.get(index) == null) {
                         actionbtn("update");
@@ -309,9 +342,9 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
         txtEmployee.setEditable(false);
 
         if (ivPanel == null) {
-            spCbx = new SelectForm("Nhà cung cấp", spBUS.getListSupplierName());
+            combobox = new SelectForm("Nhà cung cấp", spBUS.getListSupplierName());
         } else {
-            spCbx = new SelectForm("Khách hàng", ctmBUS.getListCustomerName());
+            combobox = new SelectForm("Khách hàng", ctmBUS.getListCustomerName());
         }
 
         ProductInfoPanel = new JPanel(new BorderLayout());
@@ -329,23 +362,23 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
         txtSellPrice = new InputForm("Đơn giá");
         txtSellPrice.setEditable(false);
         sp = (PlainDocument) txtSellPrice.getTxtForm().getDocument();
+        spinner = new InputForm("Số lượng", "quantity");
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new BorderLayout());
+        inputPanel.add(txtSellPrice, BorderLayout.CENTER);
+        inputPanel.add(spinner, BorderLayout.EAST);
 
         txtImportPrice = new InputForm("Giá nhập");
         PlainDocument ipp = (PlainDocument) txtImportPrice.getTxtForm().getDocument();
         ipp.setDocumentFilter((new NumericDocumentFilter()));
 
-        txtquantity = new InputForm("Số lượng");
-        PlainDocument qtt = (PlainDocument) txtquantity.getTxtForm().getDocument();
-        qtt.setDocumentFilter((new NumericDocumentFilter()));
-
         right_top.add(txtEmployee);
-        right_top.add(spCbx);
+        right_top.add(combobox);
         right_top.add(ProductInfoPanel);
-        right_top.add(txtSellPrice);
+        right_top.add(inputPanel);
         if (ivPanel == null) {
             right_top.add(txtImportPrice);
         }
-        right_top.add(txtquantity);
     }
 
     private void rightBottom() {
@@ -386,20 +419,21 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
         }
 
         for (ProductDTO pdDTO : pdList) {
+            long price = (ivPanel == null) ? pdDTO.getBasicPrice() : pdDTO.getSellPrice();
             pdTblModel.addRow(new Object[] { pdDTO.getProductID(), pdDTO.getProductName(),
-                    Formater.FormatVND(pdDTO.getSellPrice()),
+                    Formater.FormatVND(price),
                     pdDTO.getQuantity() });
         }
     }
 
     public void loadImportDetailDataIntoTable(ArrayList<ImportDetailDTO> ipdList) {
-        ipTblModel.setRowCount(0);
+        TblDetailModel.setRowCount(0);
         if (ipdList == null) {
             return;
         }
 
         for (ImportDetailDTO ipdDTO : ipdList) {
-            ipTblModel.addRow(
+            TblDetailModel.addRow(
                     new Object[] { ipdDTO.getProductID(), ipdDTO.getQuantity(), Formater.FormatVND(ipdDTO.getPrice()),
                             Formater.FormatVND(ipdDTO.getCost()) });
         }
@@ -407,13 +441,13 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
     }
 
     public void loadInvoiceDetailDataIntoTable(ArrayList<InvoiceDetailDTO> ivdList) {
-        ipTblModel.setRowCount(0);
+        TblDetailModel.setRowCount(0);
         if (ivdList == null) {
             return;
         }
 
         for (InvoiceDetailDTO ivdDTO : ivdList) {
-            ipTblModel.addRow(
+            TblDetailModel.addRow(
                     new Object[] { ivdDTO.getProductID(), ivdDTO.getQuantity(), Formater.FormatVND(ivdDTO.getPrice()),
                             Formater.FormatVND(ivdDTO.getCost()) });
         }
@@ -421,8 +455,8 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
     }
 
     public void setProductInfo(ProductDTO pdDTO) {
-        this.txtProductID.setText(pdDTO.getProductID());
-        this.txtProductName.setText(pdDTO.getProductName());
+        this.txtProductID.getTxtForm().setText(pdDTO.getProductID());
+        this.txtProductName.getTxtForm().setText(pdDTO.getProductName());
 
         Long price = (ivPanel == null) ? pdDTO.getBasicPrice() : pdDTO.getSellPrice();
 
@@ -438,15 +472,15 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
     public ImportDetailDTO getImportDetailInfo() {
         String productID = txtProductID.getText();
         long price = Long.parseLong(txtImportPrice.getText());
-        int quantity = Integer.parseInt(txtquantity.getText());
+        int quantity = (Integer) spinner.getSpinner().getValue();
         return new ImportDetailDTO(importID, productID, price, quantity, quantity * price);
     }
 
     public InvoiceDetailDTO getInvoiceDetailInfo() {
         String productID = txtProductID.getText();
-        long price = Long.parseLong(txtSellPrice.getText().replaceAll("\\.", "").replaceAll("đ", ""));
-        int quantity = Integer.parseInt(txtquantity.getText());
-        return new InvoiceDetailDTO(importID, productID, price, quantity, quantity * price);
+        long price = Long.parseLong(txtSellPrice.getText().trim().replaceAll("\\.", "").replaceAll("đ", ""));
+        int quantity = (Integer) spinner.getSpinner().getValue();
+        return new InvoiceDetailDTO(invoiceID, productID, price, quantity, quantity * price);
     }
 
     public boolean validateImport() {
@@ -457,12 +491,12 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
             JOptionPane.showMessageDialog(this, "Giá bán không được để rỗng !", "Cảnh báo !",
                     JOptionPane.WARNING_MESSAGE);
             return false;
-        } else if (Tool.isEmail(txtImportPrice.getText())) {
-            JOptionPane.showMessageDialog(this, "Giá nhập không được để rỗng !", "Cảnh báo !",
+        } else if (!Tool.isNumber(spinner.getSpinner().getValue() + "")) {
+            JOptionPane.showMessageDialog(this, "Số lượng phải là số!", "Cảnh báo !",
                     JOptionPane.WARNING_MESSAGE);
             return false;
-        } else if (Tool.isEmpty(txtquantity.getText()) || !Tool.isNumber(txtquantity.getText())) {
-            JOptionPane.showMessageDialog(this, "Số lượng không được để rỗng và phải là số!", "Cảnh báo !",
+        } else if (ivPanel == null && Tool.isEmpty(txtImportPrice.getText())) {
+            JOptionPane.showMessageDialog(this, "Giá nhập không được để rỗng !", "Cảnh báo !",
                     JOptionPane.WARNING_MESSAGE);
             return false;
         }
@@ -476,28 +510,40 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
     public void addImport() {
         ImportDetailDTO ipdDTO = getImportDetailInfo();
         int index = ipBUS.findIndexByProductID(ipdList, ipdDTO.getProductID());
-        if (index == 0) {
+        int quantity = 0;
+        if (index == -1) {
+            quantity = ipdDTO.getQuantity();
             ipdList.add(ipdDTO);
         } else {
-            int quantity = ipdList.get(index).getQuantity() + ipdDTO.getQuantity();
+            quantity = ipdList.get(index).getQuantity() + ipdDTO.getQuantity();
             ipdList.get(index).setQuantity(quantity);
         }
+
+        String basicPrice = txtSellPrice.getTxtForm().getText().trim().replaceAll("\\.", "").replaceAll("đ", "");
+        pdTempList.add(new ProductDTO(ipdDTO.getProductID(), ipdDTO.getQuantity(), Long.parseLong(basicPrice)));
+
         loadImportDetailDataIntoTable(ipdList);
-        resetForm();
         txtSellPrice.setEditable(false);
+        resetValue();
     }
 
     public void addInvoice() {
         InvoiceDetailDTO ivdDTO = getInvoiceDetailInfo();
         int index = ivBUS.findIndexByProductID(ivdList, ivdDTO.getProductID());
-        if (index == 0) {
+        int quantity = 0;
+        if (index == -1) {
+            quantity = ivdDTO.getQuantity();
             ivdList.add(ivdDTO);
         } else {
-            int quantity = ivdList.get(index).getQuantity() + ivdDTO.getQuantity();
+            quantity = ivdList.get(index).getQuantity() + ivdDTO.getQuantity();
             ivdList.get(index).setQuantity(quantity);
         }
+
+        ProductDTO pdDTO = pdBUS.getProductByID(ivdDTO.getProductID());
+        pdTempList.add(new ProductDTO(ivdDTO.getProductID(), ivdDTO.getQuantity(), pdDTO.getBasicPrice()));
+
         loadInvoiceDetailDataIntoTable(ivdList);
-        resetForm();
+        resetValue();
     }
 
     public void actionbtn(String type) {
@@ -510,11 +556,14 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
         content_btn.repaint();
     }
 
-    public void resetForm() {
+    public void resetValue() {
         this.txtProductID.setText("");
         this.txtProductName.setText("");
         this.txtSellPrice.setText("");
-        this.txtquantity.setText("");
+        if (ivPanel == null) {
+            this.txtImportPrice.setText("");
+        }
+        this.spinner.getSpinner().setValue(0);
     }
 
     @Override
@@ -530,7 +579,7 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
             } else if (source == btnConfirm) {
                 confirm();
             } else if (source == btnCancel) {
-                m.setPanel(new ImportPanel(m, epDTO));
+                cancel();
             }
         } else {
             if (source == btnAdd && validateImport()) {
@@ -542,43 +591,69 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
             } else if (source == btnConfirm) {
                 confirm();
             } else if (source == btnCancel) {
-                m.setPanel(new InvoicePanel(m, epDTO));
+                cancel();
             }
         }
     }
 
     private void editImport() {
         int index = detailTable.getSelectedRow();
-        int quantity = Integer.parseInt(txtquantity.getText());
+        int quantity = (Integer) spinner.getSpinner().getValue();
+        int price = Integer.parseInt(txtImportPrice.getTxtForm().getText().trim());
         ipdList.get(index).setQuantity(quantity);
+        ipdList.get(index).setPrice(price);
+        ipdList.get(index).setCost(price * quantity);
         loadImportDetailDataIntoTable(ipdList);
+        resetValue();
     }
 
     private void editInvoice() {
         int index = detailTable.getSelectedRow();
-        int quantity = Integer.parseInt(txtquantity.getText());
+        int quantity = (Integer) spinner.getSpinner().getValue();
         ivdList.get(index).setQuantity(quantity);
+        ivdList.get(index).setCost(quantity);
         loadInvoiceDetailDataIntoTable(ivdList);
+        resetValue();
     }
 
     private void deleteImport() {
         int index = detailTable.getSelectedRow();
         ipdList.remove(index);
+        pdTempList.remove(index);
         actionbtn("add");
+
         loadImportDetailDataIntoTable(ipdList);
-        resetForm();
+        resetValue();
     }
 
     private void deleteInvoice() {
         int index = detailTable.getSelectedRow();
         ivdList.remove(index);
+        pdTempList.remove(index);
         actionbtn("add");
+
         loadInvoiceDetailDataIntoTable(ivdList);
-        resetForm();
+        resetValue();
+    }
+
+    private void cancel() {
+        int input = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn hủy phiếu !",
+                "Xác nhận hủy", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+
+        if (input != 0) {
+            return;
+        }
+
+        if (ivPanel == null) {
+            m.setPanel(new ImportPanel(m, epDTO));
+        } else {
+            m.setPanel(new InvoicePanel(m, epDTO));
+        }
     }
 
     private void confirm() {
-        if (ipdList.isEmpty()) {
+        int row = TblDetailModel.getRowCount();
+        if (row == 0) {
             JOptionPane.showMessageDialog(this, "Chưa có sản phẩm nào trong phiếu !", "Cảnh báo !",
                     JOptionPane.ERROR_MESSAGE);
             return;
@@ -593,17 +668,34 @@ public final class CreatePanel extends JPanel implements ItemListener, ActionLis
 
         String employeeID = m.getEmployee().getEmployeeID();
         if (ivPanel == null) {
-            String supplierID = spBUS.getIDByName((String) spCbx.getSelectedItem());
+            String supplierID = spBUS.getIDByName(combobox.getValue());
             long totalCost = ipBUS.getTotalCost(ipdList);
             ipBUS.add(new ImportDTO(importID, supplierID, employeeID, totalCost), ipdList);
-            ImportPanel ipPanel = new ImportPanel(m, epDTO);
-            m.setPanel(ipPanel);
+            pdBUS.updateQuantity("increase", pdTempList);
         } else {
-            String customerID = ctmBUS.getIDByName((String) ctmCbx.getSelectedItem());
+            String customerID = ctmBUS.getIDByName(combobox.getValue());
             long totalCost = ivBUS.getTotalCost(ivdList);
             ivBUS.add(new InvoiceDTO(invoiceID, customerID, employeeID, totalCost), ivdList);
-            InvoicePanel ivPanel = new InvoicePanel(m, epDTO);
-            m.setPanel(ivPanel);
+            pdBUS.updateQuantity("decrease", pdTempList);
         }
+
+        resetForm();
+    }
+
+    private void resetForm() {
+        resetValue();
+        pdList = pdBUS.getProductList("Còn bán");
+        pdTempList = new ArrayList<>();
+        loadProductDataIntoTable(pdList);
+        if (ivPanel == null) {
+            ipdList = new ArrayList<>();
+            importID = ipBUS.createID();
+            loadImportDetailDataIntoTable(null);
+        } else {
+            ivdList = new ArrayList<>();
+            invoiceID = ivBUS.createID();
+            loadInvoiceDetailDataIntoTable(null);
+        }
+        lblCost.setText("0đ");
     }
 }

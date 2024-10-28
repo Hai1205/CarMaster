@@ -142,14 +142,14 @@ public class StatisticDAO {
 
     public static ArrayList<ByIncomeAndExpenseDTO> getIncomeAndExpensePerYear(int beginYear, int endYear) {
         ArrayList<ByIncomeAndExpenseDTO> list = new ArrayList<>();
-    
+
         Connection connection = null;
         PreparedStatement pstmt = null;
         ResultSet resultSet = null;
-    
+
         try {
             connection = Database.getConnection();
-            
+
             String setBeginYearSql = "SET @beginYear = ?;";
             pstmt = connection.prepareStatement(setBeginYearSql);
             pstmt.setInt(1, beginYear);
@@ -158,7 +158,7 @@ public class StatisticDAO {
             pstmt = connection.prepareStatement(setEndYearSql);
             pstmt.setInt(1, endYear);
             pstmt.execute();
-    
+
             String sql = """
                     WITH RECURSIVE years(year) AS (
                         SELECT @beginYear
@@ -179,7 +179,7 @@ public class StatisticDAO {
                     GROUP BY years.year
                     ORDER BY years.year;
                     """;
-    
+
             pstmt = connection.prepareStatement(sql);
             resultSet = pstmt.executeQuery();
             while (resultSet.next()) {
@@ -193,16 +193,18 @@ public class StatisticDAO {
             e.printStackTrace();
         } finally {
             try {
-                if (resultSet != null) resultSet.close();
-                if (pstmt != null) pstmt.close();
-                if (connection != null) connection.close();
+                if (resultSet != null)
+                    resultSet.close();
+                if (pstmt != null)
+                    pstmt.close();
+                if (connection != null)
+                    connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return list;
     }
-    
 
     public static ArrayList<ByCustomerDTO> getByCustomer(String text, Date beginDate, Date endDate) {
         ArrayList<ByCustomerDTO> list = new ArrayList<>();
@@ -396,118 +398,117 @@ public class StatisticDAO {
     }
 
     public static ArrayList<ByPerDateInMonthDTO> getByPerDateInMonth(int month, int year) {
-    ArrayList<ByPerDateInMonthDTO> list = new ArrayList<>();
-    String beginDateStr = year + "-" + month + "-01";
-    String endDateStr;
-    LocalDate currentDate = LocalDate.now();
-    LocalDate endDate;
-    if (year == currentDate.getYear() && month == currentDate.getMonthValue()) {
-        endDate = currentDate;
-    } else {
-        endDate = YearMonth.of(year, month).atEndOfMonth();
-    }
-    endDateStr = endDate.toString();
-
-    Connection connection = null;
-    PreparedStatement pstmt = null;
-    ResultSet resultSet = null;
-
-    try {
-        connection = Database.getConnection();
-        String sql = "SELECT \n"
-                   + "  dates.date AS date, \n"
-                   + "  COALESCE(SUM(importdetail.price), 0) AS Expense, \n"
-                   + "  COALESCE(SUM(invoicedetail.price), 0) AS Income\n"
-                   + "FROM (\n"
-                   + "  SELECT DATE_ADD(?, INTERVAL c.number DAY) AS date\n"
-                   + "  FROM (\n"
-                   + "    SELECT a.number + b.number * 31 AS number\n"
-                   + "    FROM (\n"
-                   + "      SELECT 0 AS number\n"
-                   + "      UNION ALL SELECT 1\n"
-                   + "      UNION ALL SELECT 2\n"
-                   + "      UNION ALL SELECT 3\n"
-                   + "      UNION ALL SELECT 4\n"
-                   + "      UNION ALL SELECT 5\n"
-                   + "      UNION ALL SELECT 6\n"
-                   + "      UNION ALL SELECT 7\n"
-                   + "      UNION ALL SELECT 8\n"
-                   + "      UNION ALL SELECT 9\n"
-                   + "      UNION ALL SELECT 10\n"
-                   + "      UNION ALL SELECT 11\n"
-                   + "      UNION ALL SELECT 12\n"
-                   + "      UNION ALL SELECT 13\n"
-                   + "      UNION ALL SELECT 14\n"
-                   + "      UNION ALL SELECT 15\n"
-                   + "      UNION ALL SELECT 16\n"
-                   + "      UNION ALL SELECT 17\n"
-                   + "      UNION ALL SELECT 18\n"
-                   + "      UNION ALL SELECT 19\n"
-                   + "      UNION ALL SELECT 20\n"
-                   + "      UNION ALL SELECT 21\n"
-                   + "      UNION ALL SELECT 22\n"
-                   + "      UNION ALL SELECT 23\n"
-                   + "      UNION ALL SELECT 24\n"
-                   + "      UNION ALL SELECT 25\n"
-                   + "      UNION ALL SELECT 26\n"
-                   + "      UNION ALL SELECT 27\n"
-                   + "      UNION ALL SELECT 28\n"
-                   + "      UNION ALL SELECT 29\n"
-                   + "      UNION ALL SELECT 30\n"
-                   + "  ) AS a\n"
-                   + "  CROSS JOIN (\n"
-                   + "    SELECT 0 AS number\n"
-                   + "    UNION ALL SELECT 1\n"
-                   + "    UNION ALL SELECT 2\n"
-                   + "    UNION ALL SELECT 3\n"
-                   + "    UNION ALL SELECT 4\n"
-                   + "    UNION ALL SELECT 5\n"
-                   + "    UNION ALL SELECT 6\n"
-                   + "    UNION ALL SELECT 7\n"
-                   + "    UNION ALL SELECT 8\n"
-                   + "    UNION ALL SELECT 9\n"
-                   + "    UNION ALL SELECT 10\n"
-                   + "  ) AS b\n"
-                   + ") AS c\n"
-                   + "WHERE DATE_ADD(?, INTERVAL c.number DAY) <= ?\n"
-                   + ") AS dates\n"
-                   + "LEFT JOIN invoice ON DATE(invoice.creationDate) = dates.date\n"
-                   + "LEFT JOIN invoicedetail ON invoice.invoiceID = invoicedetail.invoiceID\n"
-                   + "LEFT JOIN import ON DATE(import.creationDate) = dates.date\n"
-                   + "LEFT JOIN importdetail ON import.importID = importdetail.importID\n"
-                   + "GROUP BY dates.date\n"
-                   + "ORDER BY dates.date;";
-
-        pstmt = connection.prepareStatement(sql);
-        pstmt.setString(1, beginDateStr);
-        pstmt.setString(2, beginDateStr);
-        pstmt.setString(3, endDateStr);
-
-        resultSet = pstmt.executeQuery();
-        while (resultSet.next()) {
-            Date date = resultSet.getDate("date");
-            long expense = resultSet.getLong("Expense");
-            long income = resultSet.getLong("Income");
-            ByPerDateInMonthDTO dto = new ByPerDateInMonthDTO(date, expense, income, income - expense);
-            list.add(dto);
+        ArrayList<ByPerDateInMonthDTO> list = new ArrayList<>();
+        String beginDateStr = year + "-" + month + "-01";
+        String endDateStr;
+        LocalDate currentDate = LocalDate.now();
+        LocalDate endDate;
+        if (year == currentDate.getYear() && month == currentDate.getMonthValue()) {
+            endDate = currentDate;
+        } else {
+            endDate = YearMonth.of(year, month).atEndOfMonth();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    } finally {
+        endDateStr = endDate.toString();
+
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+        ResultSet resultSet = null;
+
         try {
-            if (resultSet != null)
-                resultSet.close();
-            if (pstmt != null)
-                pstmt.close();
-            if (connection != null)
-                connection.close();
+            connection = Database.getConnection();
+            String sql = "SELECT \n"
+                    + "  dates.date AS date, \n"
+                    + "  COALESCE(SUM(importdetail.price), 0) AS Expense, \n"
+                    + "  COALESCE(SUM(invoicedetail.price), 0) AS Income\n"
+                    + "FROM (\n"
+                    + "  SELECT DATE_ADD(?, INTERVAL c.number DAY) AS date\n"
+                    + "  FROM (\n"
+                    + "    SELECT a.number + b.number * 31 AS number\n"
+                    + "    FROM (\n"
+                    + "      SELECT 0 AS number\n"
+                    + "      UNION ALL SELECT 1\n"
+                    + "      UNION ALL SELECT 2\n"
+                    + "      UNION ALL SELECT 3\n"
+                    + "      UNION ALL SELECT 4\n"
+                    + "      UNION ALL SELECT 5\n"
+                    + "      UNION ALL SELECT 6\n"
+                    + "      UNION ALL SELECT 7\n"
+                    + "      UNION ALL SELECT 8\n"
+                    + "      UNION ALL SELECT 9\n"
+                    + "      UNION ALL SELECT 10\n"
+                    + "      UNION ALL SELECT 11\n"
+                    + "      UNION ALL SELECT 12\n"
+                    + "      UNION ALL SELECT 13\n"
+                    + "      UNION ALL SELECT 14\n"
+                    + "      UNION ALL SELECT 15\n"
+                    + "      UNION ALL SELECT 16\n"
+                    + "      UNION ALL SELECT 17\n"
+                    + "      UNION ALL SELECT 18\n"
+                    + "      UNION ALL SELECT 19\n"
+                    + "      UNION ALL SELECT 20\n"
+                    + "      UNION ALL SELECT 21\n"
+                    + "      UNION ALL SELECT 22\n"
+                    + "      UNION ALL SELECT 23\n"
+                    + "      UNION ALL SELECT 24\n"
+                    + "      UNION ALL SELECT 25\n"
+                    + "      UNION ALL SELECT 26\n"
+                    + "      UNION ALL SELECT 27\n"
+                    + "      UNION ALL SELECT 28\n"
+                    + "      UNION ALL SELECT 29\n"
+                    + "      UNION ALL SELECT 30\n"
+                    + "  ) AS a\n"
+                    + "  CROSS JOIN (\n"
+                    + "    SELECT 0 AS number\n"
+                    + "    UNION ALL SELECT 1\n"
+                    + "    UNION ALL SELECT 2\n"
+                    + "    UNION ALL SELECT 3\n"
+                    + "    UNION ALL SELECT 4\n"
+                    + "    UNION ALL SELECT 5\n"
+                    + "    UNION ALL SELECT 6\n"
+                    + "    UNION ALL SELECT 7\n"
+                    + "    UNION ALL SELECT 8\n"
+                    + "    UNION ALL SELECT 9\n"
+                    + "    UNION ALL SELECT 10\n"
+                    + "  ) AS b\n"
+                    + ") AS c\n"
+                    + "WHERE DATE_ADD(?, INTERVAL c.number DAY) <= ?\n"
+                    + ") AS dates\n"
+                    + "LEFT JOIN invoice ON DATE(invoice.creationDate) = dates.date\n"
+                    + "LEFT JOIN invoicedetail ON invoice.invoiceID = invoicedetail.invoiceID\n"
+                    + "LEFT JOIN import ON DATE(import.creationDate) = dates.date\n"
+                    + "LEFT JOIN importdetail ON import.importID = importdetail.importID\n"
+                    + "GROUP BY dates.date\n"
+                    + "ORDER BY dates.date;";
+
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, beginDateStr);
+            pstmt.setString(2, beginDateStr);
+            pstmt.setString(3, endDateStr);
+
+            resultSet = pstmt.executeQuery();
+            while (resultSet.next()) {
+                Date date = resultSet.getDate("date");
+                long expense = resultSet.getLong("Expense");
+                long income = resultSet.getLong("Income");
+                ByPerDateInMonthDTO dto = new ByPerDateInMonthDTO(date, expense, income, income - expense);
+                list.add(dto);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null)
+                    resultSet.close();
+                if (pstmt != null)
+                    pstmt.close();
+                if (connection != null)
+                    connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+        return list;
     }
-    return list;
-}
-
 
     public static ArrayList<ByPerDateInMonthDTO> getLast7Days() {
         ArrayList<ByPerDateInMonthDTO> list = new ArrayList<>();
@@ -569,47 +570,47 @@ public class StatisticDAO {
 
     public static ArrayList<ByPerDateInMonthDTO> getDateToDate(String beginDate, String endDate) {
         ArrayList<ByPerDateInMonthDTO> list = new ArrayList<>();
-        
+
         Connection connection = null;
         PreparedStatement pstmt = null;
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            
+
             String sql = "SELECT dates.date AS date,\n"
-                       + "COALESCE(SUM(importdetail.price), 0) AS Expense,\n"
-                       + "COALESCE(SUM(invoicedetail.price), 0) AS Income\n"
-                       + "FROM (\n"
-                       + "  SELECT DATE_ADD(?, INTERVAL c.number DAY) AS date\n"
-                       + "  FROM (\n"
-                       + "    SELECT a.number + b.number * 31 AS number\n"
-                       + "    FROM (SELECT 0 AS number UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4\n"
-                       + "          UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9\n"
-                       + "          UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12 UNION ALL SELECT 13 UNION ALL SELECT 14\n"
-                       + "          UNION ALL SELECT 15 UNION ALL SELECT 16 UNION ALL SELECT 17 UNION ALL SELECT 18 UNION ALL SELECT 19\n"
-                       + "          UNION ALL SELECT 20 UNION ALL SELECT 21 UNION ALL SELECT 22 UNION ALL SELECT 23 UNION ALL SELECT 24\n"
-                       + "          UNION ALL SELECT 25 UNION ALL SELECT 26 UNION ALL SELECT 27 UNION ALL SELECT 28 UNION ALL SELECT 29\n"
-                       + "          UNION ALL SELECT 30) AS a\n"
-                       + "    CROSS JOIN (SELECT 0 AS number UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4\n"
-                       + "               UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9\n"
-                       + "               UNION ALL SELECT 10) AS b\n"
-                       + "  ) AS c\n"
-                       + "  WHERE DATE_ADD(?, INTERVAL c.number DAY) <= ?\n"
-                       + ") AS dates\n"
-                       + "LEFT JOIN invoice ON DATE(invoice.creationDate) = dates.date\n"
-                       + "LEFT JOIN invoicedetail ON invoice.invoiceID = invoicedetail.invoiceID\n"
-                       + "LEFT JOIN import ON DATE(import.creationDate) = dates.date\n"
-                       + "LEFT JOIN importdetail ON import.importID = importdetail.importID\n"
-                       + "GROUP BY dates.date\n"
-                       + "ORDER BY dates.date;";
-            
+                    + "COALESCE(SUM(importdetail.price), 0) AS Expense,\n"
+                    + "COALESCE(SUM(invoicedetail.price), 0) AS Income\n"
+                    + "FROM (\n"
+                    + "  SELECT DATE_ADD(?, INTERVAL c.number DAY) AS date\n"
+                    + "  FROM (\n"
+                    + "    SELECT a.number + b.number * 31 AS number\n"
+                    + "    FROM (SELECT 0 AS number UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4\n"
+                    + "          UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9\n"
+                    + "          UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12 UNION ALL SELECT 13 UNION ALL SELECT 14\n"
+                    + "          UNION ALL SELECT 15 UNION ALL SELECT 16 UNION ALL SELECT 17 UNION ALL SELECT 18 UNION ALL SELECT 19\n"
+                    + "          UNION ALL SELECT 20 UNION ALL SELECT 21 UNION ALL SELECT 22 UNION ALL SELECT 23 UNION ALL SELECT 24\n"
+                    + "          UNION ALL SELECT 25 UNION ALL SELECT 26 UNION ALL SELECT 27 UNION ALL SELECT 28 UNION ALL SELECT 29\n"
+                    + "          UNION ALL SELECT 30) AS a\n"
+                    + "    CROSS JOIN (SELECT 0 AS number UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4\n"
+                    + "               UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9\n"
+                    + "               UNION ALL SELECT 10) AS b\n"
+                    + "  ) AS c\n"
+                    + "  WHERE DATE_ADD(?, INTERVAL c.number DAY) <= ?\n"
+                    + ") AS dates\n"
+                    + "LEFT JOIN invoice ON DATE(invoice.creationDate) = dates.date\n"
+                    + "LEFT JOIN invoicedetail ON invoice.invoiceID = invoicedetail.invoiceID\n"
+                    + "LEFT JOIN import ON DATE(import.creationDate) = dates.date\n"
+                    + "LEFT JOIN importdetail ON import.importID = importdetail.importID\n"
+                    + "GROUP BY dates.date\n"
+                    + "ORDER BY dates.date;";
+
             pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, beginDate);
             pstmt.setString(2, beginDate);
             pstmt.setString(3, endDate);
-            
+
             resultSet = pstmt.executeQuery();
-            
+
             while (resultSet.next()) {
                 Date date = resultSet.getDate("date");
                 long Expense = resultSet.getLong("Expense");

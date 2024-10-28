@@ -20,7 +20,7 @@ public class ProductBUS {
     private ArrayList<ProductDTO> list = new ArrayList<>();
 
     public ProductBUS() {
-        list = getProductList();
+        list = getProductList("Còn bán");
     }
 
     public String createID(){
@@ -31,8 +31,8 @@ public class ProductBUS {
         return ID;
     }
 
-    public ArrayList<ProductDTO> getProductList() {
-        return ProductDAO.getList();
+    public ArrayList<ProductDTO> getProductList(String status) {
+        return ProductDAO.getList(status);
     }
 
     public void addProduct(ProductDTO pdDTO) {
@@ -41,6 +41,10 @@ public class ProductBUS {
 
     public void updateProduct(ProductDTO pdDTO) {
         ProductDAO.update(pdDTO);
+    }
+
+    public void updateQuantity(String type, ArrayList<ProductDTO> pdlist){
+        ProductDAO.updateQuantity(type, pdlist);
     }
 
     public void addProductDetail(ProductDetailDTO pddDTO) {

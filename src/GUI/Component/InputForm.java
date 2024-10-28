@@ -11,7 +11,9 @@ import javax.accessibility.AccessibleContext;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.EventListenerList;
 import javax.swing.plaf.ComponentUI;
@@ -23,6 +25,7 @@ public final class InputForm extends JPanel {
     private JLabel lblTitle;
     private JTextField txtForm;
     private JPasswordField txtPass;
+    private JSpinner spinner;
 
     public InputForm() {
     }
@@ -47,25 +50,27 @@ public final class InputForm extends JPanel {
         if (style.equals("password")) {
             txtPass = new JPasswordField();
             this.add(txtPass);
+        } else if (style.equals("quantity")) {
+            SpinnerNumberModel model = new SpinnerNumberModel(0, 0, 10000, 1);
+            spinner = new JSpinner(model);
+            this.add(spinner);
         }
     }
 
     public InputForm(String title, int w, int h) {
         this.setLayout(new GridLayout(2, 1));
         this.setBackground(Color.white);
-//        this.setBorder(new EmptyBorder(0, 10, 5, 10));
         this.setPreferredSize(new Dimension(w, h));
         lblTitle = new JLabel(title);
         txtForm = new JTextField();
         this.add(lblTitle);
         this.add(txtForm);
     }
-    
+
     public void setTitle(String title) {
         this.lblTitle.setText(title);
     }
 
-    
     @SuppressWarnings("deprecation")
     public String getPass() {
         return txtPass.getText();
@@ -89,6 +94,10 @@ public final class InputForm extends JPanel {
 
     public JPasswordField getTxtPass() {
         return txtPass;
+    }
+
+    public JSpinner getSpinner() {
+        return spinner;
     }
 
     public void setTxtPass(JPasswordField txtPass) {

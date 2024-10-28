@@ -52,10 +52,11 @@ public class ImportBUS {
     public int findIndexByProductID(ArrayList<ImportDetailDTO> ipdList, String productID) {
         for (int i = 0; i < ipdList.size(); i++) {
             if (ipdList.get(i).getProductID().equals(productID)) {
+                System.out.println("sdfsdf");
                 return i;
             }
         }
-        return 0;
+        return -1;
     }
 
     public String getSupplierNameByID(String supplierID) {

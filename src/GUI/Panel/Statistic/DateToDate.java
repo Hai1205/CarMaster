@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,7 +46,6 @@ public final class DateToDate extends JPanel {
     public DateToDate(StatisticBUS sttBUS) {
         this.sttBUS = sttBUS;
         initComponent();
-
     }
 
     public void initComponent() {
@@ -100,7 +100,7 @@ public final class DateToDate extends JPanel {
         sttTable = new JTable();
         scrollTableThongKe = new JScrollPane();
         tblModel = new DefaultTableModel();
-        String[] header = new String[]{"Ngày", "Chi phí", "Doanh thu", "Lợi nhuận"};
+        String[] header = new String[] { "Ngày", "Chi phí", "Doanh thu", "Lợi nhuận" };
         tblModel.setColumnIdentifiers(header);
         sttTable.setModel(tblModel);
         sttTable.setAutoCreateRowSorter(true);
@@ -152,17 +152,20 @@ public final class DateToDate extends JPanel {
 
         Date current_date = new Date();
         if (time_start != null && time_start.after(current_date)) {
-            JOptionPane.showMessageDialog(this, "Ngày bắt đầu không được lớn hơn ngày hiện tại", "Lỗi !", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ngày bắt đầu không được lớn hơn ngày hiện tại", "Lỗi !",
+                    JOptionPane.ERROR_MESSAGE);
             dateFrom.setCalendar(null);
             return false;
         }
         if (time_end != null && time_end.after(current_date)) {
-            JOptionPane.showMessageDialog(this, "Ngày kết thúc không được lớn hơn ngày hiện tại", "Lỗi !", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ngày kết thúc không được lớn hơn ngày hiện tại", "Lỗi !",
+                    JOptionPane.ERROR_MESSAGE);
             dateTo.setCalendar(null);
             return false;
         }
         if (time_start != null && time_end != null && time_start.after(time_end)) {
-            JOptionPane.showMessageDialog(this, "Ngày kết thúc phải lớn hơn ngày bắt đầu", "Lỗi !", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ngày kết thúc phải lớn hơn ngày bắt đầu", "Lỗi !",
+                    JOptionPane.ERROR_MESSAGE);
             dateTo.setCalendar(null);
             return false;
         }
@@ -171,10 +174,12 @@ public final class DateToDate extends JPanel {
 
     public void loadByPerDateInMonth(String beginDate, String endDate) {
         ArrayList<ByPerDateInMonthDTO> list = sttBUS.getDateToDate(beginDate, endDate);
+        Collections.reverse(list);
         tblModel.setRowCount(0);
         for (int i = 0; i < list.size(); i++) {
-            tblModel.addRow(new Object[]{
-                list.get(i).getDate(), Formater.FormatVND(list.get(i).getExpense()), Formater.FormatVND(list.get(i).getIncome()), Formater.FormatVND(list.get(i).getProfits())
+            tblModel.addRow(new Object[] {
+                    list.get(i).getDate(), Formater.FormatVND(list.get(i).getExpense()),
+                    Formater.FormatVND(list.get(i).getIncome()), Formater.FormatVND(list.get(i).getProfits())
             });
         }
     }

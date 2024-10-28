@@ -24,7 +24,7 @@ public class CustomerDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT * FROM customer";
+            String query = "SELECT * FROM customer ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
 
@@ -63,7 +63,7 @@ public class CustomerDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT customerName FROM customer";
+            String query = "SELECT customerName FROM customer ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
 
@@ -176,7 +176,7 @@ public class CustomerDAO {
             String query;
 
             if (info != null && !info.isEmpty()) {
-                query = "SELECT * FROM customer WHERE customerID LIKE ? OR customerName LIKE ? OR phone LIKE ? OR address LIKE ?";
+                query = "SELECT * FROM customer WHERE customerID LIKE ? OR customerName LIKE ? OR phone LIKE ? OR address LIKE ? ORDER BY creationDate DESC";
                 pstmt = connection.prepareStatement(query);
                 String searchValue = "%" + info + "%";
                 pstmt.setString(1, searchValue);
@@ -184,7 +184,7 @@ public class CustomerDAO {
                 pstmt.setString(3, searchValue);
                 pstmt.setString(4, searchValue);
             } else {
-                query = "SELECT * FROM customer";
+                query = "SELECT * FROM customer ORDER BY creationDate DESC";
                 pstmt = connection.prepareStatement(query);
             }
 

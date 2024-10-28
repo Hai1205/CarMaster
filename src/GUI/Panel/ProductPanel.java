@@ -57,7 +57,7 @@ public class ProductPanel extends JPanel implements ActionListener {
 
     private void initComponent() {
         pdBUS = new ProductBUS();
-        pdList = pdBUS.getProductList();
+        pdList = pdBUS.getProductList("");
 
         this.setBackground(BackgroundColor);
         this.setLayout(new BorderLayout(0, 0));
@@ -65,7 +65,7 @@ public class ProductPanel extends JPanel implements ActionListener {
         productTable = new JTable();
         productScrollTable = new JScrollPane();
         tblModel = new DefaultTableModel();
-        String[] header = new String[] { "Mã sản phẩm", "Tên nhà cung cấp", "Tên sản phẩm", "Số lượng", "Giá gốc",
+        String[] header = new String[] { "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Giá gốc",
                 "Giá niêm yết",
                 "Trạng thái" };
         tblModel.setColumnIdentifiers(header);
@@ -74,10 +74,10 @@ public class ProductPanel extends JPanel implements ActionListener {
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         TableColumnModel columnModel = productTable.getColumnModel();
-        for (int i = 0; i < 7; i++) {
-            if (i != 1) {
+        for (int i = 0; i < 6; i++) {
+            // if (i != 1) {
                 columnModel.getColumn(i).setCellRenderer(centerRenderer);
-            }
+            // }
         }
         productTable.setFocusable(false);
         productTable.setAutoCreateRowSorter(true);
@@ -116,7 +116,7 @@ public class ProductPanel extends JPanel implements ActionListener {
 
         search.getBtnReset().addActionListener((ActionEvent e) -> {
             search.setTxtSearchForm("");
-            pdList = pdBUS.getProductList();
+            pdList = pdBUS.getProductList("");
             loadDataIntoTable(pdList);
         });
         functionBar.add(search);
@@ -145,14 +145,14 @@ public class ProductPanel extends JPanel implements ActionListener {
         }
 
         for (ProductDTO pdDTO : result) {
-            String supplierName = pdBUS.getSupplierNameByID(pdDTO.getSupplierID());
-            tblModel.addRow(new Object[] { pdDTO.getProductID(), supplierName, pdDTO.getProductName(), pdDTO.getQuantity(),
-                    Formater.FormatVND(pdDTO.getBasicPrice()), Formater.FormatVND(pdDTO.getSellPrice()), pdDTO.getStatus() });
+            tblModel.addRow(new Object[] { pdDTO.getProductID(), pdDTO.getProductName(), pdDTO.getQuantity(),
+                    Formater.FormatVND(pdDTO.getBasicPrice()), Formater.FormatVND(pdDTO.getSellPrice()),
+                    pdDTO.getStatus() });
         }
     }
 
     public void loadNewDataIntoTable() {
-        this.pdList = pdBUS.getProductList();
+        this.pdList = pdBUS.getProductList("");
         loadDataIntoTable(pdList);
     }
 

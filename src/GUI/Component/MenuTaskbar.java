@@ -92,8 +92,7 @@ public class MenuTaskbar extends JPanel {
         info.setLayout(new BorderLayout(0, 0));
         pnlTop.add(info, BorderLayout.CENTER);
 
-        // Cái info này bỏ vô cho đẹp tí, mai mốt có gì xóa đi đê hiển thị thông tin tài
-        // khoản và quyền
+        // Thông tin tài khoản và quyền
         information(info);
 
         bar1 = new JPanel();

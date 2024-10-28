@@ -75,6 +75,10 @@ public class PermissionBUS {
         PermissionDetailDAO.insert(pmsdtList);
     }
 
+    public void updateApplied(String type, String permissionID){
+        PermissionDAO.updateApplied(type, permissionID);
+    }
+
     public boolean checkPermisson(String permissionID, String functionID, String action) {
         ArrayList<PermissionDetailDTO> pmsdtList = getPmsdtList(permissionID);
         boolean check = false;

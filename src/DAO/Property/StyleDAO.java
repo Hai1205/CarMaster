@@ -68,7 +68,7 @@ public class StyleDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT * FROM style";
+            String query = "SELECT * FROM style ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
 
@@ -104,7 +104,7 @@ public class StyleDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT styleName FROM style";
+            String query = "SELECT styleName FROM style ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
 

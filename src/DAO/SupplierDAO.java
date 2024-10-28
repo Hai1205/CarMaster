@@ -24,7 +24,7 @@ public class SupplierDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT * FROM supplier";
+            String query = "SELECT * FROM supplier ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
 
@@ -64,7 +64,7 @@ public class SupplierDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT supplierName FROM supplier";
+            String query = "SELECT supplierName FROM supplier ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
 
@@ -178,7 +178,7 @@ public class SupplierDAO {
             String query;
 
             if (info != null && !info.isEmpty()) {
-                query = "SELECT * FROM supplier WHERE supplierID LIKE ? OR supplierName LIKE ? OR phone LIKE ? OR email LIKE ? OR address LIKE ?";
+                query = "SELECT * FROM supplier WHERE supplierID LIKE ? OR supplierName LIKE ? OR phone LIKE ? OR email LIKE ? OR address LIKE ? ORDER BY creationDate DESC";
                 pstmt = connection.prepareStatement(query);
                 String searchValue = "%" + info + "%";
                 pstmt.setString(1, searchValue);
@@ -187,7 +187,7 @@ public class SupplierDAO {
                 pstmt.setString(4, searchValue);
                 pstmt.setString(5, searchValue);
             } else {
-                query = "SELECT * FROM supplier";
+                query = "SELECT * FROM supplier ORDER BY creationDate DESC";
                 pstmt = connection.prepareStatement(query);
             }
 

@@ -37,7 +37,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.text.PlainDocument;
 
 import BUS.ProductBUS;
-import BUS.SupplierBUS;
 import BUS.Property.BrandBUS;
 import BUS.Property.ColorBUS;
 import BUS.Property.DiscountBUS;
@@ -56,7 +55,7 @@ public class ProductDialog extends JDialog implements ActionListener {
     private HeaderTitle titlePage;
     private JPanel pnProductInfo, pnbottom, pnCenter, pnProductInfoRight, pnmain;
     private ButtonCustom btnAdd, btnSave;
-    private InputForm txtProductName, txtBasicPrice, txtYearOfManufacture, txtSupplier;
+    private InputForm txtProductName, txtBasicPrice, txtYearOfManufacture;
     private SelectForm cbBrandName, cbSeeting, cbColor, cbStyle, cbFuel, cbDiscount, cbGearBox, cbStatus;
     private InputImage productImg;
     private DefaultTableCellRenderer centerRenderer;
@@ -69,7 +68,6 @@ public class ProductDialog extends JDialog implements ActionListener {
     private FuelBUS fBUS;
     private SeatBUS sBUS;
     private StyleBUS stBUS;
-    private SupplierBUS spBUS;
     private String productID;
 
     private String[] arrBrandName;
@@ -93,7 +91,6 @@ public class ProductDialog extends JDialog implements ActionListener {
         fBUS = new FuelBUS();
         sBUS = new SeatBUS();
         stBUS = new StyleBUS();
-        spBUS = new SupplierBUS();
 
         arrBrandName = bBUS.getListBrandName();
         arrColorName = clBUS.getListColorName();
@@ -136,9 +133,6 @@ public class ProductDialog extends JDialog implements ActionListener {
 
         txtProductName = new InputForm("Tên sản phẩm");
 
-        txtSupplier = new InputForm("Nhà sản xuất");
-        txtSupplier.getTxtForm().setEnabled(false);
-
         txtBasicPrice = new InputForm("Giá gốc");
         txtBasicPrice.setText("0đ");
         txtBasicPrice.getTxtForm().setEnabled(false);
@@ -160,7 +154,6 @@ public class ProductDialog extends JDialog implements ActionListener {
         
         pnProductInfo.add(txtProductName);
         if(type.equals("update")){
-            pnProductInfo.add(txtSupplier);
             pnProductInfo.add(txtBasicPrice);
         }
         pnProductInfo.add(cbStatus);
@@ -268,7 +261,6 @@ public class ProductDialog extends JDialog implements ActionListener {
     }
 
     public void getInfo() {
-        String supplierID = txtSupplier.getText();
         String pdName = txtProductName.getText();
         String pdImg = productImg.getUrl_img();
         Long pdBasicPrice = Long.parseLong(txtBasicPrice.getText().replaceAll("\\.", "").replaceAll("đ", ""));
@@ -282,14 +274,12 @@ public class ProductDialog extends JDialog implements ActionListener {
         String pdGearBox = cbGearBox.getValue();
         int pdDiscount = Integer.parseInt(cbDiscount.getValue().replaceAll("%", ""));
         long pdSellPrice = pdBasicPrice * (100 - pdDiscount) / 100;
-        pdDTO = new ProductDTO(productID, supplierID, pdName, pdImg, pdStatus, pdSellPrice);
+        pdDTO = new ProductDTO(productID, pdName, pdImg, pdStatus, pdSellPrice);
         pddDTO = new ProductDetailDTO(productID, pdBrand, pdStyle, pdFuel, pdColor, pdGearBox, pdMFG, pdSeet,
                 pdDiscount);
     }
 
     public void setInfo(ProductDTO pdDTO) {
-        String supplierName = spBUS.getNameByID(pdDTO.getSupplierID());
-        txtSupplier.setText(supplierName);;
         txtProductName.setText(pdDTO.getProductName());
         productImg.setUrl_img(pdDTO.getProductImg());
         txtBasicPrice.setText(Formater.FormatVND(pdDTO.getBasicPrice()));

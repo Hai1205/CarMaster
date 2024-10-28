@@ -1,35 +1,32 @@
 package GUI.Panel;
 
-import java.awt.*;
-import javax.swing.*;
-import com.formdev.flatlaf.FlatIntelliJLaf;
+import BUS.StatisticBUS;
+import GUI.Panel.Statistic.Total;
 
-public class HomePage extends JPanel {
+import java.awt.Color;
+import java.awt.GridLayout;
+import javax.swing.JPanel;
 
-    private JPanel center;
-    private final Image backgroundImage;
+/**
+ *
+ */
+public final class HomePage extends JPanel {
+
+    private JPanel total;
+    private Color BackgroundColor = new Color(240, 247, 250);
+    private StatisticBUS sttBUS;
 
     public HomePage() {
-        backgroundImage = new ImageIcon(getClass().getResource("/img/background.png")).getImage();
         initComponent();
-        FlatIntelliJLaf.registerCustomDefaultsSource("style");
-        FlatIntelliJLaf.setup();
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (backgroundImage != null) {
-            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        }
-    }
+    public void initComponent() {
+        this.setLayout(new GridLayout(1, 1));
+        this.setBackground(BackgroundColor);
 
-    private void initComponent() {
-        this.setLayout(new BorderLayout());
-        center = new JPanel();
-        center.setOpaque(false);
-        center.setPreferredSize(new Dimension(1100, 800));
-        center.setLayout(new FlowLayout(1, 50, 50));
-        this.add(center, BorderLayout.CENTER);
+        sttBUS = new StatisticBUS();
+        total = new Total(sttBUS);
+
+        this.add(total);
     }
 }

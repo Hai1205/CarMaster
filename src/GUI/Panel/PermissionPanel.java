@@ -104,17 +104,15 @@ public class PermissionPanel extends JPanel implements ActionListener {
         tblpms.setDefaultEditor(Object.class, null);
         scrollTable = new JScrollPane();
         tblModel = new DefaultTableModel();
-        String[] header = new String[]{"Mã nhóm quyền", "Tên nhóm quyền", "Giới hạn"};
+        String[] header = new String[]{"Mã nhóm quyền", "Tên nhóm quyền", "Giới hạn", "Đã áp dụng"};
         tblModel.setColumnIdentifiers(header);
         tblpms.setModel(tblModel);
         scrollTable.setViewportView(tblpms);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         TableColumnModel columnModel = tblpms.getColumnModel();
-        for (int i = 0; i < 2; i++) {
-            if (i != 1) {
+        for (int i = 0; i < 4; i++) {
                 columnModel.getColumn(i).setCellRenderer(centerRenderer);
-            }
         }
         tblpms.setFocusable(false);
         main.add(scrollTable);
@@ -139,7 +137,7 @@ public class PermissionPanel extends JPanel implements ActionListener {
 
         for (PermissionDTO pmsDTO : result) {
             tblModel.addRow(new Object[]{
-                pmsDTO.getPermissionID(), pmsDTO.getPermissionName(), pmsDTO.getSlot()
+                pmsDTO.getPermissionID(), pmsDTO.getPermissionName(), pmsDTO.getSlot(), pmsDTO.getApplied()
             });
         }
     }

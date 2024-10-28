@@ -68,7 +68,7 @@ public class DiscountDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT * FROM discount";
+            String query = "SELECT * FROM discount ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
 
@@ -104,7 +104,7 @@ public class DiscountDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT discountPercent FROM discount";
+            String query = "SELECT discountPercent FROM discount ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
 

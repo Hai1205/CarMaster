@@ -22,11 +22,11 @@ public class ImportDAO {
         PreparedStatement pstmt = null;
         try {
             connection = Database.getConnection();
-            String sql = "INSERT INTO import(importID, supplierID, employeeID, totalCost) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO import(importID, supplierID, employeeID, totalCost) VALUES (?, ?, ?, ?) ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, ipDTO.getImportID());
-            pstmt.setString(2, ipDTO.getImportID());
-            pstmt.setString(3, ipDTO.getSupplierID());
+            pstmt.setString(2, ipDTO.getSupplierID());
+            pstmt.setString(3, ipDTO.getEmployeeID());
             pstmt.setLong(4, ipDTO.getTotalCost());
             pstmt.executeUpdate();
         } catch (SQLException ex) {
@@ -128,7 +128,7 @@ public class ImportDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String sql = "SELECT * FROM import WHERE totalCost BETWEEN ? AND ?";
+            String sql = "SELECT * FROM import WHERE totalCost BETWEEN ? AND ? ORDER BY creationDate DESC";
             pstmt = (PreparedStatement) connection.prepareStatement(sql);
             pstmt.setLong(1, min);
             pstmt.setLong(2, max);
@@ -173,15 +173,17 @@ public class ImportDAO {
             String query;
 
             if (info != null && !info.isEmpty()) {
-                query = "SELECT import.importID, supplier.supplierID, employee.employeeID, import.creationDate, import.totalCost " +
-               "FROM import " +
-               "JOIN supplier ON import.supplierID = supplier.supplierID " +
-               "JOIN employee ON employee.employeeID = import.employeeID " +
-               "WHERE import.importID LIKE ? " +
-               "OR supplier.supplierName LIKE ? " +
-               "OR employee.employeeName LIKE ? " +
-               "OR import.creationDate LIKE ? " +
-               "OR import.totalCost LIKE ?";
+                query = "SELECT import.importID, supplier.supplierID, employee.employeeID, import.creationDate, import.totalCost "
+                        +
+                        "FROM import " +
+                        "JOIN supplier ON import.supplierID = supplier.supplierID " +
+                        "JOIN employee ON employee.employeeID = import.employeeID " +
+                        "WHERE import.importID LIKE ? " +
+                        "OR supplier.supplierName LIKE ? " +
+                        "OR employee.employeeName LIKE ? " +
+                        "OR import.creationDate LIKE ? " +
+                        "OR import.totalCost LIKE ?" +
+                        "ORDER BY creationDate DESC";
 
                 pstmt = connection.prepareStatement(query);
                 String searchValue = "%" + info + "%";
@@ -191,7 +193,7 @@ public class ImportDAO {
                 pstmt.setString(4, searchValue);
                 pstmt.setString(5, searchValue);
             } else {
-                query = "SELECT * FROM import";
+                query = "SELECT * FROM import ORDER BY creationDate DESC";
                 pstmt = connection.prepareStatement(query);
             }
 

@@ -50,7 +50,7 @@ public class EmployeeDialog extends JDialog {
     private EmployeeDialog epDialog;
     private PlainDocument slr;
     private boolean isInfo;
-    private String permissionNameStr;
+    private String permissionNameStr, oldPermissionID;
 
     // Create
     public EmployeeDialog(EmployeeBUS epBUS, JFrame owner, boolean modal, String title, String type) {
@@ -96,6 +96,7 @@ public class EmployeeDialog extends JDialog {
 
     private void setPermissionAndEmployeeInfo() {
         permissionName.setSelectedItem(permissionNameStr);
+        oldPermissionID = pmsBUS.getIDByName(permissionNameStr);
         employeeName.setText(epDTO.getEmployeeName());
     }
 
@@ -121,6 +122,7 @@ public class EmployeeDialog extends JDialog {
         String formattedSalary = isInfo ? Formater.FormatVND(epDTO.getSalary()) : String.valueOf(epDTO.getSalary());
         salary.setText(formattedSalary);
         salary.setEditable(!isInfo);
+        permissionName.getCbb().setEnabled(!isInfo);
     }
 
     private void setGenderSelection() {
@@ -137,7 +139,7 @@ public class EmployeeDialog extends JDialog {
         status.setSelectedItem(epDTO.getStatus());
     }
 
-    public void init(String title, String type) {
+    private void init(String title, String type) {
         Dimension inputSize = new Dimension(100, 110);
         this.setSize(new Dimension(450, 590));
         this.setLayout(new BorderLayout(0, 0));
@@ -148,17 +150,17 @@ public class EmployeeDialog extends JDialog {
         main.setBackground(Color.white);
 
         isInfo = title.equals("Thông tin tài khoản");
-        
+
         employeeName = new InputForm("Họ và tên");
         email = new InputForm("Email");
-        
+
         changePassword = new JLabel("Đổi mật khẩu", SwingConstants.LEFT);
         changePassword.setPreferredSize(new Dimension(320, 40));
         changePassword.setFont(new Font(FlatRobotoFont.FAMILY, Font.ITALIC, 18));
         JPanel changePasswordPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         changePasswordPanel.setBackground(Color.white);
         changePasswordPanel.add(changePassword);
-        
+
         if (epDTO != null) {
             permissionNameStr = pmsBUS.getNameByID(epDTO.getPermissionID());
         } else {
@@ -210,7 +212,7 @@ public class EmployeeDialog extends JDialog {
         if (isInfo) {
             main.add(changePasswordPanel);
         }
-        
+
         main.add(phone);
         main.add(jpanelG);
         main.add(jpaneljd);
@@ -219,7 +221,7 @@ public class EmployeeDialog extends JDialog {
         if (title.equals("Sửa nhân viên")) {
             main.add(status);
         }
-        
+
         // Cuộn trang khi nội dung quá dài
         JScrollPane scrollPane = new JScrollPane(main);
         scrollPane.setBorder(null);
@@ -271,7 +273,11 @@ public class EmployeeDialog extends JDialog {
 
                     epBUS.update(new EmployeeDTO(epDTO.getEmployeeID(), permissionIDStr, employeeNameStr,
                             epDTO.getHireDate(), genderStr, phoneStr, epDTO.getEmail(), epDTO.getPassword(),
-                            statusStr, birthDay,  epDTO.getSalary(), 0));
+                            statusStr, birthDay, epDTO.getSalary(), 0));
+
+                    pmsBUS.updateApplied("decrease", oldPermissionID);
+                    pmsBUS.updateApplied("increase", permissionIDStr);
+
                     this.dispose();
                 } catch (ParseException ex) {
                     ex.printStackTrace();

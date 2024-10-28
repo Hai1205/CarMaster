@@ -63,16 +63,16 @@ INSERT INTO supplier (supplierID, supplierName, address, email, phone, creationD
 
 -- Dữ liệu bảng employee
 INSERT INTO employee (employeeID, employeeName, hireDate, gender, DOB, phone, salary, email, password, permissionID, OTP, status) VALUES
-('EP000001', 'Nguyễn Văn An', '2018-05-01 10:30:00', 'Nam', '1990-01-01', '0912345678', 50000000, 'annguyenvan0101@gmail.com', '$2a$12$y6D4PCBAP5pOYH6NjWW/.uvzteSrKMo4HihyyY9IAsiktOaU6j07S', 'PMS000001', 0, 'Hoạt động'),
-('EP000002', 'Lê Thị Bình', '2018-05-01 17:00:00', 'Nữ', '1989-02-02', '0987654321', 50000000, 'binhlethiP0000202@gmail.com', '$2a$12$SH/cRKdK6UKYfg802STmdeGMLNKZ2t0Jcwa8rJ6v0OQxLNw5eagMC', 'PMS000001', 0, 'Ngưng hoạt động'),
+('EP000001', 'Nguyễn Văn An', '2018-05-01 10:30:00', 'Nam', '1990-01-01', '0912345678', 30000000, 'annguyenvan0101@gmail.com', '$2a$12$y6D4PCBAP5pOYH6NjWW/.uvzteSrKMo4HihyyY9IAsiktOaU6j07S', 'PMS000002', 0, 'Hoạt động'),
+('EP000002', 'Lê Thị Bình', '2018-05-01 17:00:00', 'Nữ', '1989-02-02', '0987654321', 30000000, 'binhlethiP0000202@gmail.com', '$2a$12$SH/cRKdK6UKYfg802STmdeGMLNKZ2t0Jcwa8rJ6v0OQxLNw5eagMC', 'PMS000003', 0, 'Ngưng hoạt động'),
 ('EP000003', 'Trần Văn Cảnh', '2019-03-02 08:45:00', 'Nam', '1991-03-03', '0909123456', 20000000, 'canhtranvan0303@gmail.com', '$2a$12$eo3kBaD5npH64ZG0dsl.NeDtiPMSAYoknCIAeD9Q.JrJX9z5aYjl2W', 'PMS000002', 0, 'Ngưng hoạt động'),
-('EP000004', 'Phạm Thị Duyên', '2021-03-10 13:30:00', 'Nữ', '1992-04-04', '0945123456', 20000000, 'duyenphamthiP0000404@gmail.com', '$2a$12$LTzo77POlp0qpxhXfHc9jO/rnpVbYsTCgFAps3SvpIuV44RDKCqj2', 'PMS000002', 0, 'Hoạt động'),
+('EP000004', 'Phạm Thị Duyên', '2021-03-10 13:30:00', 'Nữ', '1992-04-04', '0945123456', 30000000, 'duyenphamthiP0000404@gmail.com', '$2a$12$LTzo77POlp0qpxhXfHc9jO/rnpVbYsTCgFAps3SvpIuV44RDKCqj2', 'PMS000002', 0, 'Hoạt động'),
 ('EP000005', 'Nguyễn Văn Hùng', '2017-12-06 15:00:00', 'Nam', '1988-05-05', '0915234567', 20000000, 'hungnguyenvan0505@gmail.com', '$2a$12$anxb02QZjdP.dGJWhhLRW.h.G54mdU5gTLvcjD9Y2KOzc8geVW72.', 'PMS000003', 0, 'Ngưng hoạt động'),
-('EP000006', 'Lê Thị Thu Trang', '2021-07-28 11:00:00', 'Nữ', '1987-06-06', '0976345123', 20000000, 'tranglethithu0606@gmail.com', '$2a$12$qW/Tcx7IB0FmwO6M5nQtuOpjS9TuE/RaZs.imtfX3N3bxxpMzyrCa', 'PMS000003', 0, 'Hoạt động'),
+('EP000006', 'Lê Thị Thu Trang', '2021-07-28 11:00:00', 'Nữ', '1987-06-06', '0976345123', 10000000, 'tranglethithu0606@gmail.com', '$2a$12$qW/Tcx7IB0FmwO6M5nQtuOpjS9TuE/RaZs.imtfX3N3bxxpMzyrCa', 'PMS000003', 0, 'Hoạt động'),
 ('EP000007', 'Trần Văn Giang', '2017-12-10 16:30:00', 'Nam', '1993-07-07', '0936123456', 20000000, 'giangtranvan0707@gmail.com', '$2a$12$MVj8DceH6.RigI.5BSnl7.rirRj6srddLG9jyzRpiTwUMUrZzTQEq', 'PMS000002', 0, 'Hoạt động'),
-('EP000008', 'Phạm Thị Huyền', '2019-09-20 14:45:00', 'Nữ', '1994-08-08', '0909123456', 20000000, 'huyenphamthi@gmail.com', '$2a$12$nhtjCSCrEIv4Y6HduI8mWOVuBdKS00nL8xQlaNl9gRsVwrEKfvpt.', 'PMS000002', 0, 'Ngưng hoạt động'),
+('EP000008', 'Phạm Thị Huyền', '2019-09-20 14:45:00', 'Nữ', '1994-08-08', '0909123456', 10000000, 'huyenphamthi@gmail.com', '$2a$12$nhtjCSCrEIv4Y6HduI8mWOVuBdKS00nL8xQlaNl9gRsVwrEKfvpt.', 'PMS000002', 0, 'Ngưng hoạt động'),
 ('EP000009', 'Nguyễn Văn Toàn', '2022-01-10 09:15:00', 'Nam', '1995-09-09', '0967123456', 20000000, 'toannguyenvan@gmail.com', '$2a$12$hfWwBHo/IMf6BeR7j1XFs.Dp8PMSHnDiPMSk/BjD.1o4/0nBZNDQH1C', 'PMS000003', 0, 'Ngưng hoạt động'),
-('EP000010', 'Lê Thị Bích Ngoc', '2023-06-20 12:00:00', 'Nữ', '1996-10-10', '0945234567', 20000000, 'ngoclethibich1010@gmail.com', '$2a$12$WtNcNSpSsYkHSdquFafEOePYapdpqCMlz.khWZalgPTA.XwOqEm8G', 'PMS000003', 0, 'Hoạt động'),
+('EP000010', 'Lê Thị Bích Ngoc', '2023-06-20 12:00:00', 'Nữ', '1996-10-10', '0945234567', 40000000, 'ngoclethibich1010@gmail.com', '$2a$12$WtNcNSpSsYkHSdquFafEOePYapdpqCMlz.khWZalgPTA.XwOqEm8G', 'PMS000003', 0, 'Hoạt động'),
 ('EP000011', 'Nguyễn Hoàng Hải', '2018-05-12  12:05:04', 'Nam', '2004-05-12', '0782748863', 50000000, 'hainguyenhoang1205@gmail.com', '$2a$12$W5ZcIAEtbQHrQnhsLYUw9.V0I5.EOvSC5NgYcX/NVMcfYQfPxLh.y', 'PMS000001', 0, 'Hoạt động');
 
 -- Dữ liệu bảng brand
@@ -147,32 +147,32 @@ INSERT INTO discount (discountID, discountPercent, creationDate) VALUES
 ('DC000009', 45, '2023-10-23 08:45:00');
 
 -- Dữ liệu bảng produc
-INSERT INTO product (productID, supplierID, productName, productImg, quantity, basicPrice, sellPrice, status, creationDate) VALUES
-('PD000001', 'SP000001', 'Toyota Vios', 'Toyota-Vios.png', 50-1-1, 24000*25000, 21600*25000, 'Còn bán', '2018-05-12 12:05:04'),
-('PD000002', 'SP000001', 'Toyota Fortuner', 'Toyota-Fortuner.png', 50-1-2, 40000*25000, 34000*25000, 'Còn bán', '2018-05-12 12:05:04'),
-('PD000003', 'SP000002', 'Audi E-Tron', 'Audi-E-Tron.png', 50-2-1, 68000*25000, 64600*25000, 'Còn bán', '2019-12-16 12:00:00'),
-('PD000004', 'SP000003', 'Porsche Taycan', 'Porsche-Taycan.png', 50-2-1, 380000*25000, 304000*25000, 'Còn bán', '2019-12-16 12:00:00'),
-('PD000005', 'SP000003', 'Chevrolet Cruze', 'Chevrolet-Cruze.png', 50-1-1, 22000*25000, 16500*25000, 'Còn bán', '2020-01-17 09:15:00'),
-('PD000006', 'SP000003', 'Cadillac Escalade', 'Cadillac-Escalade.png', 50-1-1, 470000*25000, 329000*25000, 'Còn bán', '2020-01-17 09:15:00'),
-('PD000007', 'SP000004', 'Ford Everest Sport', 'Ford-Everest-Sport.png', 50-2-1, 48000*25000, 45600*25000, 'Còn bán', '2022-01-18 14:45:00'),
-('PD000008', 'SP000004', 'Ford Everest Ambiente', 'Ford-Everest-Ambiente.png', 50-2-1, 40000*25000, 36000*25000, 'Còn bán', '2022-01-18 14:45:00'),
-('PD000009', 'SP000005', 'Hyundai Creta', 'Hyundai-Creta.png', 50-1-1, 24000*25000, 20400*25000, 'Còn bán', '2022-12-19 16:30:00'),
-('PD000010', 'SP000005', 'Kia K5', 'Kia-K5.png', 50-1-1, 35000*25000, 28000*25000, 'Còn bán', '2022-12-19 16:30:00'),
-('PD000011', 'SP000006', 'Honda Civic', 'Honda-Civic.png', 50-1-1, 30000*25000, 21000*25000, 'Còn bán', '2023-01-20 11:00:00'),
-('PD000012', 'SP000006', 'Acura MDX', 'Acura-MDX.png', 50-1-1, 47000*25000, 42300*25000, 'Còn bán', '2023-01-20 11:00:00'),
-('PD000013', 'SP000007', 'BMW 530i', 'BMW-530i.png', 50-1-1, 60000*25000, 45000*25000, 'Còn bán', '2023-04-21 15:00:00'),
-('PD000014', 'SP000007', 'Mini Cooper S', 'Mini-Cooper-S.png', 50-1-1, 96000*25000, 91200*25000, 'Còn bán', '2023-04-21 15:00:00'),
-('PD000015', 'SP000008', 'Mercedes C200', 'Mercedes-C200.png', 50-1-1, 640000*25000, 576000*25000, 'Còn bán', '2023-07-22 13:30:00'),
-('PD000016', 'SP000008', 'Mercedes GLS 450', 'Mercedes-GLS-450.png', 50-1-1, 216000*25000, 183600*25000, 'Còn bán', '2023-07-22 13:30:00'),
-('PD000017', 'SP000009', 'Nissan Almera', 'Nissan-Almera.png', 50-1-1, 21600*25000, 17280*25000, 'Còn bán', '2023-10-23 08:45:00'),
-('PD000018', 'SP000009', 'Infiniti QX60', 'Infiniti-QX60.png', 50-2-1, 51000*25000, 38250*25000, 'Còn bán', '2023-10-23 08:45:00'),
-('PD000019', 'SP000010', 'Jaguar F-Pace', 'Jaguar-F-Pace.png', 50-1-1, 70000*25000, 49000*25000, 'Còn bán', '2024-01-24 17:00:00'),
-('PD000020', 'SP000010', 'Land Rover Discovery', 'Land-Rover-Discovery.png', 50-1-1, 172000*25000, 154800*25000, 'Còn bán', '2024-01-24 17:00:00'),
-('PD000021', 'SP000011', 'Suzuki XL7', 'Suzuki-XL7.png', 50-1-1, 24000*25000, 21600*25000, 'Còn bán', '2024-06-25 10:30:00'),
-('PD000022', 'SP000012', 'Vinfast VF8', 'Vinfast-VF8.png', 50-1-1, 28000*25000, 25200*25000, 'Còn bán', '2024-08-26 12:00:00'),
-('PD000023', 'SP000013', 'Mazda 3', 'Mazda-3.png', 50-1-1, 24000*25000, 21600*25000, 'Còn bán', '2024-08-29 12:00:00'),
-('PD000024', 'SP000013', 'Peugeot 408 GT', 'Peugeot-408-GT.png', 50-1-1, 52000*25000, 46800*25000, 'Còn bán', '2024-08-29 12:00:00'),
-('PD000025', 'SP000014', 'Tesla Roadter', 'Tesla-Roadter.png', 50-1-1, 80000*25000, 72000*25000, 'Còn bán', '2024-09-26 12:00:00');
+INSERT INTO product (productID, productName, productImg, quantity, basicPrice, sellPrice, status, creationDate) VALUES
+('PD000001', 'Toyota Vios', 'Toyota-Vios.png', 50-1-1, 24000*25000, 21600*25000, 'Còn bán', '2018-05-12 12:05:04'),
+('PD000002', 'Toyota Fortuner', 'Toyota-Fortuner.png', 50-1-2, 40000*25000, 34000*25000, 'Còn bán', '2018-05-12 12:05:04'),
+('PD000003', 'Audi E-Tron', 'Audi-E-Tron.png', 50-2-1, 68000*25000, 64600*25000, 'Còn bán', '2019-12-16 12:00:00'),
+('PD000004', 'Porsche Taycan', 'Porsche-Taycan.png', 50-2-1, 380000*25000, 304000*25000, 'Còn bán', '2019-12-16 12:00:00'),
+('PD000005', 'Chevrolet Cruze', 'Chevrolet-Cruze.png', 50-1-1, 22000*25000, 16500*25000, 'Còn bán', '2020-01-17 09:15:00'),
+('PD000006', 'Cadillac Escalade', 'Cadillac-Escalade.png', 50-1-1, 470000*25000, 329000*25000, 'Còn bán', '2020-01-17 09:15:00'),
+('PD000007', 'Ford Everest Sport', 'Ford-Everest-Sport.png', 50-2-1, 48000*25000, 45600*25000, 'Còn bán', '2022-01-18 14:45:00'),
+('PD000008', 'Ford Everest Ambiente', 'Ford-Everest-Ambiente.png', 50-2-1, 40000*25000, 36000*25000, 'Còn bán', '2022-01-18 14:45:00'),
+('PD000009', 'Hyundai Creta', 'Hyundai-Creta.png', 50-1-1, 24000*25000, 20400*25000, 'Còn bán', '2022-12-19 16:30:00'),
+('PD000010', 'Kia K5', 'Kia-K5.png', 50-1-1, 35000*25000, 28000*25000, 'Còn bán', '2022-12-19 16:30:00'),
+('PD000011', 'Honda Civic', 'Honda-Civic.png', 50-1-1, 30000*25000, 21000*25000, 'Còn bán', '2023-01-20 11:00:00'),
+('PD000012', 'Acura MDX', 'Acura-MDX.png', 50-1-1, 47000*25000, 42300*25000, 'Còn bán', '2023-01-20 11:00:00'),
+('PD000013', 'BMW 530i', 'BMW-530i.png', 50-1-1, 60000*25000, 45000*25000, 'Còn bán', '2023-04-21 15:00:00'),
+('PD000014', 'Mini Cooper S', 'Mini-Cooper-S.png', 50-1-1, 96000*25000, 91200*25000, 'Còn bán', '2023-04-21 15:00:00'),
+('PD000015', 'Mercedes C200', 'Mercedes-C200.png', 50-1-1, 640000*25000, 576000*25000, 'Còn bán', '2023-07-22 13:30:00'),
+('PD000016', 'Mercedes GLS 450', 'Mercedes-GLS-450.png', 50-1-1, 216000*25000, 183600*25000, 'Còn bán', '2023-07-22 13:30:00'),
+('PD000017', 'Nissan Almera', 'Nissan-Almera.png', 50-1-1, 21600*25000, 17280*25000, 'Còn bán', '2023-10-23 08:45:00'),
+('PD000018', 'Infiniti QX60', 'Infiniti-QX60.png', 50-2-1, 51000*25000, 38250*25000, 'Còn bán', '2023-10-23 08:45:00'),
+('PD000019', 'Jaguar F-Pace', 'Jaguar-F-Pace.png', 50-1-1, 70000*25000, 49000*25000, 'Còn bán', '2024-01-24 17:00:00'),
+('PD000020', 'Land Rover Discovery', 'Land-Rover-Discovery.png', 50-1-1, 172000*25000, 154800*25000, 'Còn bán', '2024-01-24 17:00:00'),
+('PD000021', 'Suzuki XL7', 'Suzuki-XL7.png', 50-1-1, 24000*25000, 21600*25000, 'Còn bán', '2024-06-25 10:30:00'),
+('PD000022', 'Vinfast VF8', 'Vinfast-VF8.png', 50-1-1, 28000*25000, 25200*25000, 'Còn bán', '2024-08-26 12:00:00'),
+('PD000023', 'Mazda 3', 'Mazda-3.png', 50-1-1, 24000*25000, 21600*25000, 'Còn bán', '2024-08-29 12:00:00'),
+('PD000024', 'Peugeot 408 GT', 'Peugeot-408-GT.png', 50-1-1, 52000*25000, 46800*25000, 'Còn bán', '2024-08-29 12:00:00'),
+('PD000025', 'Tesla Roadter', 'Tesla-Roadter.png', 50-1-1, 80000*25000, 72000*25000, 'Còn bán', '2024-09-26 12:00:00');
 
 -- Dữ liệu bảng productDetail
 INSERT INTO productDetail (productID, brandName, yearOfManufacture, numberOfSeat, styleName, fuelType, colorName, gearBox, discountPercent) VALUES
@@ -373,10 +373,10 @@ INSERT INTO functional (functionID, functionName) VALUES
 ('FT000009', 'Quản lý bán hàng');
 
 -- Dữ liệu bảng rightsGroup
-INSERT INTO permission (permissionID, permissionName, creationDate, slot) VALUES
-('PMS000001', 'Admin', '2017-12-06 15:00:00', 1),
-('PMS000002', 'Nhân viên nhập hàng', '2017-12-10 16:30:00', 5),
-('PMS000003', 'Nhân viên bán hàng', '2018-05-01 17:00:00', 5);
+INSERT INTO permission (permissionID, permissionName, creationDate, slot, applied) VALUES
+('PMS000001', 'Admin', '2017-12-06 15:00:00', 1, 1),
+('PMS000002', 'Nhân viên nhập hàng', '2017-12-10 16:30:00', 5, 5),
+('PMS000003', 'Nhân viên bán hàng', '2018-05-01 17:00:00', 5, 5);
 
 -- Dữ liệu bảng rightsGroupDetail
 INSERT INTO permissionDetail (permissionID, functionID, action) VALUES

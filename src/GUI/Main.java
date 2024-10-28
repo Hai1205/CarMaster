@@ -20,10 +20,13 @@ public class Main extends JFrame {
     private HomePage homePage;
 
     private void initComponent() {
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("../img/CarMaster.png"));
+        setIconImage(icon);
+
         this.setSize(new Dimension(1400, 800));
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout(0, 0));
-        this.setTitle("Hệ thống quản lý kho hàng ");
+        this.setTitle("CarMaster showroom");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         if (epDTO != null) {

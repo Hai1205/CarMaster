@@ -5,7 +5,6 @@ USE Carmaster;
 -- Bảng product
 CREATE TABLE product (
     productID VARCHAR(10) PRIMARY KEY NOT NULL,
-    supplierID VARCHAR(10) NOT NULL,
     productName VARCHAR(255) NOT NULL,
     productImg VARCHAR(255) NOT NULL,
     quantity INT NOT NULL,
@@ -154,6 +153,7 @@ CREATE TABLE permission (
     permissionID VARCHAR(10) PRIMARY KEY NOT NULL,
     creationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     slot INT NOT NULL, 
+    applied INT NOT NULL, 
     permissionName VARCHAR(255) NOT NULL
 );
 

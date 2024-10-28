@@ -33,6 +33,9 @@ public class LogIn extends JFrame implements KeyListener {
     }
 
     private void initComponent() {
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("../img/CarMaster.png"));
+        setIconImage(icon);
+
         FlatRobotoFont.install();
         FlatLaf.setPreferredFontFamily(FlatRobotoFont.FAMILY);
         FlatLaf.setPreferredLightFontFamily(FlatRobotoFont.FAMILY_LIGHT);
@@ -171,4 +174,4 @@ public class LogIn extends JFrame implements KeyListener {
         LogIn login = new LogIn();
         login.setVisible(true);
     }
-}
+}   

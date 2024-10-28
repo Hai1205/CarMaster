@@ -15,11 +15,11 @@ public class InvoiceBUS {
     public InvoiceBUS() {
     }
 
-    public String createID(){
+    public String createID() {
         String ID;
-        do{
-            ID = "IV"+Tool.randomID();
-        }while(getInvoiceByID(ID) != null);
+        do {
+            ID = "IV" + Tool.randomID();
+        } while (getInvoiceByID(ID) != null);
         return ID;
     }
 
@@ -27,7 +27,7 @@ public class InvoiceBUS {
         return InvoiceDAO.getList();
     }
 
-    public ArrayList<InvoiceDTO> search(String info){
+    public ArrayList<InvoiceDTO> search(String info) {
         return InvoiceDAO.search(info);
     }
 
@@ -50,30 +50,30 @@ public class InvoiceBUS {
     }
 
     public int findIndexByProductID(ArrayList<InvoiceDetailDTO> ivdList, String productID) {
-        for(int i=0; i<ivdList.size(); i++) {
-            if(ivdList.get(i).getProductID().equals(productID)){
+        for (int i = 0; i < ivdList.size(); i++) {
+            if (ivdList.get(i).getProductID().equals(productID)) {
                 return i;
             }
         }
-        return 0;
+        return -1;
     }
 
-    public String getCustomerNameByID(String customerID){
+    public String getCustomerNameByID(String customerID) {
         CustomerBUS ctmBUS = new CustomerBUS();
         return ctmBUS.getNameByID(customerID);
     }
 
-    public String getSupplierAddressByID(String customerID){
+    public String getSupplierAddressByID(String customerID) {
         CustomerBUS ctmBUS = new CustomerBUS();
         return ctmBUS.getAddressByID(customerID);
     }
 
-    public String getEmployeeNameByID(String employeeID){
+    public String getEmployeeNameByID(String employeeID) {
         EmployeeBUS epBUS = new EmployeeBUS();
         return epBUS.getNameByID(employeeID);
     }
 
-    public InvoiceDTO getInvoiceByID(String invoiceID){
+    public InvoiceDTO getInvoiceByID(String invoiceID) {
         return InvoiceDAO.getInvoiceByID(invoiceID);
     }
 

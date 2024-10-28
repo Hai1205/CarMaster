@@ -76,7 +76,7 @@ public class BrandDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT * FROM brand";
+            String query = "SELECT * FROM brand ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
 
@@ -112,7 +112,7 @@ public class BrandDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT brandName FROM brand";
+            String query = "SELECT brandName FROM brand ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
     
@@ -211,90 +211,4 @@ public class BrandDAO {
         }
         return brandName;
     }
-
-//    public static BrandDTO getByID(String brandID) {
-//        BrandDTO bDTO = null;
-//        Connection connection = null;
-//        PreparedStatement pstmt = null;
-//        ResultSet resultSet = null;
-//        try {
-//            connection = Database.getConnection();
-//            String query;
-//            query = "SELECT * FROM brand WHERE brandID = ?";
-//            pstmt = connection.prepareStatement(query);
-//            pstmt.setString(1, brandID);
-//            resultSet = pstmt.executeQuery();
-//
-//            if (resultSet.next()) {
-//                brandID = resultSet.getString("brandID");
-//                String brandName = resultSet.getString("brandName");
-//                bDTO = new BrandDTO(brandID, brandName);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if (resultSet != null) {
-//                    resultSet.close();
-//                }
-//                if (pstmt != null) {
-//                    pstmt.close();
-//                }
-//                if (connection != null) {
-//                    connection.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return bDTO;
-//    }
-//    
-//    public static ArrayList<BrandDTO> search(String info) {
-//        ArrayList<BrandDTO> list = new ArrayList<>();
-//        Connection connection = null;
-//        PreparedStatement pstmt = null;
-//        ResultSet resultSet = null;
-//        try {
-//            connection = Database.getConnection();
-//            String query;
-//
-//            if (info != null && !info.isEmpty()) {
-//                query = "SELECT * FROM brand WHERE brandName LIKE ? OR brandID LIKE ?";
-//                pstmt = connection.prepareStatement(query);
-//                String searchValue = "%" + info + "%";
-//                pstmt.setString(1, searchValue);
-//                pstmt.setString(2, searchValue);
-//            } else {
-//                query = "SELECT * FROM brand";
-//                pstmt = connection.prepareStatement(query);
-//            }
-//
-//            resultSet = pstmt.executeQuery();
-//
-//            while (resultSet.next()) {
-//                String brandName = resultSet.getString("brandName");
-//                String permissionID = resultSet.getString("brandID");
-//                
-//                list.add(new BrandDTO(permissionID, brandName));
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if (resultSet != null) {
-//                    resultSet.close();
-//                }
-//                if (pstmt != null) {
-//                    pstmt.close();
-//                }
-//                if (connection != null) {
-//                    connection.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return list;
-//    }
 }

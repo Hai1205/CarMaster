@@ -94,7 +94,7 @@ public final class DetailDialog extends JDialog implements ActionListener {
 
         for (ImportDetailDTO ipdDTO : detailList) {
             tblModel.addRow(new Object[] {
-                    ipdDTO.getProductID(), ipdDTO.getPrice(), ipdDTO.getQuantity(), ipdDTO.getCost() });
+                    ipdDTO.getProductID(), Formater.FormatVND(ipdDTO.getPrice()), ipdDTO.getQuantity(), Formater.FormatVND(ipdDTO.getCost()) });
         }
     }
 
@@ -106,7 +106,7 @@ public final class DetailDialog extends JDialog implements ActionListener {
 
         for (InvoiceDetailDTO ivdDTO : detailList) {
             tblModel.addRow(new Object[] {
-                    ivdDTO.getProductID(), ivdDTO.getPrice(), ivdDTO.getQuantity(), ivdDTO.getCost() });
+                    ivdDTO.getProductID(), Formater.FormatVND(ivdDTO.getPrice()), ivdDTO.getQuantity(), Formater.FormatVND(ivdDTO.getCost()) });
         }
     }
 

@@ -20,7 +20,6 @@ public final class MainFunction extends JToolBar {
         btn.put("create", new ButtonToolBar("THÊM", "add.svg", "create"));
         btn.put("detail", new ButtonToolBar("CHI TIẾT", "detail.svg", "update"));
         btn.put("update", new ButtonToolBar("CẬP NHẬT", "edit.svg", "update"));
-        // btn.put("cancel", new ButtonToolBar("HUỶ PHIẾU", "cancel.svg", "delete"));
         btn.put("import", new ButtonToolBar("NHẬP EXCEL", "import_excel.svg", "create"));
         btn.put("export", new ButtonToolBar("XUẤT EXCEL", "export_excel.svg", "view"));
     }

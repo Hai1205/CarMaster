@@ -116,7 +116,7 @@ public class StatisticBUS {
     }
 
     public int getProductQuantity() {
-        return ProductDAO.getList().size();
+        return ProductDAO.getList("").size();
     }
 
     public int getCustomerQuantity() {

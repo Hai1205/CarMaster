@@ -33,7 +33,7 @@ import javax.swing.table.DefaultTableModel;
 /**
  *
  */
-public final class PerMonthOfYear extends JPanel implements ActionListener{
+public final class PerMonthOfYear extends JPanel implements ActionListener {
 
     private PanelBorderRadius pnlChart;
     private JPanel pnl_top;
@@ -81,7 +81,7 @@ public final class PerMonthOfYear extends JPanel implements ActionListener{
         sttTable = new JTable();
         scrollSttTable = new JScrollPane();
         tblModel = new DefaultTableModel();
-        String[] header = new String[]{"Tháng", "Chi phí", "Doanh thu", "Lợi nhuận"};
+        String[] header = new String[] { "Tháng", "Chi phí", "Doanh thu", "Lợi nhuận" };
         tblModel.setColumnIdentifiers(header);
         sttTable.setModel(tblModel);
         sttTable.setAutoCreateRowSorter(true);
@@ -111,7 +111,8 @@ public final class PerMonthOfYear extends JPanel implements ActionListener{
         chart.addLegend("Doanh thu", new Color(135, 189, 245));
         chart.addLegend("Lợi nhuận", new Color(189, 135, 245));
         for (int i = 0; i < list.size(); i++) {
-            chart.addData(new ModelChart("Tháng " + (i + 1), new double[]{list.get(i).getExpense(), list.get(i).getIncome(), list.get(i).getProfits()}));
+            chart.addData(new ModelChart("Tháng " + (i + 1),
+                    new double[] { list.get(i).getExpense(), list.get(i).getIncome(), list.get(i).getProfits() }));
         }
         chart.repaint();
         chart.validate();
@@ -119,9 +120,11 @@ public final class PerMonthOfYear extends JPanel implements ActionListener{
         pnlChart.repaint();
         pnlChart.validate();
         tblModel.setRowCount(0);
-        for (int i = 0; i < list.size(); i++) {
-            tblModel.addRow(new Object[]{
-                "Tháng " + (i + 1), Formater.FormatVND(list.get(i).getExpense()), Formater.FormatVND(list.get(i).getIncome()), Formater.FormatVND(list.get(i).getProfits())
+
+        for (int i = list.size() - 1; i >= 0; i--) {
+            tblModel.addRow(new Object[] {
+                    "Tháng " + (i + 1), Formater.FormatVND(list.get(i).getExpense()),
+                    Formater.FormatVND(list.get(i).getIncome()), Formater.FormatVND(list.get(i).getProfits())
             });
         }
 
@@ -129,7 +132,7 @@ public final class PerMonthOfYear extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == export) {
+        if (e.getSource() == export) {
             try {
                 JTableExporter.exportJTableToExcel(sttTable);
             } catch (IOException ex) {

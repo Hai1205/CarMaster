@@ -23,11 +23,12 @@ public class PermissionDAO {
         PreparedStatement pstmt = null;
         try {
             con = (Connection) Database.getConnection();
-            String sql = "INSERT INTO permission (permissionID, permissionName, slot) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO permission (permissionID, permissionName, slot, applied) VALUES (?, ?, ?, ?)";
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1, pmsDTO.getPermissionID());
             pstmt.setString(2, pmsDTO.getPermissionName());
             pstmt.setInt(3, pmsDTO.getSlot());
+            pstmt.setInt(4, 0);
             result = pstmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -73,6 +74,32 @@ public class PermissionDAO {
         }
     }
 
+    public static void updateApplied(String type, String permissionID) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = (Connection) Database.getConnection();
+            String sql = "UPDATE permission SET applied = applied " + ((type.equals("increase")) ? "+" : "-")
+                    + " 1 WHERE permissionID = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, permissionID);
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static ArrayList<PermissionDTO> search(String info) {
         ArrayList<PermissionDTO> list = new ArrayList<>();
         Connection connection = null;
@@ -83,14 +110,15 @@ public class PermissionDAO {
             String query;
 
             if (info != null && !info.isEmpty()) {
-                query = "SELECT * FROM permission WHERE permissionName LIKE ? OR permissionID LIKE ? OR slot LIKE ?";
+                query = "SELECT * FROM permission WHERE permissionName LIKE ? OR permissionID LIKE ? OR slot LIKE ? OR applied LIKE ? ORDER BY creationDate DESC";
                 pstmt = connection.prepareStatement(query);
                 String searchValue = "%" + info + "%";
                 pstmt.setString(1, searchValue);
                 pstmt.setString(2, searchValue);
                 pstmt.setString(3, searchValue);
+                pstmt.setString(4, searchValue);
             } else {
-                query = "SELECT * FROM permission";
+                query = "SELECT * FROM permission ORDER BY creationDate DESC";
                 pstmt = connection.prepareStatement(query);
             }
 
@@ -100,8 +128,9 @@ public class PermissionDAO {
                 String permissionName = resultSet.getString("permissionName");
                 String permissionID = resultSet.getString("permissionID");
                 int slot = resultSet.getInt("slot");
+                int applied = resultSet.getInt("applied");
 
-                list.add(new PermissionDTO(permissionID, permissionName, slot));
+                list.add(new PermissionDTO(permissionID, permissionName, slot, applied));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -130,7 +159,7 @@ public class PermissionDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT * FROM permission";
+            String query = "SELECT * FROM permission ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
 
@@ -138,8 +167,9 @@ public class PermissionDAO {
                 String permissionID = resultSet.getString("permissionID");
                 String permissionName = resultSet.getString("permissionName");
                 int slot = resultSet.getInt("slot");
+                int applied = resultSet.getInt("applied");
 
-                list.add(new PermissionDTO(permissionID, permissionName, slot));
+                list.add(new PermissionDTO(permissionID, permissionName, slot, applied));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -175,10 +205,10 @@ public class PermissionDAO {
             resultSet = pstmt.executeQuery();
 
             if (resultSet.next()) {
-                permissionID = resultSet.getString("permissionID");
                 String permissionName = resultSet.getString("permissionName");
                 int slot = resultSet.getInt("slot");
-                pmsDTO = new PermissionDTO(permissionID, permissionName, slot);
+                int applied = resultSet.getInt("applied");
+                pmsDTO = new PermissionDTO(permissionID, permissionName, slot, applied);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -277,16 +307,9 @@ public class PermissionDAO {
         Connection connection = null;
         PreparedStatement pstmt = null;
         ResultSet resultSet = null;
-        if(!permissionName.isEmpty()){
-            list.add(permissionName);
-        }
         try {
             connection = Database.getConnection();
-            String query = "SELECT permission.permissionName\n"
-                    + "FROM permission\n"
-                    + "LEFT JOIN employee ON permission.permissionID = employee.permissionID\n"
-                    + "GROUP BY permission.permissionName, permission.slot\n"
-                    + "HAVING COUNT(employee.permissionID) < permission.slot;";
+            String query = "SELECT permission.permissionName FROM permission WHERE applied < slot ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
 
@@ -311,6 +334,9 @@ public class PermissionDAO {
             }
         }
 
+        if (!permissionName.isEmpty() && !list.contains(permissionName)) {
+            list.add(0, permissionName);
+        }
         return list.toArray(new String[0]);
     }
 }

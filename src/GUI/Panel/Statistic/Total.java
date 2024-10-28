@@ -13,6 +13,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -37,7 +39,7 @@ public class Total extends JPanel {
     private String[][] getStr = {
             { "Sản phẩm hiện có trong kho", "car.svg", "" },
             { "Khách từ trước đến nay", "stafff.svg", "" },
-            { "Nhân viên đang hoạt động", "customerr.svg", "" } };
+            { "Nhân viên còn hoạt động", "customerr.svg", "" } };
 
     public Total(StatisticBUS sttBUS) {
         getStr[0][2] = sttBUS.getProductQuantity() + "";
@@ -56,8 +58,9 @@ public class Total extends JPanel {
     }
 
     public void loadDataIntoTable(ArrayList<ByPerDateInMonthDTO> list) {
+        Collections.reverse(list);
         tblModel.setRowCount(0);
-        for (ByPerDateInMonthDTO i : dataset) {
+        for (ByPerDateInMonthDTO i : list) {
             tblModel.addRow(new Object[] {
                     i.getDate(), Formater.FormatVND(i.getExpense()), Formater.FormatVND(i.getIncome()),
                     Formater.FormatVND(i.getProfits())
@@ -75,7 +78,6 @@ public class Total extends JPanel {
         jp_top.setOpaque(false);
         jp_top.setBorder(new EmptyBorder(10, 10, 10, 10));
         jp_top.setPreferredSize(new Dimension(0, 120));
-
         listitem = new itemTaskbar[getStr.length];
         for (int i = 0; i < getStr.length; i++) {
             listitem[i] = new itemTaskbar(getStr[i][1], getStr[i][2], getStr[i][0], 0);
@@ -87,7 +89,7 @@ public class Total extends JPanel {
         JPanel jp_center_top = new JPanel(new FlowLayout());
         jp_center_top.setBorder(new EmptyBorder(10, 0, 0, 10));
         jp_center_top.setOpaque(false);
-        JLabel txtChartName = new JLabel("Thống kê doanh thu 7 ngày gần nhất");
+        JLabel txtChartName = new JLabel("Doanh thu 7 ngày gần nhất");
         txtChartName.putClientProperty("FlatLaf.style", "font: 150% $medium.font");
         jp_center_top.add(txtChartName);
 
@@ -121,6 +123,7 @@ public class Total extends JPanel {
         statisticTable.setDefaultRenderer(Object.class, centerRenderer);
         statisticTable.setFocusable(false);
         scrollStatisticTable.setPreferredSize(new Dimension(0, 250));
+        statisticTable.setRowHeight(40);
 
         TableSorter.configureTableColumnSorter(statisticTable, 0, TableSorter.DATE_COMPARATOR);
         TableSorter.configureTableColumnSorter(statisticTable, 1, TableSorter.VND_CURRENCY_COMPARATOR);

@@ -28,9 +28,9 @@ public class EmployeeDAO {
             connection = Database.getConnection();
             String query;
             if (status.equals("Hoạt động")) {
-                query = "SELECT * FROM employee WHERE status = 'Hoạt động'";
+                query = "SELECT * FROM employee WHERE status = 'Hoạt động' ORDER BY hireDate DESC";
             } else {
-                query = "SELECT * FROM employee";
+                query = "SELECT * FROM employee ORDER BY hireDate DESC";
             }
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
@@ -176,7 +176,7 @@ public class EmployeeDAO {
             String query;
 
             if (info != null && !info.isEmpty()) {
-                query = "SELECT * FROM employee WHERE employeeID LIKE ? OR permissionID LIKE ? OR email LIKE ? OR gender LIKE ? OR employeeName LIKE ? OR DOB LIKE ?  OR YEAR(DOB) LIKE ? OR MONTH(DOB) LIKE ? OR salary LIKE ? OR phone LIKE ? OR hireDate LIKE ? OR YEAR(hireDate) LIKE ? OR MONTH(hireDate) LIKE ? OR status LIKE ?";
+                query = "SELECT * FROM employee WHERE employeeID LIKE ? OR permissionID LIKE ? OR email LIKE ? OR gender LIKE ? OR employeeName LIKE ? OR DOB LIKE ?  OR YEAR(DOB) LIKE ? OR MONTH(DOB) LIKE ? OR salary LIKE ? OR phone LIKE ? OR hireDate LIKE ? OR YEAR(hireDate) LIKE ? OR MONTH(hireDate) LIKE ? OR status LIKE ? ORDER BY hireDate DESC";
                 pstmt = connection.prepareStatement(query);
                 String searchValue = "%" + info + "%";
                 pstmt.setString(1, searchValue);
@@ -194,7 +194,7 @@ public class EmployeeDAO {
                 pstmt.setString(13, searchValue);
                 pstmt.setString(14, searchValue);
             } else {
-                query = "SELECT * FROM employee";
+                query = "SELECT * FROM employee ORDER BY hireDate DESC";
                 pstmt = connection.prepareStatement(query);
             }
 

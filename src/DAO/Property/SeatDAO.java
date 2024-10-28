@@ -76,7 +76,7 @@ public class SeatDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT * FROM seat";
+            String query = "SELECT * FROM seat ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
 
@@ -112,7 +112,7 @@ public class SeatDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT numberOfSeat FROM seat";
+            String query = "SELECT numberOfSeat FROM seat ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
     

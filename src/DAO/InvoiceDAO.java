@@ -18,7 +18,7 @@ public class InvoiceDAO {
         Connection connection = null;
         try {
             connection = Database.getConnection();
-            String sql = "INSERT INTO invoice(creationDate, customerID, totalCost, employeeID, invoiceID) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO invoice(creationDate, customerID, totalCost, employeeID, invoiceID) VALUES (?, ?, ?, ?, ?) ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(sql);
 
             pstmt.setTimestamp(1, ivDTO.getCreationDate());
@@ -121,7 +121,7 @@ public class InvoiceDAO {
 
         try {
             connection = Database.getConnection();
-            String sql = "SELECT * FROM invoice WHERE invoiceID=?";
+            String sql = "SELECT * FROM invoice WHERE invoiceID = ?";
             pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, invoiceID);
             resultSet = pstmt.executeQuery();
@@ -162,7 +162,7 @@ public class InvoiceDAO {
 
         try {
             connection = Database.getConnection();
-            String sql = "SELECT * FROM invoice WHERE customerID = ?";
+            String sql = "SELECT * FROM invoice WHERE customerID = ? ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, customerID);
             resultSet = pstmt.executeQuery();
@@ -205,15 +205,16 @@ public class InvoiceDAO {
             String query;
 
             if (info != null && !info.isEmpty()) {
-                query = "SELECT invocie.invoiceID, customer.customerID, employee.employeeID, invocie.creationDate, invocie.totalCost " +
-               "FROM invocie " +
-               "JOIN customer ON invocie.customerID = customer.customerID " +
-               "JOIN employee ON employee.employeeID = invocie.employeeID " +
-               "WHERE invocie.invoiceID LIKE ? " +
+                query = "SELECT invoice.invoiceID, customer.customerID, employee.employeeID, invoice.creationDate, invoice.totalCost " +
+               "FROM invoice " +
+               "JOIN customer ON invoice.customerID = customer.customerID " +
+               "JOIN employee ON employee.employeeID = invoice.employeeID " +
+               "WHERE invoice.invoiceID LIKE ? " +
                "OR customer.customerName LIKE ? " +
                "OR employee.employeeName LIKE ? " +
-               "OR invocie.creationDate LIKE ? " +
-               "OR invocie.totalCost LIKE ?";
+               "OR invoice.creationDate LIKE ? " +
+               "OR invoice.totalCost LIKE ?" +
+               "ORDER BY invoice.creationDate DESC";
                
                 pstmt = connection.prepareStatement(query);
                 String searchValue = "%" + info + "%";
@@ -223,7 +224,7 @@ public class InvoiceDAO {
                 pstmt.setString(4, searchValue);
                 pstmt.setString(5, searchValue);
             } else {
-                query = "SELECT * FROM invoice";
+                query = "SELECT * FROM invoice ORDER BY creationDate DESC";
                 pstmt = connection.prepareStatement(query);
             }
 

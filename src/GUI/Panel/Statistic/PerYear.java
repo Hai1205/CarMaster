@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
@@ -61,6 +62,7 @@ public final class PerYear extends JPanel implements ActionListener {
     }
 
     public void loadDataIntoTable(ArrayList<ByIncomeAndExpenseDTO> list) {
+        Collections.reverse(list);
         tblModel.setRowCount(0);
         for (ByIncomeAndExpenseDTO i : dataset) {
             tblModel.addRow(new Object[] {

@@ -22,7 +22,6 @@ public class NavigationBar extends JPanel implements MouseListener{
         this.setBackground(Color.black);
         
         lbl = new JLabel("QUẢN LÝ KHO HÀNG TỔNG HỢP");
-//        lbl.setPreferredSize(new Dimension(100,30));
         lbl.setFont(new Font("Segoe UI", Font.BOLD, 20));
         lbl.setForeground(MainColor);
         this.add(lbl, BorderLayout.CENTER);
@@ -53,22 +52,18 @@ public class NavigationBar extends JPanel implements MouseListener{
 
     @Override
     public void mousePressed(MouseEvent e) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
     

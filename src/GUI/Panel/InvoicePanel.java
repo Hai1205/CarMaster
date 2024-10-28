@@ -183,7 +183,7 @@ public final class InvoicePanel extends JPanel
         } else if (source == mainFunction.btn.get("detail")) {
             int index = getRowSelected();
             if (index != -1) {
-                new DetailDialog(m, "Thông tin phiếu nhập", true, ivBUS.getList().get(index));
+                new DetailDialog(m, "Thông tin hóa đơn", true, ivBUS.getList().get(index));
             }
         } else if (source == search.getBtnReset()) {
             search.getTxtSearchForm().setText("");

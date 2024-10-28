@@ -55,6 +55,7 @@ public class SupplierBUS {
     }
 
     public String getIDByName(String supplierName) {
+        // System.out.println(supplierName);
         return SupplierDAO.getIDByName(supplierName);
     }
 

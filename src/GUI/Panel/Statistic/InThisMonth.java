@@ -17,6 +17,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
@@ -132,6 +133,7 @@ public final class InThisMonth extends JPanel{
 
     public void loadByPerDateInMonth(int month, int year) {
         ArrayList<ByPerDateInMonthDTO> list = sttBUS.getByPerDateInMonth(month, year);
+        Collections.reverse(list);
         pnlChart.remove(chart);
         chart = new Chart();
         chart.addLegend("Vốn", new Color(245, 189, 135));

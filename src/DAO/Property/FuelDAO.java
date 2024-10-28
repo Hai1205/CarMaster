@@ -76,7 +76,7 @@ public class FuelDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT * FROM fuel";
+            String query = "SELECT * FROM fuel ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
 
@@ -112,7 +112,7 @@ public class FuelDAO {
         ResultSet resultSet = null;
         try {
             connection = Database.getConnection();
-            String query = "SELECT fuelType FROM fuel";
+            String query = "SELECT fuelType FROM fuel ORDER BY creationDate DESC";
             pstmt = connection.prepareStatement(query);
             resultSet = pstmt.executeQuery();
     
